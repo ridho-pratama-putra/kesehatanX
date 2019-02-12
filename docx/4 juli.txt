@@ -1,0 +1,97 @@
+| ->		detil2 halaman	|
+| *			catatan			|
+| !!		revisi			|
+| ----		sudah			|
+
+ROMI
+	----REGISTER
+		-> localhost/kesehatan/Account/menu/register 	
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\account\register.php
+		*form biasa
+		*tambahkan alert. gunakan sweetalert yang sudah terintegrasi. dokumentasi ada di https://sweetalert.js.org/
+
+	----LOGIN
+		-> localhost/kesehatan/Account/menu/login	
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\account\login.php
+		*form biasa disertai alert sweetalert
+
+	----LOG PEMERIKSAAN DOKTER	
+		-> localhost/kesehatan/Dokter/log	
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\dokter\log.php
+		*gunakan datatable
+		*tampilkan status : RF atau UMUM
+		*log beserta detilnya
+
+	----CETAK SURAT SEHAT	
+		-> localhost/kesehatan/Dokter/cetak/suratsehat	
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\dokter\suratsehat.php
+		*sediakan form untuk pengisian surat sesuai docx
+
+	----VERIFIKASI REGISTRASI PENGGUNA (oleh admin) untuk registrasi dokter dan petugas non admin. cantumkan daftar user yang mengajukan pendaftaran dan tombol untuk verifikasi registrasi. tampilkan pengguna yang terverifikasi. cantumkan tombol untuk reset password pengguna
+
+	DAFTAR SEMUA PASIEN TERDAFTAR (ADMIN) berupa tabel menyangkut identitas pasien, jenis pembayaran, dll disertai tombol ke menu rekam medis setiap pasien
+		-> http://localhost/kesehatan/Admin/menu/daftar_pasien
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\admin
+	
+	DAFTAR REKAM MEDIS SETIAP PASIEN (ADMIN) berupa tabel seperti log pada dokter
+		-> http://localhost/kesehatan/Admin/rekam_medis
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\admin
+
+	HALAMAN INSERT ICD (ADMIN)
+		-> halaman untuk update ICD
+		-> http://localhost/kesehatan/Admin/menu/insertICD
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\admin
+
+
+ALDI
+	----PENDAFTARAN PETUGAS	
+		->localhost/kesehatan/Petugas/menu/pendaftaran	
+		->edit file C:\xampp\htdocs\kesehatan\application\views\petugas\pendaftaran_pasien.php
+	
+	----PEMERIKSAAN PETUGAS	
+		->localhost/kesehatan/Petugas/menu/pemeriksaan	
+		->edit file C:\xampp\htdocs\kesehatan\application\views\petugas\pemeriksaan_awal.php
+	
+	PEMERIKSAAN DOKTER	
+		->localhost/kesehatan/Dokter/pemeriksaan	
+		->edit file C:\xampp\htdocs\kesehatan\application\views\dokter\pemeriksaan.php
+		*form input sesuai RF atau UMUM
+		!!kolom assesment bukan text area, sepertinya berupa panel. didalam terdapat select element kode ICD untuk primary sekunder dan lain2. sesuaikan dengan hardcopy rekam medis RF
+	
+	----CETAK SURAT SAKIT	
+		-> localhost/kesehatan/Dokter/cetak/suratsakit	
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\dokter\suratsakit.php
+		*sediakan form untuk pengisian surat sesuai docx
+	
+	-----DAFTAR PASIEN YANG SEDANG ANTRI 
+		-> localhost/kesehatan/Dokter/antrian 
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\dokter\antri
+		*cantumkan nama, usia,  pembayaran, waktu datang, nomor pasien
+		*sertakan button dgn tulisan "Pemeriksaan"
+
+	DAFTAR SEMUA DOKTER TERDAFTAR (ADMIN) berupa tabel DISERTAI tombol untuk ke detil pelayanan dan tombol untuk reset password
+		-> http://localhost/kesehatan/Admin/menu/daftar_dokter
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\admin
+
+	DETIL PELAYANAN SETIAP DOKTER (ADMIN) berupa tabel sorting berdasarkan tanggal terbaru
+		-> halaman untuk melihat berapa pasien yang telah dilayani selama 1 bulan. terdapat informasi siapa saja pasien beserta jenis pembayaran(BPJS|UMUM|RF)
+		-> http://localhost/kesehatan/Admin/rekam_dokter
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\admin
+
+	HALAMAN EDIT INFORMASI USER seperti ubah password, ubah foto profil
+		-> http://localhost/kesehatan/Account/my_account
+		-> edit file C:\xampp\htdocs\kesehatan\application\views\account\myaccount
+
+
+RIDHO
+	-setup https://github.com/DoersGuild/jQuery.print taruh di assets/jquery.print.doersguild
+	-setelah tampilan form cetak surat2 jadi, tambahkan JS cetak
+	----form handler pendaftaran pasien, pemeriksaan awal, login, register
+	-debug jqueryprint
+	-https://belajarphp.net/laporan-pdf-codeigniter/
+
+PUTRA 	
+	-setup sweetalert : https://sweetalert.js.org/ masukkan assets\sweetalert
+	-buat helper json_encode() alert parser nya
+	-form handler rekam medis, cetak surat
+	----setup datatable

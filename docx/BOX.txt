@@ -1,0 +1,17 @@
+ADMIN
+	laporan pasien datang bulan ini
+	daftar pasien (**seperti log pada dokter)
+		info pasien
+		rekam medis (SOAP)
+	ICD insert
+	daftar dokter
+		jumlah penanganan setiap tipe pembayaran (BPJS/RF/UMUM)
+	
+DOKTER
+	pasien antri
+	pemeriksaan
+		isi SOAP dll
+	cetak surat
+		setiap surat yang keluar (docx/pdf) masukkan setiap folder dengan nomor pasien sebagai nama
+
+
