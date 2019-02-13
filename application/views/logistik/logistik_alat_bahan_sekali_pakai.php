@@ -14,6 +14,7 @@
 		<thead>
 			<tr>
 				<!-- <th class="text-center" style="width: 5%">No.</th> -->
+				<th>Golongan Bahan</th>
 				<th>Nama Bahan</th>
 				<th>Sediaan Bahan</th>
 				<th>Bentuk</th>
@@ -21,6 +22,7 @@
 				<th>Harga Jual satuan</th>
 				<th>Stok</th>
 				<th>Presentase</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +32,7 @@
 				?>
 				<tr>
 					<!-- <td class="text-center"><?=$i?></td> -->
+					<td><?=$value->nama_golongan?></td>
 					<td><?=$value->nama?></td>
 					<td><?=$value->sediaan?></td>
 					<td><?=$value->bentuk?></td>
@@ -52,6 +55,12 @@
 					) * 100, 2, '.', '')
 					: '0'
 					?> %</td>
+					<td>
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai-edit/<?=$value->id?>" class="btn btn-primary">Edit</a>
+							<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai-hapus/<?=$value->id?>" class="btn btn-secondary">Delete</a>
+						</div>
+					</td>
 				</tr>
 				<?php 
 				// $i++; 

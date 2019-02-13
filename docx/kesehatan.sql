@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-02-12 19:11:08
+Date: 2019-02-13 15:34:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `golongan_logistik` (
   `nama_golongan` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `golongan obat` (`nama_golongan`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of golongan_logistik
@@ -79,7 +79,7 @@ CREATE TABLE `logistik_alat_bahan_sekali_pakai` (
 -- ----------------------------
 -- Records of logistik_alat_bahan_sekali_pakai
 -- ----------------------------
-INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('1', 'Silk 2/0 + Jarum', '22', '75cm', 'IHS Medikom', 'Padat', '4000', '15000', '5');
+INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('1', 'Silk 2/0 + Jarum', '22', '75cm', 'IHS Medikom', 'Padat', '4000', '15000', '6');
 
 -- ----------------------------
 -- Table structure for logistik_obat_injeksi
@@ -95,7 +95,7 @@ CREATE TABLE `logistik_obat_injeksi` (
   `harga_jual_satuan` varchar(255) DEFAULT NULL,
   `stok` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of logistik_obat_injeksi
@@ -128,23 +128,27 @@ INSERT INTO `logistik_obat_oral` VALUES ('3', '1', 'Amoxicillin', '125mg/5ml', '
 INSERT INTO `logistik_obat_oral` VALUES ('4', '1', 'Cefadroxil', '500mg', 'Capsul', '100', '65000', '1000', '30');
 
 -- ----------------------------
--- Table structure for logistik_sigma_usus_externum
+-- Table structure for logistik_obat_sigma_usus_externum
 -- ----------------------------
-DROP TABLE IF EXISTS `logistik_sigma_usus_externum`;
-CREATE TABLE `logistik_sigma_usus_externum` (
+DROP TABLE IF EXISTS `logistik_obat_sigma_usus_externum`;
+CREATE TABLE `logistik_obat_sigma_usus_externum` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_obat` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
   `golongan` varchar(255) DEFAULT NULL,
   `presentase` varchar(255) DEFAULT NULL,
   `sediaan` varchar(255) DEFAULT NULL,
   `bentuk` varchar(255) DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL,
+  `harga_beli_per_satuan` varchar(255) DEFAULT NULL,
+  `harga_jual_per_satuan` varchar(255) DEFAULT NULL,
+  `stok` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of logistik_sigma_usus_externum
+-- Records of logistik_obat_sigma_usus_externum
 -- ----------------------------
+INSERT INTO `logistik_obat_sigma_usus_externum` VALUES ('1', 'Chloramphenicol', '1', '0,5 %', '10ml', 'Drop-Eye', '11000', '15000', '8');
+INSERT INTO `logistik_obat_sigma_usus_externum` VALUES ('2', 'Gentamicin Sulfate', '1', '0,1%', '5g', 'Zalf-Skin', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for log_logistik

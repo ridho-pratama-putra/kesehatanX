@@ -14,6 +14,7 @@
 		<thead>
 			<tr>
 				<!-- <th class="text-center" style="width: 5%">No.</th> -->
+				<th>Golongan Obat</th>
 				<th>Nama Obat</th>
 				<th>Sediaan Obat</th>
 				<th>Bentuk</th>
@@ -21,6 +22,7 @@
 				<th>Harga Jual satuan</th>
 				<th>Stok</th>
 				<th>Presentase</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +32,7 @@
 				?>
 				<tr>
 					<!-- <td class="text-center"><?=$i?></td> -->
+					<td><?=$value->nama_golongan?></td>
 					<td><?=$value->nama?></td>
 					<td><?=$value->sediaan?></td>
 					<td><?=$value->bentuk?></td>
@@ -37,10 +40,16 @@
 					<td><?=$value->harga_jual_satuan?></td>
 					<td><?=$value->stok?></td>
 					<td><?=
-					($value->harga_jual_satuan !== 0) ?
+					($value->harga_jual_satuan !== '0' && $value->harga_beli_satuan !== '0') ?
 					number_format((float)(($value->harga_jual_satuan - $value->harga_beli_satuan)/($value->harga_beli_satuan))*100, 2, '.', '')
 					: '0'
 					?> %</td>
+					<td>
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<a href="<?=base_url()?>logistik-obat-injeksi-edit/<?=$value->id?>" class="btn btn-primary">Edit</a>
+							<a href="<?=base_url()?>logistik-obat-injeksi-hapus/<?=$value->id?>" class="btn btn-secondary">Delete</a>
+						</div>
+					</td>
 				</tr>
 				<?php 
 				// $i++; 

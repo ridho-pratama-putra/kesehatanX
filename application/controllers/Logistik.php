@@ -9,6 +9,23 @@ class Logistik extends CI_Controller {
 		$this->load->helper(array('Cookie', 'String'));
 	}
 
+	function redirectUrl($jenis_logistik)
+	{
+		if ($jenis_logistik == "obat_oral") {
+			$url = "logistik-obat-oral";
+			return $url;
+		}elseif ($jenis_logistik == "obat_injeksi") {
+			$url = "logistik-obat-injeksi";
+			return $url;
+		}elseif ($jenis_logistik == "alat_bahan_sekali_pakai") {
+			$url = "logistik-alat-bahan-sekali-pakai";
+			return $url;
+		}elseif ($jenis_logistik == "obat_sigma_usus_externum") {
+			$url = "logistik-obat-sigma-usus-externum";
+			return $url;
+		}
+	}
+
 	function readGolongan()
 	{
 		$data 	= array(
@@ -26,9 +43,9 @@ class Logistik extends CI_Controller {
 		$exec = $this->model->create("golongan_logistik",array("nama_golongan"=>$this->input->post('nama_golongan')));
 		$exec = json_decode($exec);
 		if ($exec->status) {
-			alert('alert','success','Berhasil','Golongan Obat telah di tambahkan');
+			alert('alert','success','Berhasil','Golongan Logistik telah di tambahkan');
 		}else{
-			alert('alert','danger','Gagal','Golongan Obat gagal di tambahkan '.$exec->error_message->message);
+			alert('alert','danger','Gagal','Golongan Logistik gagal di tambahkan '.$exec->error_message->message);
 		}
 		redirect("golongan-logistik");
 	}
@@ -46,9 +63,9 @@ class Logistik extends CI_Controller {
 		);
 		$exec = json_decode($exec);
 		if ($exec->status) {
-			alert('alert','success','Berhasil','Golongan Obat telah di update');
+			alert('alert','success','Berhasil','Golongan Logistik telah di update');
 		}else{
-			alert('alert','danger','Gagal','Golongan Obat gagal di update '.$exec->error_message->message);
+			alert('alert','danger','Gagal','Golongan Logistik gagal di update '.$exec->error_message->message);
 		}
 		redirect("golongan-logistik");
 	}
@@ -57,9 +74,9 @@ class Logistik extends CI_Controller {
 	{
 		$exec = $this->model->delete("golongan_logistik",array("id"=>$id));
 		if ($exec) {
-			alert('alert','success','Berhasil','Golongan Obat telah di hapus');
+			alert('alert','success','Berhasil','Golongan Logistik telah di hapus');
 		}else{
-			alert('alert','warning','Gagal','Golongan Obat gagal dihapus '.$exec->message);
+			alert('alert','warning','Gagal','Golongan Logistik gagal dihapus '.$exec->message);
 		}
 		redirect("golongan-logistik");
 	}
@@ -68,23 +85,23 @@ class Logistik extends CI_Controller {
 	* get semua data ibat yang ada di database
 	* $jenis obat isinya = oral|injeksi|
 	*/
-	function readLogistik($jenis_obat){
+	function readLogistik($jenis_logistik){
 		$active = array(
-			"alat_bahan_sekali_pakai" 	=>	"logistik-bahan-sekali-pakai",
+			"alat_bahan_sekali_pakai" 	=>	"logistik-alat-bahan-sekali-pakai",
 			"obat_injeksi"				=>	"logistik-obat-injeksi",
 			"obat_oral"					=>	"logistik-obat-oral",
-			"sigma_usus_externum"		=>	"logistik-sigma_usus_externum"
+			"obat_sigma_usus_externum"	=>	"logistik-obat-sigma-usus-externum"
 		);
 
 		$data 	= array(
-			"active"					=>	$active[$jenis_obat],
-			"record"					=>	$this->model->readS("logistik_".$jenis_obat)->result(),
+			"active"					=>	$active[$jenis_logistik],
+			"record"					=>	$this->model->rawQuery("SELECT golongan_logistik.nama_golongan, logistik_".$jenis_logistik.".* FROM logistik_".$jenis_logistik." INNER JOIN golongan_logistik ON golongan_logistik.id = logistik_".$jenis_logistik.".golongan")->result(),
 			"golongan_logistik"			=>	$this->model->readS("golongan_logistik")->result()
 		);
 
 		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
 		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
-		$this->load->view("logistik/logistik_".$jenis_obat,$data);
+		$this->load->view("logistik/logistik_".$jenis_logistik,$data);
 		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
 	}
 
@@ -116,13 +133,62 @@ class Logistik extends CI_Controller {
 				alert('alert','warning','Gagal','Logistik gagal di tambahkan Error : '.$exec_query->error_message->message);
 			}
 		}
-		if ($jenis_logistik == "obat_oral") {
-			redirect("logistik-obat-oral");
-		}elseif ($jenis_logistik == "obat_injeksi") {
-			redirect("logistik-obat-injeksi");
-		}elseif ($jenis_logistik == "alat_bahan_sekali_pakai") {
-			redirect("logistik-alat-bahan-sekali-pakai");
+		redirect($this->redirectUrl($jenis_logistik));
+	}
+
+	// create logistik berdsarkan parameter
+	// $jenis_obat hanya bisa bernilai
+	// - bahan_sekali_pakai
+	// - obat_injeksi
+	// - obat_oral
+	// - sigma_usus_externum
+	function editLogistik($jenis_logistik,$id)
+	{
+		$active = array(
+			"alat_bahan_sekali_pakai" 	=>	"logistik-alat-bahan-sekali-pakai",
+			"obat_injeksi"				=>	"logistik-obat-injeksi",
+			"obat_oral"					=>	"logistik-obat-oral",
+			"obat_sigma_usus_externum"		=>	"logistik-obat-sigma-usus-externum"
+		);
+
+		$data 	= array(
+			"active"					=>	$active[$jenis_logistik],
+			"record"					=>	$this->model->read("logistik_".$jenis_logistik,array("id"=>$id))->result(),
+			"golongan_logistik"			=>	$this->model->readS("golongan_logistik")->result()
+		);
+
+		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
+		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
+		$this->load->view("logistik/logistik_".$jenis_logistik."_edit",$data);
+		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
+	}
+
+	function submitEditLogistik($jenis_logistik)
+	{
+		$data = $this->input->post();
+		$id = $data['id'];
+		unset($data['id']);
+
+		$exec = $this->model->update("logistik_".$jenis_logistik,array("id"=>$id),$data);
+		$exec = json_decode($exec);
+
+		if ($exec->status) {
+			alert('alert','success','Berhasil','Logistik telah di update');
+		}else{
+			alert('alert','danger','Gagal','Logistik gagal di update '.$exec->error_message->message);
 		}
+		redirect($this->redirectUrl($jenis_logistik)."-edit/".$id);
+	}
+
+	function deleteLogistik($jenis_logistik,$id)
+	{
+		$exec = $this->model->delete("logistik_".$jenis_logistik,array("id"=>$id));
+		if ($exec) {
+			alert('alert','success','Berhasil','Logistik telah di hapus');
+		}else{
+			alert('alert','warning','Gagal','Logistik gagal dihapus '.$exec->message);
+		}
+		redirect($this->redirectUrl($jenis_logistik));
 	}
 }
 // UNSET THINGS

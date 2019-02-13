@@ -15,6 +15,9 @@
       <li class="nav-item" id="logistik-obat-oral">
         <a class="nav-link" href="<?php echo base_url()?>logistik-obat-oral">Logistik obat oral</a>
       </li>
+      <li class="nav-item" id="logistik-obat-sigma-usus-externum">
+        <a class="nav-link" href="<?php echo base_url()?>logistik-obat-sigma-usus-externum">Logistik obat SUE</a>
+      </li>
       <li class="nav-item" id="golongan-logistik">
         <a class="nav-link" href="<?php echo base_url()?>golongan-logistik">Golongan logistik</a>
       </li>
