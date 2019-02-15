@@ -89,3 +89,13 @@ $route['logistik-obat-sigma-usus-externum-edit/(:num)']		= 'Logistik/editLogisti
 $route['logistik-obat-sigma-usus-externum-submit-edit']		= 'Logistik/submitEditLogistik/obat_sigma_usus_externum';
 $route['logistik-obat-sigma-usus-externum-hapus/(:num)'] 	= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
 
+
+
+
+$route['dashboard-admin'] 								= 'Admin/dashboard';
+$route['verifikasi-user'] 								= 'Admin/verifikasi';
+$route['submit-verifikasi-user'] 						= 'Admin/SubmitVerifikasiUser';
+$route['submit-reset-password/(:num)'] 					= 'Admin/SubmitResetPassword/$1';
+$route['pendaftaran'] 									= 'Petugas/pendaftaran';
+$route['submit-pendaftaran'] 							= 'Petugas/submitPendaftaran';
+$route['pemeriksaan-awal'] 								= 'Petugas/pemeriksaanAwal';
