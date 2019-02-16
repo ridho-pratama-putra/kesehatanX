@@ -49,7 +49,8 @@ class Petugas extends CI_Controller
 	function SubmitPendaftaran()
 	{
 		// echo "<pre>";
-
+		// var_dump($this->input->post());
+		// die();
 		$nik = $this->input->post('nik');
 
 		// cek apakah nik tidak ada isinya? jika tidak ada maka langsung skip pembacaan nik duplikat di database dan langsung insert. jika ada maka cek dulu di db adakah duplikasi
@@ -157,12 +158,11 @@ class Petugas extends CI_Controller
 			'tanggal_lahir' =>$tgl_lahir->format('Y-m-d'),
 			'usia'			=>$usia,
 			'jalan'			=>ucwords($this->input->post('jalan')),
-			'rt'			=>$this->input->post('RT'),
-			'rw'			=>$this->input->post('RW'),
 			'kelurahan'		=>$kelurahan,
 			'kecamatan'		=>$kecamatan,
 			'kota'			=>$kota,
 			'jenis_kelamin'	=>$this->input->post('jenis_kelamin'),
+			'nomor_bpjs'	=>$this->input->post('nomor_bpjs'),
 			'pekerjaan'		=>ucwords($this->input->post('pekerjaan')),
 			'pembayaran'	=>$pembayaran,
 			'tanggal_datang'=>date("y-m-d"),
@@ -186,10 +186,156 @@ class Petugas extends CI_Controller
 		$result = json_decode($this->model->create('pasien',$dataForm),false);
 		if ($result->status) {
 			alert('alert','success','Berhasil','Registrasi berhasil');
+			// redirect("pendaftaran");
 			redirect("pemeriksaan-awal/".$dataForm['nomor_pasien']);
 		}else{
 			alert('alert','warning','Gagal',$result->error_message->message);
 			redirect("pendaftaran");
 		}
 	}
+
+	/*
+	* function untuk menampilkan halaman live antrian.
+	*/
+	function antrian()
+	{
+		$data 	= array(
+			"active"					=>	"antrian",
+		);
+		$this->load->view('petugas/header');
+		$this->load->view('petugas/navbar',$data);
+		$this->load->view('petugas/antrian');
+		$this->load->view('petugas/footer');
+	}
+
+	/*
+	* funtion untuk handle live antrian pada sisi petugas depan
+	*/
+	function liveAntrian()
+	{
+		$data['antrian']		=	$this->model->rawQuery('
+			SELECT 
+			pasien.nama, 
+			antrian.jam_datang, 
+			antrian.nomor_antrian, 
+			pasien.pembayaran, 
+			pasien.nomor_pasien 
+			FROM antrian 
+			INNER JOIN pasien on antrian.nomor_pasien=pasien.nomor_pasien
+			WHERE DATE(jam_datang) = DATE(CURRENT_DATE()) ORDER BY nomor_antrian
+			')->result();
+
+		$data['proses_antrian']	=	$this->model->rawQuery('
+			SELECT 
+			proses_antrian.nomor_pasien,
+			pasien.nama, 
+			pasien.pembayaran 
+			FROM proses_antrian 
+			INNER JOIN pasien on proses_antrian.nomor_pasien=pasien.nomor_pasien
+			')->result();
+		echo json_encode($data);
+	}
+
+	/*
+	* function untuk menampilkan halaman  pemeriksaan awal
+	*/
+	function pemeriksaanAwal($nomor_pasien ="")
+	{
+		if ($nomor_pasien != '' ) {
+			$data 	= array(
+				"active"					=>	"pemeriksaan-awal",
+				"pasien"					=>	$this->model->read('pasien',array('nomor_pasien'=>$nomor_pasien))->result(),
+			);
+			$this->load->view('petugas/header',$data);
+			$this->load->view('petugas/navbar',$data);
+			$this->load->view('petugas/pemeriksaan_awal',$data);
+		}else{
+			redirect("cari-pasien");
+		}
+	}
+
+	/*
+	* function untuk menampilkan halaman cari pasien
+	*/
+	function cariPasien()
+	{
+		$data 	= array(
+			"active"					=>	"pemeriksaan-awal",
+		);
+		$this->load->view('petugas/header');
+		$this->load->view('petugas/navbar',$data);
+		$this->load->view('petugas/cari_pasien');
+	}
+
+	/*
+	* hadnler cari nama pasien via ajax
+	*/
+	function cariNama()
+	{
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			$dataReturn = $this->model->orLike('pasien',array('nama'=>$dataForm['term']['term'],'nomor_pasien'=>$dataForm['term']['term']))->result();
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->nomor_pasien;
+				$data[$key]['text'] = $value->nama." / ".$value->nomor_pasien;
+			}
+			echo json_encode($data);
+		}else{
+			redirect('logout');
+		}
+	}
+
+	/*
+	* cari nomor pasien via ajax
+	*/
+	function redirector()
+	{
+		if ($this->input->get() != NULL) {
+			var_dump($this->input->get());
+			redirect("pemeriksaan-awal/".$this->input->get('nama_or_nomor'));
+		}else{
+			echo "<pre>";
+			var_dump($this->input->get());
+		}
+	}
+
+		/*
+	* form handler untuk pemeriksaan awal
+	*/
+	function submitPemeriksaanAwal()
+	{
+		$postedData = 	array(
+			'tinggi_badan'		=>	$this->input->post('tinggi_badan'),
+			'berat_badan'		=>	$this->input->post('berat_badan'),
+			'sistol'			=>	$this->input->post('sistol'),
+			'diastol'			=>	$this->input->post('diastol'),
+			'nadi'				=>	$this->input->post('denyut_nadi'),
+			'respiratory_rate'	=>	$this->input->post('frekuensi_pernapasan'),
+			'temperature_ax'	=>	$this->input->post('suhu'),
+			'id_pasien'		=>	$this->input->post('id_pasien'),
+			// 'nomor_pasien'		=>	$this->input->post('nomor_pasien'),
+			'tanggal_jam'		=>	date("Y-m-d H:i:s")
+		);
+
+		// echo "<pre>";
+		// var_dump($postedData);
+		// die();
+
+		// create ke tabel RM dengan isi objektif
+		$this->model->create('rekam_medis',$postedData);
+		$result = json_decode($this->model->create("antrian",array("nomor_pasien"=>$this->input->post("nomor_pasien"),"jam_datang"=>date("Y-m-d H:i:s"))),false);
+
+		if ($result->status) {
+			alert("alert","success","Berhasil","Data berhasil dimasukkan");
+			redirect("antrian/");
+		}else{
+			alert("alert","success","Gagal","Kegagalan database".$result->error_message);
+			redirect("pemeriksaan-awal/".$this->input->post('nomor_pasien'));
+		}
+	}
+
+
+
+
 }

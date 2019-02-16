@@ -8,13 +8,16 @@
 
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" id="antrian">
-        <a class="nav-link" href="<?php echo base_url()?>Petugas/antrian">Antrian</a>
+        <a class="nav-link" href="<?php echo base_url()?>antrian">Antrian</a>
       </li>
       <li class="nav-item" id="tambah-antrian">
         <a class="nav-link" href="<?php echo base_url()?>cari-pasien">Tambah Antrian</a>
       </li>
       <li class="nav-item" id="pendaftaran">
         <a class="nav-link" href="<?php echo base_url()?>pendaftaran">Pendaftaran</a>
+      </li>
+      <li class="nav-item" id="pemeriksaan-awal">
+        <a class="nav-link" href="<?php echo base_url()?>pemeriksaan-awal">Pemeriksaan awal</a>
       </li>
     </ul>
 

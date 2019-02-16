@@ -9,7 +9,7 @@
 			input_element.setAttribute("type", "text");
 			input_element.setAttribute("name", "kota_lain");
 			input_element.setAttribute("placeholder", "Contoh : kabupaten mojokerto / Kota surabaya");
-			input_element.setAttribute("required", "");
+			// input_element.setAttribute("required", "");
 			kotaORkabupatenLain.appendChild(input_element);
 
 			document.getElementById("kecamatanID").value ="other";kecamatanLain();
@@ -37,7 +37,7 @@
 			input_element.setAttribute("type", "text");
 			input_element.setAttribute("name", "kecamatan_lain");
 			input_element.setAttribute("placeholder", "Contoh: lowokwaru");
-			input_element.setAttribute("required", "");
+			// input_element.setAttribute("required", "");
 			kecamatanLain.appendChild(input_element);
 			document.getElementById("kelurahanID").value ="013 Lain-lain";kelurahanLain();
 		}else{
@@ -62,7 +62,7 @@
 			input_element.setAttribute("type", "text");
 			input_element.setAttribute("name", "kelurahan_lain");
 			input_element.setAttribute("placeholder", "Contoh: dinoyo");
-			input_element.setAttribute("required", "");
+			// input_element.setAttribute("required", "");
 			kelurahanLain.appendChild(input_element);
 		}else{
 			kelurahanLain.className = "";
@@ -247,27 +247,11 @@
 				<div class="form-group row">
 					<div class="col">
 						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Jalan</label>
-							<div class="input-group-prepend col-sm-9">
-								<input type="text" class="form-control" id="" name="jalan" placeholder="Contoh : mayjen sungkono no 123" required="">
+							<label class="col-sm-1 col-form-label">Jalan</label>
+							<div class="input-group-prepend col-sm-11">
+								<input type="text" class="form-control" id="" name="jalan" placeholder="Contoh : mayjen sungkono no 123 RT 01 RW 01" required="">
 							</div>
 						</div>	
-					</div>
-					<div class="col">
-						<div class="form-group row">
-							<label class="col-sm-1 col-form-label">RT</label>
-							<div class="input-group-prepend col-sm-5">
-								<input type="number" class="form-control" id="" name="RT" placeholder="Contoh: 02" required="" min="0">
-							</div>
-							<label class="col-sm-1 col-form-label">RW</label>
-							<div class="input-group-prepend col-sm-5">
-								<input type="number" class="form-control" id="" name="RW" placeholder="Contoh: 02" required="" min="0">
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="form-group row">
-						</div>
 					</div>
 				</div>
 
