@@ -300,7 +300,7 @@ class Petugas extends CI_Controller
 		}
 	}
 
-		/*
+	/*
 	* form handler untuk pemeriksaan awal
 	*/
 	function submitPemeriksaanAwal()
@@ -333,6 +333,36 @@ class Petugas extends CI_Controller
 			alert("alert","success","Gagal","Kegagalan database".$result->error_message);
 			redirect("pemeriksaan-awal/".$this->input->post('nomor_pasien'));
 		}
+	}
+
+		/*
+	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian
+	*/
+	function SubmitAntrian($aksi,$nomor_pasien)
+	{
+		if ($aksi == 'proses') {
+			$this->model->create(
+				'proses_antrian',
+				array(
+					'nomor_pasien'	=>	$nomor_pasien
+				)
+			);
+		}elseif ($aksi == 'hapus') {
+			$recordPasien = $this->model->read('pasien',array('nomor_pasien'=>$nomor_pasien))->result();
+			$this->model->rawQuery("DELETE FROM rekam_medis WHERE id_pasien ='".$recordPasien[0]->id."' AND YEAR(tanggal_jam)='".date('Y')."' AND MONTH(tanggal_jam)='".date('m')."' AND DAY(tanggal_jam)='".date('d')."' ORDER BY id DESC LIMIT 1");
+
+			$this->model->delete(
+				'proses_antrian',
+				array(
+					'nomor_pasien'	=>	$nomor_pasien
+				));
+		}
+		$this->model->delete(
+			'antrian',
+			array(
+				'nomor_pasien'	=>	$nomor_pasien
+			));
+		redirect("antrian");
 	}
 
 
