@@ -101,10 +101,17 @@ $route['submit-pendaftaran'] 							= 'Petugas/submitPendaftaran';
 $route['pemeriksaan-awal'] 								= 'Petugas/pemeriksaanAwal';
 $route['pemeriksaan-awal/(:any)'] 						= 'Petugas/pemeriksaanAwal/$1';
 $route['submit-pemeriksaan-awal'] 						= 'Petugas/submitPemeriksaanAwal';
-$route['antrian'] 										= 'Petugas/antrian';
-$route['cari-pasien'] 									= 'Petugas/cariPasien';
-$route['redirector'] 									= 'Petugas/redirector';
-
-
+$route['antrian-petugas'] 								= 'Petugas/antrian';
+$route['cari-pasien-petugas'] 									= 'Petugas/cariPasien';
+$route['redirector-petugas'] 							= 'Petugas/redirector';
 $route['submit-antrian-proses/(:any)']					= 'Petugas/submitAntrian/proses/$1';
 $route['submit-antrian-hapus/(:any)']					= 'Petugas/submitAntrian/hapus/$1';
+
+
+
+
+$route['antrian-dokter']								= 'Dokter/antrian';
+$route['pemeriksaan-langsung']							= 'Dokter/pemeriksaanLangsung';
+$route['cari-pasien-dokter']							= 'Dokter/cariPasien';
+$route['redirector-dokter'] 							= 'Dokter/redirector';
+$route['pemeriksaan/(:any)'] 							= 'Dokter/pemeriksaan/$1';

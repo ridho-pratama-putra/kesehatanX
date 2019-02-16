@@ -18,6 +18,7 @@
       <li class="nav-item" id="verifikasi-user">
         <a class="nav-link" href="<?php echo base_url()?>verifikasi-user">Verifikasi User</a>
       </li>
+      
     </ul>
 
     <?php 

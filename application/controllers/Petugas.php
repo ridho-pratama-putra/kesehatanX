@@ -10,7 +10,7 @@ class Petugas extends CI_Controller
 		parent::__construct();
 		$this->load->model('model');
 		date_default_timezone_set("Asia/Jakarta");
-		// if ($this->session->userdata('logged_in')['akses'] != '3' ){
+		// if ($this->session->userdata('logged_in')['akses'] != 'petugas' ){
 		// 	redirect("Account/logout");
 		// }
 

@@ -21,6 +21,12 @@
       <li class="nav-item" id="golongan-logistik">
         <a class="nav-link" href="<?php echo base_url()?>golongan-logistik">Golongan logistik</a>
       </li>
+      <li class="nav-item" id="antrian">
+        <a class="nav-link" href="<?php echo base_url()?>antrian-dokter">Antrian</a>
+      </li>
+      <li class="nav-item" id="pemeriksaan-langsung">
+        <a class="nav-link" href="<?php echo base_url()?>pemeriksaan-langsung">Pemeriksaan Langsung</a>
+      </li>
     </ul>
 
 

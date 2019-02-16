@@ -8,10 +8,10 @@
 
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" id="antrian">
-        <a class="nav-link" href="<?php echo base_url()?>antrian">Antrian</a>
+        <a class="nav-link" href="<?php echo base_url()?>antrian-petugas">Antrian</a>
       </li>
       <li class="nav-item" id="tambah-antrian">
-        <a class="nav-link" href="<?php echo base_url()?>cari-pasien">Tambah Antrian</a>
+        <a class="nav-link" href="<?php echo base_url()?>cari-pasien-petugas">Tambah Antrian</a>
       </li>
       <li class="nav-item" id="pendaftaran">
         <a class="nav-link" href="<?php echo base_url()?>pendaftaran">Pendaftaran</a>
