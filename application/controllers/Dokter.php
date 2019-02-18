@@ -143,4 +143,49 @@ class Dokter extends CI_Controller {
 		}
 	}
 
+	// Fungsi ini digunakan untuk mencari data pada tabel ICD 10
+	function cariICD()
+	{
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			$dataReturn = $this->model->orLike('icd10',array('Diagnosa'=>$dataForm['term']['term'],'Diskripsi'=>$dataForm['term']['term']))->result();
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->Kode_ICD. " / ".$value->Diskripsi;
+				$data[$key]['text'] = $value->Kode_ICD." / ".$value->Diskripsi;
+			}
+			echo json_encode($data);
+		}else{
+			redirect(base_url());
+		}
+	}
+
+	/*
+	* funtion untuk menangani ajax request cari logistik  untuk pemeriksaan
+	*/
+	function cariLogistik($jenis_logistik)
+	{
+		if ($this->input->get() != NULL) {
+			$dataForm = $this->input->get();
+			$dataReturn = $this->db->query(" SELECT * FROM logistik_".$jenis_logistik." WHERE nama LIKE '%".$dataForm['term']['term']."%' ESCAPE '!' AND stok > 0")->result();			
+
+			$data = array();
+			foreach ($dataReturn as $key => $value) {
+				$data[$key]['id'] = $value->id."|".$value->nama;
+				$data[$key]['text'] = $value->nama;
+				$data[$key]['stok'] = $value->stok;
+				$data[$key]['harga'] = $value->harga_jual_satuan;
+				// if ($value->kadaluarsa < date("Y-m-d-d")) {
+				// 	$data[$key]['expired'] = " :: Sudah kadaluarsa".tgl_indo($value->kadaluarsa);
+				// }else{
+				// 	$data[$key]['expired'] = " :: Exp ".tgl_indo($value->kadaluarsa);
+				// }
+				$data[$key]['sediaan'] = $value->sediaan;
+			}
+			echo json_encode($data);
+		}else{
+			redirect();
+		}		
+	}
+
 }

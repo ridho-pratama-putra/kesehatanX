@@ -37,6 +37,12 @@
 			</select>
 		</div>
 		<div class="form-group">
+			<label for="presentaseObat">
+				Presentase Obat
+			</label>
+			<input type="text" class="form-control" id="presentaseObat" placeholder="Contoh : 0,5 %" name="presentase" required="">
+		</div>
+		<div class="form-group">
 			<label for="sediaan">
 				Sediaan
 			</label>

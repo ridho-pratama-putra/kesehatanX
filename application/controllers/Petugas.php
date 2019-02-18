@@ -10,9 +10,9 @@ class Petugas extends CI_Controller
 		parent::__construct();
 		$this->load->model('model');
 		date_default_timezone_set("Asia/Jakarta");
-		// if ($this->session->userdata('logged_in')['akses'] != 'petugas' ){
-		// 	redirect("Account/logout");
-		// }
+		if ($this->session->userdata('logged_in')['akses'] != 'petugas' ){
+			redirect("Account/logout");
+		}
 
 		$data['last_sync'] 		=	$this->model->read('settingan',array('id'=>1))->result();
 		$now 					=	date("Y-m-d H:i:s");
@@ -328,14 +328,14 @@ class Petugas extends CI_Controller
 
 		if ($result->status) {
 			alert("alert","success","Berhasil","Data berhasil dimasukkan");
-			redirect("antrian/");
+			redirect("antrian-petugas/");
 		}else{
 			alert("alert","success","Gagal","Kegagalan database".$result->error_message);
 			redirect("pemeriksaan-awal/".$this->input->post('nomor_pasien'));
 		}
 	}
 
-		/*
+	/*
 	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian
 	*/
 	function SubmitAntrian($aksi,$nomor_pasien)
@@ -362,7 +362,7 @@ class Petugas extends CI_Controller
 			array(
 				'nomor_pasien'	=>	$nomor_pasien
 			));
-		redirect("antrian");
+		redirect("antrian-petugas");
 	}
 
 

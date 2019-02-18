@@ -114,10 +114,10 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="sediaanObat">
+						<label for="presentaseObat">
 							Presentase Obat
 						</label>
-						<input type="text" class="form-control" id="sediaanObat" placeholder="Contoh : 0,5 %" name="presentase" required="">
+						<input type="text" class="form-control" id="presentaseObat" placeholder="Contoh : 0,5 %" name="presentase" required="">
 					</div>
 					<div class="form-group">
 						<label for="sediaanObat">
@@ -135,13 +135,13 @@
 						<label for="hargaBeliSatuanObat">
 							Harga Beli Satuan
 						</label>
-						<input type="number" min="0" class="form-control" id="hargaBeliSatuanObat" placeholder="Contoh : 11000 atau 0 (Negative)" name="harga_beli_per_satuan" required="">
+						<input type="number" min="0" class="form-control" id="hargaBeliSatuanObat" placeholder="Contoh : 11000 atau 0 (Negative)" name="harga_beli_satuan" required="">
 					</div>
 					<div class="form-group">
 						<label for="hargaJualSatuanObat">
 							Harga Jual Satuan
 						</label>
-						<input type="number" min="0" class="form-control" id="hargaJualSatuanObat" placeholder="Contoh : 11000 atau 0 (Negative)" name="harga_jual_per_satuan" required="">
+						<input type="number" min="0" class="form-control" id="hargaJualSatuanObat" placeholder="Contoh : 11000 atau 0 (Negative)" name="harga_jual_satuan" required="">
 					</div>
 					<div class="form-group">
 						<label for="stok">

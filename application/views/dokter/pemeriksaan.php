@@ -4,12 +4,20 @@
 .linone {display: none;}
 .no-bullets {list-style-type: none;}
 </style>
+<style type="text/css">
+.sembunyikan {
+	display: none
+}
+</style>
 <script type="text/javascript">
 
-	// inisialisasi tabel rekam medis
-	var addObat;
-	var flagid = 0;
+	var addObatInjeksi;var addObatOral;var addObatSigmaUsusExternum;var addAlatBahanSekaliPakai	
+	var flagidobatinjeksi = 0;
+	var flagidobatoral = 0;
+	var flagidobatsigmaususeksternum = 0;
+	var flagidalatbahansekalipakai = 0;
 	$(document).ready(function() {
+		// inisialisasi tabel rekam medis
 		$('#example').DataTable({
 			dom: 'Bfrtip',
 			buttons: [
@@ -100,38 +108,33 @@
 			validClass: "my-valid-class"
 		});
 
-		
-		
-		// untuk add input form obat
-		addObat = function addObat() {
-			
-			
-			$(".obat").select2();
-			flagid += 1;
-			$('#renderInputObat').append(	"<div class='row mt-3 mb-3'>"+
+		// untuk add input form logistik obat injeksi
+		addObatInjeksi = function addObatInjeksi() {
+			flagidobatinjeksi += 1;
+			$('#renderInputObatInjeksi').append(	"<div class='row mt-3 mb-3'>"+
 				"<div class='col-4'>"+
-				"<select class='obat form-control' name='obat[]' style='height: 90%' id='obat"+flagid+"'>"+
-				"<option selected=' disabled='>PIlih obat</option>"+
+				"<select class='obat-injeksi form-control' name='obat_injeksi[]' style='height: 90%' id='obatinjeksi"+flagidobatinjeksi+"'>"+
+				"<option selected=' disabled='>Pilih logistik</option>"+
 				"</select>"+
 				"</div>"+
 				"<div class='col-3'>"+
-				"<input type='number' class='form-control' name='jumlah_obat[]' id='jumlah"+flagid+"' min='0' onkeyup='ubahHarga("+flagid+")'></input>"+
+				"<input type='number' class='form-control' name='jumlah_obat_injeksi[]' id='jumlahinjeksi"+flagidobatinjeksi+"' min='0' onkeyup='ubahHarga("+flagidobatinjeksi+")'></input>"+
 				"</div>"+
 				"<div class='col-2'>"+
-				"<input type='number' class='form-control' name='harga_obat[]' id='harga"+flagid+"' readonly></input>"+
+				"<input type='number' class='form-control' name='harga_obat_injeksi[]' id='hargainjeksi"+flagidobatinjeksi+"' readonly></input>"+
 				"</div>"+
 				"<div class='col-3'>"+
-				"<input type='number' class='form-control texxt-right ' name='per_item[]' id='perItem"+flagid+"' ></input>"+
+				"<input type='number' class='form-control texxt-right ' name='per_item_injeksi[]' id='periteminjeksi"+flagidobatinjeksi+"' ></input>"+
 				"</div>"+
 												// "<div class='col'>"+
-												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagid+"' readonly=''></input>"+
+												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatinjeksi+"' readonly=''></input>"+
 												// "</div>"+
 												"</div>");
 
 			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
-			$(".obat").select2({
+			$(".obat-injeksi").select2({
 				ajax: {
-					url: '<?=base_url()?>Dokter/cariObat/',
+					url: '<?=base_url()?>Dokter/cariLogistik/obat_injeksi',
 					dataType: 'json',
 					delay: 1000,
 					data: function (term) {
@@ -161,7 +164,7 @@
 
 				var markup = "<div class='clearfix'>";
 
-				markup += data.text+" :: Stok sekarang "+data.stok+" "+data.expired+
+				markup += data.text+" :: Stok sekarang "+data.stok+
 				"</div>";
 
 				return markup;
@@ -169,45 +172,316 @@
 
 			function formatRepoSelection (data) {
 				// console.log(data);
-				$('#harga'+flagid).val(data.harga);
-				$('#jumlah'+flagid).attr(
+				$('#hargainjeksi'+flagidobatinjeksi).val(data.harga);
+				$('#jumlahinjeksi'+flagidobatinjeksi).attr(
 				{
 					"max" : data.stok
 				}
 				);
 
-				if (typeof(data.satuan) !== 'undefined') {
-					$('#jumlah'+flagid).attr(
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahinjeksi'+flagidobatinjeksi).attr(
 					{
-						"placeholder" : "contoh : 2 ("+data.satuan+")"
+						"placeholder" : "contoh : 2x ("+data.sediaan+")"
 					}
 					);
 				}
-				$('#perItem'+flagid).val($('#jumlah'+flagid).val() * $('#harga'+flagid).val());
+				$('#periteminjeksi'+flagidobatinjeksi).val($('#jumlahinjeksi'+flagidobatinjeksi).val() * $('#hargainjeksi'+flagidobatinjeksi).val());
 				return data.text;
 			}
 
 		}
+
+		// untuk add input form logistik obat injeksi
+		addObatOral = function addObatOral() {
+			flagidobatoral += 1;
+			$('#renderInputObatOral').append(	"<div class='row mt-3 mb-3'>"+
+				"<div class='col-4'>"+
+				"<select class='obat-oral form-control' name='obat_oral[]' style='height: 90%' id='obatoral"+flagidobatoral+"'>"+
+				"<option selected=' disabled='>Pilih logistik</option>"+
+				"</select>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control' name='jumlah_obat_oral[]' id='jumlahoral"+flagidobatoral+"' min='0' onkeyup='ubahHarga("+flagidobatoral+")'></input>"+
+				"</div>"+
+				"<div class='col-2'>"+
+				"<input type='number' class='form-control' name='harga_obat_oral[]' id='hargaoral"+flagidobatoral+"' readonly></input>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control texxt-right ' name='per_item_oral[]' id='peritemoral"+flagidobatoral+"' ></input>"+
+				"</div>"+
+												// "<div class='col'>"+
+												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatoral+"' readonly=''></input>"+
+												// "</div>"+
+												"</div>");
+
+			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+			$(".obat-oral").select2({
+				ajax: {
+					url: '<?=base_url()?>Dokter/cariLogistik/obat_oral',
+					dataType: 'json',
+					delay: 1000,
+					data: function (term) {
+						return {
+							term: term // search term
+						};
+					},
+					processResults: function (data) {
+						// console.log(data);
+
+						return {
+							results: data
+						};
+					}
+				},
+				escapeMarkup: function (markup) { return markup; },
+				minimumInputLength: 1,
+				theme : "bootstrap",
+				templateResult: formatRepo,
+				templateSelection: formatRepoSelection
+			});
+
+			function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			}
+
+			function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargaoral'+flagidobatoral).val(data.harga);
+				$('#jumlahoral'+flagidobatoral).attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahoral'+flagidobatoral).attr(
+					{
+						"placeholder" : "contoh : 2x ("+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemoral'+flagidobatoral).val($('#jumlahoral'+flagidobatoral).val() * $('#hargaoral'+flagidobatoral).val());
+				return data.text;
+			}
+
+		}
+
+		// untuk add input form logistik obat injeksi
+		addObatSigmaUsusExternum = function addObatSigmaUsusExternum() {
+			flagidobatsigmaususeksternum += 1;
+			$('#renderInputObatSigmaUsusExternum').append(	"<div class='row mt-3 mb-3'>"+
+				"<div class='col-4'>"+
+				"<select class='obat-sigmaususeksternum form-control' name='obat_sigmaususeksternum[]' style='height: 90%' id='obatsigmaususeksternum"+flagidobatsigmaususeksternum+"'>"+
+				"<option selected=' disabled='>Pilih logistik</option>"+
+				"</select>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control' name='jumlah_obat_sigmaususeksternum[]' id='jumlahsigmaususeksternum"+flagidobatsigmaususeksternum+"' min='0' onkeyup='ubahHarga("+flagidobatsigmaususeksternum+")'></input>"+
+				"</div>"+
+				"<div class='col-2'>"+
+				"<input type='number' class='form-control' name='harga_obat_sigmaususeksternum[]' id='hargasigmaususeksternum"+flagidobatsigmaususeksternum+"' readonly></input>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control texxt-right ' name='per_item_sigmaususeksternum[]' id='peritemsigmaususeksternum"+flagidobatsigmaususeksternum+"' ></input>"+
+				"</div>"+
+												// "<div class='col'>"+
+												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatsigmaususeksternum+"' readonly=''></input>"+
+												// "</div>"+
+												"</div>");
+
+			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+			$(".obat-sigmaususeksternum").select2({
+				ajax: {
+					url: '<?=base_url()?>Dokter/cariLogistik/obat_sigma_usus_eksternum',
+					dataType: 'json',
+					delay: 1000,
+					data: function (term) {
+						return {
+							term: term // search term
+						};
+					},
+					processResults: function (data) {
+						// console.log(data);
+
+						return {
+							results: data
+						};
+					}
+				},
+				escapeMarkup: function (markup) { return markup; },
+				minimumInputLength: 1,
+				theme : "bootstrap",
+				templateResult: formatRepo,
+				templateSelection: formatRepoSelection
+			});
+
+			function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			}
+
+			function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargasigmaususeksternum'+flagidobatsigmaususeksternum).val(data.harga);
+				$('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).attr(
+					{
+						"placeholder" : "contoh : 2x ("+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemsigmaususeksternum'+flagidobatsigmaususeksternum).val($('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).val() * $('#hargasigmaususeksternum'+flagidobatoral).val());
+				return data.text;
+			}
+
+		}
+
+		// untuk add input form logistik obat injeksi
+		addAlatBahanSekaliPakai = function addAlatBahanSekaliPakai() {
+			flagidalatbahansekalipakai += 1;
+			$('#renderInputAlatBahanSekaliPakai').append(	"<div class='row mt-3 mb-3'>"+
+				"<div class='col-4'>"+
+				"<select class='alat-bahan-sekali-pakai form-control' name='alat_bahan_sekali_pakai[]' style='height: 90%' id='alatbahansekalipakai"+flagidalatbahansekalipakai+"'>"+
+				"<option selected=' disabled='>Pilih logistik</option>"+
+				"</select>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control' name='jumlah_obat_oral[]' id='jumlahalatbahansekalipakai"+flagidalatbahansekalipakai+"' min='0' onkeyup='ubahHarga("+flagidalatbahansekalipakai+")'></input>"+
+				"</div>"+
+				"<div class='col-2'>"+
+				"<input type='number' class='form-control' name='harga_alat_bahan_sekali_pakai[]' id='hargaalatbahansekalipakai"+flagidalatbahansekalipakai+"' readonly></input>"+
+				"</div>"+
+				"<div class='col-3'>"+
+				"<input type='number' class='form-control texxt-right ' name='per_item_alat_bahan_sekali_pakai[]' id='peritemalatbahansekalipakai"+flagidalatbahansekalipakai+"' ></input>"+
+				"</div>"+
+												// "<div class='col'>"+
+												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidalatbahansekalipakai+"' readonly=''></input>"+
+												// "</div>"+
+												"</div>");
+
+			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+			$(".alat-bahan-sekali-pakai").select2({
+				ajax: {
+					url: '<?=base_url()?>Dokter/cariLogistik/alat_bahan_sekali_pakai',
+					dataType: 'json',
+					delay: 1000,
+					data: function (term) {
+						return {
+							term: term // search term
+						};
+					},
+					processResults: function (data) {
+						// console.log(data);
+
+						return {
+							results: data
+						};
+					}
+				},
+				escapeMarkup: function (markup) { return markup; },
+				minimumInputLength: 1,
+				theme : "bootstrap",
+				templateResult: formatRepo,
+				templateSelection: formatRepoSelection
+			});
+
+			function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			}
+
+			function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargaalatbahansekalipakai'+flagidalatbahansekalipakai).val(data.harga);
+				$('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).attr(
+					{
+						"placeholder" : "contoh : 2x ("+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemalatbahansekalipakai'+flagidalatbahansekalipakai).val($('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).val() * $('#hargaalatbahansekalipakai'+flagidalatbahansekalipakai).val());
+				return data.text;
+			}
+
+		}
+
 		// panggil hitung total agar mucul biaya yang harus dibayar
 		hitungTotal();
 	});
 
+
 	// ubah harga saat memasukkan jumlah obat yang akan diberikan
 	function ubahHarga(argument) {
-		$('#perItem'+argument).val($('#jumlah'+argument).val() * $('#harga'+argument).val());
+		$('#periteminjeksi'+argument).val($('#jumlahinjeksi'+argument).val() * $('#hargainjeksi'+argument).val());
+		$('#peritemoral'+argument).val($('#jumlahoral'+argument).val() * $('#hargaoral'+argument).val());
+		$('#peritemsigmaususeksternum'+argument).val($('#jumlahsigmaususeksternum'+argument).val() * $('#hargasigmaususeksternum'+argument).val());
+		$('#peritemalatbahansekalipakai'+argument).val($('#jumlahalatbahansekalipakai'+argument).val() * $('#hargaalatbahansekalipakai'+argument).val());
 		hitungTotal();
 	}
 
-
-	
 	// hitung total biaya yang harus dibayar
 	function hitungTotal() {
 		$('#total').html();
 		var total = 0;
 		
-		if (flagid > 0) {
-			for (var i = 1; i <= flagid; i++) {
-				total = (total + parseInt($('#perItem'+i).val(), 10));
+		if (flagidobatinjeksi > 0) {
+			for (var i = 1; i <= flagidobatinjeksi; i++) {
+				total = (total + parseInt($('#periteminjeksi'+i).val(), 10));
+				
+			}
+		}
+		if (flagidobatoral > 0) {
+			for (var i = 1; i <= flagidobatoral; i++) {
+				total = (total + parseInt($('#perItemoral'+i).val(), 10));
+			}
+		}
+		if (flagidobatsigmaususeksternum> 0) {
+			for (var i = 1; i <= flagidobatsigmaususeksternum; i++) {
+				total = (total + parseInt($('#peritemsigmaususeksternum'+i).val(), 10));
+			}
+		}
+		if (flagidalatbahansekalipakai > 0) {
+			for (var i = 1; i <= flagidalatbahansekalipakai; i++) {
+				total = (total + parseInt($('#perItemalatbahansekalipakai'+i).val(), 10));
 			}
 		}
 		total = (total + parseInt($('#biaya_dokter').val(), 10));
@@ -560,13 +834,11 @@
 			</ul>
 
 
-			<!-- REKAM MEDIS -->
-			<div class="tab-content" id="myTabContent">
+			<div class="tab-content" id="myTabContent" >
+				<!-- REKAM MEDIS -->
 				<div class="tab-pane fade" id="rekam_medis" role="tabpanel" aria-labelledby="home-tab">
-					
 					<h5 class="text-center mt-3">Rekam Medis</h5>
 					<div class="container">
-
 						<div class=" row mt-5">	
 							<div class="col-12">	
 								<table class="table" id="example">
@@ -584,8 +856,7 @@
 									<tbody>
 										<?php
 										$i = 1;
-										foreach($rekam_medis as $key => $value) {
-											?>
+										foreach($rekam_medis as $key => $value) { ?>
 											<tr>
 												<td>
 													<?=$i?>
@@ -610,660 +881,687 @@
 												<td></td>
 												<td><button type="button" class="btn btn-primary" >CETAK</button> </td>
 											</tr>
-											<?php $i++; }
-											?>
-										</tbody>
-									</table>
-								</div>
+											<?php $i++; 
+										}
+										?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
-					<!-- REKAM MEDIS -->
+				</div>
+				<!-- REKAM MEDIS -->
 
 
-					<!-- TAB PEMERIKSAAN -->
-					<div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="profile-tab">
-						<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
-							<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor_pasien_pemeriksaan">
-							<div class="container">
-								<h5 class="text-center mt-3">Subjektif</h5>
-								<textarea class="form-control" aria-label="With textarea" placeholder="Subjektif" name="subjektif" id="subjektif_pemeriksaan"></textarea>
-								<hr>
+				<!-- TAB PEMERIKSAAN -->
+				<div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="profile-tab">
+					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
+						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor_pasien_pemeriksaan">
+						<div class="container">
+							<h5 class="text-center mt-3">Subjektif</h5>
+							<textarea class="form-control" aria-label="With textarea" placeholder="Subjektif" name="subjektif" id="subjektif_pemeriksaan"></textarea>
+							<hr>
 
-								<h5 class="text-center mt-3">Objektif</h5>
-								<!-- START FORM OBJEKTIF -->
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Tinggi Badan</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control" id="tinggi_badan_pemeriksaan" name="tinggi_badan" value="<?=(isset($rekam_medis[0]->tinggi_badan) ? $rekam_medis[0]->tinggi_badan : '')?>">
-													<div class="input-group-append">
-														<div class="input-group-text">cm</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Berat Badan</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control" id="berat_badan_pemeriksaan" name="berat_badan" value="<?=(isset($rekam_medis[0]->berat_badan) ? $rekam_medis[0]->berat_badan : '')?>">
-													<div class="input-group-append">
-														<div class="input-group-text">kg</div>
-													</div>
+							<h5 class="text-center mt-3">Objektif</h5>
+							<!-- START FORM OBJEKTIF -->
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Tinggi Badan</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control" id="tinggi_badan_pemeriksaan" name="tinggi_badan" value="<?=(isset($rekam_medis[0]->tinggi_badan) ? $rekam_medis[0]->tinggi_badan : '')?>">
+												<div class="input-group-append">
+													<div class="input-group-text">cm</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-
-								<div class="row">
-									<div class="col-6">
-										<div class="row mt-3">
-											<div class="col-4">Tekanan Darah</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control mr-1" id="sistol_pemeriksaan" name="sistol" value="<?=(isset($rekam_medis[0]->sistol) ? $rekam_medis[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : 'disabled=""' )?>>
-													/
-													<input type="number" class="form-control ml-1" id="diastol_pemeriksaan" name="diastol" value="<?=(isset($rekam_medis[0]->diastol) ? $rekam_medis[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : 'disabled=""' )?>><div class="input-group-append">
-														<div class="input-group-text">mmHg</div>
-													</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Berat Badan</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control" id="berat_badan_pemeriksaan" name="berat_badan" value="<?=(isset($rekam_medis[0]->berat_badan) ? $rekam_medis[0]->berat_badan : '')?>">
+												<div class="input-group-append">
+													<div class="input-group-text">kg</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-6">
-										<div class="row mt-3">
-											<div class="col-4">Nadi</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control" id="nadi_pemeriksaan" name="nadi" value="<?=(isset($rekam_medis[0]->nadi) ? $rekam_medis[0]->nadi : '')?>">
-													<div class="input-group-append">
-														<div class="input-group-text">rpm</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Respiratory R.</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control" id="respiratory_rate_pemeriksaan" name="respiratory_rate" value="<?=(isset($rekam_medis[0]->respiratory_rate) ? $rekam_medis[0]->respiratory_rate : '')?>">
-													<div class="input-group-append">
-														<div class="input-group-text">rpm</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Temp. Axile</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<div class="input-group">
-													<input type="number" class="form-control" id="temperature_ax_pemeriksaan" name="temperature_ax" value="<?=(isset($rekam_medis[0]->temperature_ax) ? $rekam_medis[0]->temperature_ax : '')?>">
-													<div class="input-group-append">
-														<div class="input-group-text">&deg;C</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Head To Toe</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<input type="text" class="form-control" id="headtotoe_pemeriksaan" name="headtotoe">
-									</div>
-								</div>
-								<!-- END FORM OBJEKTIF -->							
-
-								<hr>
-
-								<h5 class="text-center mt-3">Assesment</h5>
-								<div class="row mt-3">
-									<div class="col-2">Primary</div>
-									<div class="col-1">:</div>
-									<div class="col-9">
-										<select class="js-data-example-ajax" id="primary_pemeriksaan" name="assessmentPrimary[]" multiple="multiple" style="width: 99%"></select>
-									</div>	
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Sekunder</div>
-									<div class="col-1">:</div>
-									<div class="col-9">
-										<select class="js-data-example-ajax" id="secondary_pemeriksaan" name="assessmentSecondary[]" multiple="multiple" style="width: 99%"></select>
-									</div>	
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Lain-lain</div>
-									<div class="col-1">:</div>
-									<div class="col-9">
-										<select class="js-data-example-ajax" id="lain_pemeriksaan" name="assessmentLain[]" multiple="multiple" style="width: 99%"></select>
-									</div>	
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Laboratorium</div>
-									<div class="col-1">:</div>
-									<div class="col-9">
-										<input class="form-control" type="text" name="assessmentPemeriksaanLab" placeholder="Pemeriksaan Laboratorium" id="pemeriksaan_lab_pemeriksaan">
-									</div>	
-								</div>
-
-								<hr>
-
-								<!-- Start Form GCS -->
-								<div class="row mt-3">
-									<div class="col-2">GCS</div>
-									<div class="col-1">:</div>
-									<div class="col"><input type="text" class="form-control" id="gcs_e_pemeriksaan" name="gcs_e" placeholder="E" ></div>
-									<div class="col"><input type="text" class="form-control" id="gcs_v_pemeriksaan" name="gcs_v" placeholder="V" ></div>
-									<div class="col"><input type="text" class="form-control" id="gcs_m_pemeriksaan" name="gcs_m" placeholder="M" ></div>	
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-3"></div>
-									<div class="col form-check ml-3">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_cm_pemeriksaan" name="gcs_opsi[]" value="CM">
-										<label class="form-check-label">CM</label>
-									</div>
-									<div class="col form-check">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_apatis_pemeriksaan" name="gcs_opsi[]" value="Apatis">
-										<label class="form-check-label">Apatis</label>
-									</div>
-									<div class="col form-check">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_derilium_pemeriksaan" name="gcs_opsi[]" value="Derilium">
-										<label class="form-check-label">Derilium</label>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-3"></div>
-									<div class="col form-check ml-3">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_somnolen_pemeriksaan" name="gcs_opsi[]" value="Somnolen">
-										<label class="form-check-label">Somnolen</label>
-									</div>
-									<div class="col form-check">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_stupor_pemeriksaan" name="gcs_opsi[]" value="Stupor">
-										<label class="form-check-label">Stupor</label>
-									</div>
-									<div class="col form-check">
-										<input class="form-check-input" type="checkbox" id="gcs_opsi_coma_pemeriksaan" name="gcs_opsi[]" value="Coma">
-										<label class="form-check-label">Coma</label>
-									</div>
-								</div>
-								<!-- End Form GCS -->
-								<hr>
-								<!-- KEPALA -->							
-								<h5 class="text-center mt-3">Head Toe To</h5>
-								<h6 class="text-center">Kepala</h6>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Anemis</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="anemis_kiri_pemeriksaan" name="anemis_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="anemis_kanan_pemeriksaan" name="anemis_kanan" value="1">
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Ikterik</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="ikterik_kiri_pemeriksaan" name="ikterik_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="ikterik_kanan_pemeriksaan" name="ikterik_kanan" value="1">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Cianosis</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="cianosis_kiri_pemeriksaan" name="cianosis_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="cianosis_kanan_pemeriksaan" name="cianosis_kanan" value="1">
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Deformitas</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="deformitas_kiri_pemeriksaan" name="deformitas_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="deformitas_kanan_pemeriksaan" name="deformitas_kanan" value="1">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Reflek Cahaya</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="refchy_kiri_pemeriksaan" name="refchy_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="refchy_kanan_pemeriksaan" name="refchy_kanan" value="1">
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col">Isokor</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="refchy_opsi_pemeriksaan" name="refchy_opsi_pemeriksaan" value="Isokor"></div>
-											<div class="col ml">Anisokor</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="refchy_opsi_pemeriksaan" name="refchy_opsi_pemeriksaan" value="Anisokor"></div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Ket. Tambahan</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<input class="form-control" type="text" name="kepala_ket_tambahan" placeholder="Keterangan tambahan kepala" id="kepala_ket_tambahan_pemeriksaan">
-									</div>		
-								</div>
-								<!-- END KEPALA -->							
-								<hr>
-								<!-- THORAK -->
-								<h6 class="text-center mt-3">Thorak</h6>
-								<h6 class="text-center">Paru</h6>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col">Simetris</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="paru_simetris_asimetris_pemeriksaan" value="Simetris"></div>
-											<div class="col ml">Asimetris</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="paru_simetris_asimetris_pemeriksaan" value="Asimetris"></div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Wheezing</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="wheezing_kiri_pemeriksaan" name="wheezing_kiri" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="wheezing_kanan_pemeriksaan" name="wheezing_kanan" value="1">
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Ronkhi</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="ronkhi_kiri_pemeriksaan" name="ronkhi_kiri" placeholder="" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="ronkhi_kanan_pemeriksaan" name="ronkhi_kanan" placeholder="" value="1">
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Vesikular</div>
-											<div class="col-1">:</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="vesikuler_kiri_pemeriksaan" name="vesikuler_kiri" placeholder="" value="1">
-											</div>
-											<div class="col-1">/</div>
-											<div class="col-3 mt-2">
-												<input type="checkbox" class="form-control" id="vesikuler_kanan_pemeriksaan" name="vesikuler_kanan" placeholder="" value="1">
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- END THORAK -->
-
-								<hr>
-								<!-- JANTUNG -->
-								<h6 class="text-center mt-3">Jantung</h6>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Tampak</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_ictuscordis_pemeriksaan" value="Tampak"></div>
-											<div class="col-4ml">Tak Tampak</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_ictuscordis_pemeriksaan" value="Tak Tampak"></div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col">Reguler</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_s1_s2_pemeriksaan" value="Reguler"></div>
-											<div class="col ml">Irreguler</div>
-											<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_s1_s2_pemeriksaan" value="Irreguler"></div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Suara Tambahan</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<input type="text" class="form-control" id="jantung_suaratambahan_pemeriksaan" name="jantung_suaratambahan">
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="row">
-											<div class="col-4">Keterangan Tambahan</div>
-											<div class="col-1">:</div>
-											<div class="col">
-												<input type="text" class="form-control" id="jantung_ket_tambahan_pemeriksaan" name="jantung_ket_tambahan">
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- END JANTUNG -->
-
-								<hr>
-								<!-- ABDOMEN -->
-								<h6 class="text-center mt-3">Abdomen</h6>
-
-								<div class="row mt-3">
-									<div class="col-2">BU</div>
-									<div class="col-1">:</div>
-									<div class="col-1">Normal</div>
-									<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Normal"></div>
-									<div class="col-1">Menurun</div>
-									<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Menurun"></div>
-									<div class="col-1">Meningkat</div>
-									<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Meningkat"></div>
-									<div class="col-1">Negatif</div>
-									<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Negatif"></div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Nyeri Tekan</div>
-									<div class="col-1">:</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan1_pemeriksaan" name="nyeri_tekan1" value="1">
-										<label class="form-check-label">1</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan2_pemeriksaan" name="nyeri_tekan2" value="1">
-										<label class="form-check-label">2</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan3_pemeriksaan" name="nyeri_tekan3" value="1">
-										<label class="form-check-label">3</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan4_pemeriksaan" name="nyeri_tekan4" value="1">
-										<label class="form-check-label">4</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan5_pemeriksaan" name="nyeri_tekan5" value="1">
-										<label class="form-check-label">5</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan6_pemeriksaan" name="nyeri_tekan6" value="1">
-										<label class="form-check-label">6</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan7_pemeriksaan" name="nyeri_tekan7" value="1">
-										<label class="form-check-label">7</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan8_pemeriksaan" name="nyeri_tekan8" value="1">
-										<label class="form-check-label">8</label>
-									</div><div class="col-1">
-										<input class="form-check-input" type="checkbox" id="nyeri_tekan9_pemeriksaan" name="nyeri_tekan9" value="1">
-										<label class="form-check-label">9</label>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Hepatomegali</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<input type="text" class="form-control" id="hepatomegali_pemeriksaan" name="hepatomegali" placeholder="">
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Spleenomegali</div>
-									<div class="col-1">:</div>
-									<div class="col-9">
-										<input type="text" class="form-control" id="spleenomegali_pemeriksaan" name="spleenomegali" placeholder="">
-									</div>
-								</div>
-								<div class="row mt-3">
-									<div class="col-2">Keterangan Tambahan Abdomen</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="abdomen_ket_tambahan_pemeriksaan" name="abdomen_ket_tambahan" placeholder="Keterangan Tambahan" ></textarea>
-									</div>
-								</div>
-								<!-- END ABDOMEN -->
-								<hr>
-								<!-- EKSTERMITAS -->
-
-								<h6 class="text-center mt-3">Ekstermitas</h6>
-
-								<div class="row mt-3">
-									<div class="col-2">Akral Hangat</div>
-									<div class="col-1">:</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="akral_hangat1_pemeriksaan" name="akral_hangat_1" value="1">
-										<label class="form-check-label">1</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="akral_hangat2_pemeriksaan" name="akral_hangat_2" value="1">
-										<label class="form-check-label">2</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="akral_hangat3_pemeriksaan" name="akral_hangat_3" value="1">
-										<label class="form-check-label">3</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="akral_hangat4_pemeriksaan" name="akral_hangat_4" value="1">
-										<label class="form-check-label">4</label>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">CRT</div>
-									<div class="col-1">:</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="crt1_pemeriksaan" name="crt_1" value="1">
-										<label class="form-check-label">1</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="crt2_pemeriksaan" name="crt_2" value="1">
-										<label class="form-check-label">2</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="crt3_pemeriksaan" name="crt_3" value="1">
-										<label class="form-check-label">3</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="crt4_pemeriksaan" name="crt_4" value="1">
-										<label class="form-check-label">4</label>
-									</div>
-									<div class="col-1">/</div>
-									<div class="col-2">2 Detik</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Edema</div>
-									<div class="col-1">:</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="edema1_pemeriksaan" name="edema_1" value="1">
-										<label class="form-check-label">1</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="edema2_pemeriksaan" name="edema_2" value="1">
-										<label class="form-check-label">2</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="edema3_pemeriksaan" name="edema_3" value="1">
-										<label class="form-check-label">3</label>
-									</div>
-									<div class="col-1">
-										<input class="form-check-input" type="checkbox" id="edema4_pemeriksaan" name="edema_4" value="1">
-										<label class="form-check-label">4</label>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Ekstermitas</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<input class="form-check-input" type="radio" name="pitting_pemeriksaan" value="Non-pitting">
-										<label class="form-check-label">Non-pitting</label>
-									</div>
-									<div class="col">
-										<input class="form-check-input" type="radio" name="pitting_pemeriksaan" value="Pitting">
-										<label class="form-check-label">Pitting</label>
-									</div>
-								</div>
-
-								<div class="row mt-3">
-									<div class="col-2">Keterangan Tambahan Ekstermitas</div>
-									<div class="col-1">:</div>
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="ekstermitas_kettambahan_pemeriksaan" name="ekstermitas_ket_tambahan" placeholder="Keterangan Tambahan"></textarea>
-									</div>
-								</div>
-								<!-- EKSTERMITAS -->
-
-								<hr>
-
-								<h6 class="text-center mt-3">Lain-lain</h6>
-
-								<div class="row mt-3">
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="lain_lain_pemeriksaan" name="lain_lain" placeholder="Lain-lain"></textarea>
-									</div>
-								</div>
-
-								<hr>
-								<h5 class="text-center mt-3">Planing</h5>
-								<textarea class="form-control" aria-label="With textarea" placeholder="Planing" id="planning_pemeriksaan" name="planning"></textarea>
-
-								<hr>
-								<h6 class="text-center mt-3">Terapi</h6>
-
-								<div class="row mt-3">
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="terapi1_pemeriksaan" name="terapi1" placeholder="Terapi 1"></textarea>
-									</div>
-								</div>
-								<div class="row mt-3">
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="terapi2_pemeriksaan" name="terapi2" placeholder="Terapi 2"></textarea>
-									</div>
-								</div>
-								<div class="row mt-3">
-									<div class="col">
-										<textarea class="form-control" aria-label="With textarea" id="terapi3_pemeriksaan" name="terapi3" placeholder="Terapi 3"></textarea>
-									</div>
-								</div>
-								<hr>
-
-								<h6 class="text-center mt-3">Obat</h6>
-								<div class="row mt-3">
-									<div class="col">
-										<button type="button" class="btn btn-primary btn-block" onclick="addObat()">Tambah Obat</button>
-									</div>
-								</div>
-								<div id="renderInputObat"></div>
-								<hr>
-
-								<div class="row mt-3">
-									<div class="col">
-										<h6 class="text-left mt-3">Biaya Dokter</h6>
-									</div>
-									<div class="col-3 float-right">
-										<input type="number" class="form-control" name="biaya_dokter" onkeyup="hitungTotal()" id="biaya_dokter" value="10000">
-									</div>
-								</div>
-								<hr>
-								<div class="row mt-3">
-									<div class="col">
-										<h4 class="text-left mt-3">TOTAL</h4>
-									</div>
-									<div class="col">
-										<h6 id="total" class="text-right mt-3"></h6>
-									</div>
-								</div>
-
-								<div class="row mb-3">
-									<div class="col text-right">
-										<button type="submit" class="btn btn-primary mt-3">Simpan Rekam Medis</button>
-										<a role="button" class="btn btn-primary mt-3 text-white" onclick="formSuratRujukan()">Cetak Rujukan</a>
 									</div>
 								</div>
 							</div>
-						</form>
-					</div>
 
-					<!-- HIDDEN FORM SURAT RUJUKAN -->
-					<form method="POST" action="<?=base_url()?>Dokter/submitCetak/suratrujukan" target="_blank" onsubmit="SuratRujukan()" id="suratrujukan">
-						<style type="text/css">
-						.sembunyikan {
-							display: none
-						}
-					</style>
+							<div class="row">
+								<div class="col-6">
+									<div class="row mt-3">
+										<div class="col-4">Tekanan Darah</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control mr-1" id="sistol_pemeriksaan" name="sistol" value="<?=(isset($rekam_medis[0]->sistol) ? $rekam_medis[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>>
+												/
+												<input type="number" class="form-control ml-1" id="diastol_pemeriksaan" name="diastol" value="<?=(isset($rekam_medis[0]->diastol) ? $rekam_medis[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>><div class="input-group-append">
+													<div class="input-group-text">mmHg</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row mt-3">
+										<div class="col-4">Nadi</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control" id="nadi_pemeriksaan" name="nadi" value="<?=(isset($rekam_medis[0]->nadi) ? $rekam_medis[0]->nadi : '')?>">
+												<div class="input-group-append">
+													<div class="input-group-text">rpm</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Respiratory R.</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control" id="respiratory_rate_pemeriksaan" name="respiratory_rate" value="<?=(isset($rekam_medis[0]->respiratory_rate) ? $rekam_medis[0]->respiratory_rate : '')?>">
+												<div class="input-group-append">
+													<div class="input-group-text">rpm</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Temp. Axile</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<div class="input-group">
+												<input type="number" class="form-control" id="temperature_ax_pemeriksaan" name="temperature_ax" value="<?=(isset($rekam_medis[0]->temperature_ax) ? $rekam_medis[0]->temperature_ax : '')?>">
+												<div class="input-group-append">
+													<div class="input-group-text">&deg;C</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Head To Toe</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<input type="text" class="form-control" id="headtotoe_pemeriksaan" name="headtotoe">
+								</div>
+							</div>
+							<!-- END FORM OBJEKTIF -->							
+
+							<hr>
+
+							<h5 class="text-center mt-3">Assesment</h5>
+							<div class="row mt-3">
+								<div class="col-2">Primary</div>
+								<div class="col-1">:</div>
+								<div class="col-9">
+									<select class="js-data-example-ajax" id="primary_pemeriksaan" name="assessmentPrimary[]" multiple="multiple" style="width: 99%"></select>
+								</div>	
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Sekunder</div>
+								<div class="col-1">:</div>
+								<div class="col-9">
+									<select class="js-data-example-ajax" id="secondary_pemeriksaan" name="assessmentSecondary[]" multiple="multiple" style="width: 99%"></select>
+								</div>	
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Lain-lain</div>
+								<div class="col-1">:</div>
+								<div class="col-9">
+									<select class="js-data-example-ajax" id="lain_pemeriksaan" name="assessmentLain[]" multiple="multiple" style="width: 99%"></select>
+								</div>	
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Laboratorium</div>
+								<div class="col-1">:</div>
+								<div class="col-9">
+									<input class="form-control" type="text" name="assessmentPemeriksaanLab" placeholder="Pemeriksaan Laboratorium" id="pemeriksaan_lab_pemeriksaan">
+								</div>	
+							</div>
+
+							<hr>
+
+							<!-- Start Form GCS -->
+							<div class="row mt-3">
+								<div class="col-2">GCS</div>
+								<div class="col-1">:</div>
+								<div class="col"><input type="text" class="form-control" id="gcs_e_pemeriksaan" name="gcs_e" placeholder="E" ></div>
+								<div class="col"><input type="text" class="form-control" id="gcs_v_pemeriksaan" name="gcs_v" placeholder="V" ></div>
+								<div class="col"><input type="text" class="form-control" id="gcs_m_pemeriksaan" name="gcs_m" placeholder="M" ></div>	
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-3"></div>
+								<div class="col form-check ml-3">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_cm_pemeriksaan" name="gcs_opsi[]" value="CM">
+									<label class="form-check-label">CM</label>
+								</div>
+								<div class="col form-check">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_apatis_pemeriksaan" name="gcs_opsi[]" value="Apatis">
+									<label class="form-check-label">Apatis</label>
+								</div>
+								<div class="col form-check">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_derilium_pemeriksaan" name="gcs_opsi[]" value="Derilium">
+									<label class="form-check-label">Derilium</label>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3"></div>
+								<div class="col form-check ml-3">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_somnolen_pemeriksaan" name="gcs_opsi[]" value="Somnolen">
+									<label class="form-check-label">Somnolen</label>
+								</div>
+								<div class="col form-check">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_stupor_pemeriksaan" name="gcs_opsi[]" value="Stupor">
+									<label class="form-check-label">Stupor</label>
+								</div>
+								<div class="col form-check">
+									<input class="form-check-input" type="checkbox" id="gcs_opsi_coma_pemeriksaan" name="gcs_opsi[]" value="Coma">
+									<label class="form-check-label">Coma</label>
+								</div>
+							</div>
+							<!-- End Form GCS -->
+							<hr>
+							<!-- KEPALA -->							
+							<h5 class="text-center mt-3">Head Toe To</h5>
+							<h6 class="text-center">Kepala</h6>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Anemis</div>
+										<div class="col-1">:</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="anemis_kiri_pemeriksaan" name="anemis_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="anemis_kanan_pemeriksaan" name="anemis_kanan" value="1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Ikterik</div>
+										<div class="col-1">:</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="ikterik_kiri_pemeriksaan" name="ikterik_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="ikterik_kanan_pemeriksaan" name="ikterik_kanan" value="1">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Cianosis</div>
+										<div class="col-1">:</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="cianosis_kiri_pemeriksaan" name="cianosis_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="cianosis_kanan_pemeriksaan" name="cianosis_kanan" value="1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Deformitas</div>
+										<div class="col-1">:</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="deformitas_kiri_pemeriksaan" name="deformitas_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="deformitas_kanan_pemeriksaan" name="deformitas_kanan" value="1">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Reflek Cahaya</div>
+										<div class="col-1">:</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="refchy_kiri_pemeriksaan" name="refchy_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-2 mt-2">
+											<input type="checkbox" class="form-control" id="refchy_kanan_pemeriksaan" name="refchy_kanan" value="1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col">Isokor</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="refchy_opsi_pemeriksaan" name="refchy_opsi_pemeriksaan" value="Isokor"></div>
+										<div class="col ml">Anisokor</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="refchy_opsi_pemeriksaan" name="refchy_opsi_pemeriksaan" value="Anisokor"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Ket. Tambahan</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<input class="form-control" type="text" name="kepala_ket_tambahan" placeholder="Keterangan tambahan kepala" id="kepala_ket_tambahan_pemeriksaan">
+								</div>		
+							</div>
+							<!-- END KEPALA -->							
+							<hr>
+							<!-- THORAK -->
+							<h6 class="text-center mt-3">Thorak</h6>
+							<h6 class="text-center">Paru</h6>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col">Simetris</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="paru_simetris_asimetris_pemeriksaan" value="Simetris"></div>
+										<div class="col ml">Asimetris</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="paru_simetris_asimetris_pemeriksaan" value="Asimetris"></div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Wheezing</div>
+										<div class="col-1">:</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="wheezing_kiri_pemeriksaan" name="wheezing_kiri" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="wheezing_kanan_pemeriksaan" name="wheezing_kanan" value="1">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Ronkhi</div>
+										<div class="col-1">:</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="ronkhi_kiri_pemeriksaan" name="ronkhi_kiri" placeholder="" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="ronkhi_kanan_pemeriksaan" name="ronkhi_kanan" placeholder="" value="1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Vesikular</div>
+										<div class="col-1">:</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="vesikuler_kiri_pemeriksaan" name="vesikuler_kiri" placeholder="" value="1">
+										</div>
+										<div class="col-1">/</div>
+										<div class="col-3 mt-2">
+											<input type="checkbox" class="form-control" id="vesikuler_kanan_pemeriksaan" name="vesikuler_kanan" placeholder="" value="1">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END THORAK -->
+
+							<hr>
+							<!-- JANTUNG -->
+							<h6 class="text-center mt-3">Jantung</h6>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Tampak</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_ictuscordis_pemeriksaan" value="Tampak"></div>
+										<div class="col-4ml">Tak Tampak</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_ictuscordis_pemeriksaan" value="Tak Tampak"></div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col">Reguler</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_s1_s2_pemeriksaan" value="Reguler"></div>
+										<div class="col ml">Irreguler</div>
+										<div class="col mt-2"><input type="radio" class="form-control" id="" name="jantung_s1_s2_pemeriksaan" value="Irreguler"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Suara Tambahan</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<input type="text" class="form-control" id="jantung_suaratambahan_pemeriksaan" name="jantung_suaratambahan">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="row">
+										<div class="col-4">Keterangan Tambahan</div>
+										<div class="col-1">:</div>
+										<div class="col">
+											<input type="text" class="form-control" id="jantung_ket_tambahan_pemeriksaan" name="jantung_ket_tambahan">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END JANTUNG -->
+
+							<hr>
+							<!-- ABDOMEN -->
+							<h6 class="text-center mt-3">Abdomen</h6>
+
+							<div class="row mt-3">
+								<div class="col-2">BU</div>
+								<div class="col-1">:</div>
+								<div class="col-1">Normal</div>
+								<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Normal"></div>
+								<div class="col-1">Menurun</div>
+								<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Menurun"></div>
+								<div class="col-1">Meningkat</div>
+								<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Meningkat"></div>
+								<div class="col-1">Negatif</div>
+								<div class="col-1 mt-2"><input type="radio" class="form-control" id="" name="BU_pemeriksaan" placeholder="" value="Negatif"></div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Nyeri Tekan</div>
+								<div class="col-1">:</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan1_pemeriksaan" name="nyeri_tekan1" value="1">
+									<label class="form-check-label">1</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan2_pemeriksaan" name="nyeri_tekan2" value="1">
+									<label class="form-check-label">2</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan3_pemeriksaan" name="nyeri_tekan3" value="1">
+									<label class="form-check-label">3</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan4_pemeriksaan" name="nyeri_tekan4" value="1">
+									<label class="form-check-label">4</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan5_pemeriksaan" name="nyeri_tekan5" value="1">
+									<label class="form-check-label">5</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan6_pemeriksaan" name="nyeri_tekan6" value="1">
+									<label class="form-check-label">6</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan7_pemeriksaan" name="nyeri_tekan7" value="1">
+									<label class="form-check-label">7</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan8_pemeriksaan" name="nyeri_tekan8" value="1">
+									<label class="form-check-label">8</label>
+								</div><div class="col-1">
+									<input class="form-check-input" type="checkbox" id="nyeri_tekan9_pemeriksaan" name="nyeri_tekan9" value="1">
+									<label class="form-check-label">9</label>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Hepatomegali</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<input type="text" class="form-control" id="hepatomegali_pemeriksaan" name="hepatomegali" placeholder="">
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Spleenomegali</div>
+								<div class="col-1">:</div>
+								<div class="col-9">
+									<input type="text" class="form-control" id="spleenomegali_pemeriksaan" name="spleenomegali" placeholder="">
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-2">Keterangan Tambahan Abdomen</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="abdomen_ket_tambahan_pemeriksaan" name="abdomen_ket_tambahan" placeholder="Keterangan Tambahan" ></textarea>
+								</div>
+							</div>
+							<!-- END ABDOMEN -->
+							<hr>
+							<!-- EKSTERMITAS -->
+
+							<h6 class="text-center mt-3">Ekstermitas</h6>
+
+							<div class="row mt-3">
+								<div class="col-2">Akral Hangat</div>
+								<div class="col-1">:</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="akral_hangat1_pemeriksaan" name="akral_hangat_1" value="1">
+									<label class="form-check-label">1</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="akral_hangat2_pemeriksaan" name="akral_hangat_2" value="1">
+									<label class="form-check-label">2</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="akral_hangat3_pemeriksaan" name="akral_hangat_3" value="1">
+									<label class="form-check-label">3</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="akral_hangat4_pemeriksaan" name="akral_hangat_4" value="1">
+									<label class="form-check-label">4</label>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">CRT</div>
+								<div class="col-1">:</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="crt1_pemeriksaan" name="crt_1" value="1">
+									<label class="form-check-label">1</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="crt2_pemeriksaan" name="crt_2" value="1">
+									<label class="form-check-label">2</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="crt3_pemeriksaan" name="crt_3" value="1">
+									<label class="form-check-label">3</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="crt4_pemeriksaan" name="crt_4" value="1">
+									<label class="form-check-label">4</label>
+								</div>
+								<div class="col-1">/</div>
+								<div class="col-2">2 Detik</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Edema</div>
+								<div class="col-1">:</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="edema1_pemeriksaan" name="edema_1" value="1">
+									<label class="form-check-label">1</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="edema2_pemeriksaan" name="edema_2" value="1">
+									<label class="form-check-label">2</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="edema3_pemeriksaan" name="edema_3" value="1">
+									<label class="form-check-label">3</label>
+								</div>
+								<div class="col-1">
+									<input class="form-check-input" type="checkbox" id="edema4_pemeriksaan" name="edema_4" value="1">
+									<label class="form-check-label">4</label>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Ekstermitas</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<input class="form-check-input" type="radio" name="pitting_pemeriksaan" value="Non-pitting">
+									<label class="form-check-label">Non-pitting</label>
+								</div>
+								<div class="col">
+									<input class="form-check-input" type="radio" name="pitting_pemeriksaan" value="Pitting">
+									<label class="form-check-label">Pitting</label>
+								</div>
+							</div>
+
+							<div class="row mt-3">
+								<div class="col-2">Keterangan Tambahan Ekstermitas</div>
+								<div class="col-1">:</div>
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="ekstermitas_kettambahan_pemeriksaan" name="ekstermitas_ket_tambahan" placeholder="Keterangan Tambahan"></textarea>
+								</div>
+							</div>
+							<!-- EKSTERMITAS -->
+
+							<hr>
+
+							<h6 class="text-center mt-3">Lain-lain</h6>
+
+							<div class="row mt-3">
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="lain_lain_pemeriksaan" name="lain_lain" placeholder="Lain-lain"></textarea>
+								</div>
+							</div>
+
+							<hr>
+							<h5 class="text-center mt-3">Planing</h5>
+							<textarea class="form-control" aria-label="With textarea" placeholder="Planing" id="planning_pemeriksaan" name="planning"></textarea>
+
+							<hr>
+							<h6 class="text-center mt-3">Terapi</h6>
+
+							<div class="row mt-3">
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="terapi1_pemeriksaan" name="terapi1" placeholder="Terapi 1"></textarea>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="terapi2_pemeriksaan" name="terapi2" placeholder="Terapi 2"></textarea>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col">
+									<textarea class="form-control" aria-label="With textarea" id="terapi3_pemeriksaan" name="terapi3" placeholder="Terapi 3"></textarea>
+								</div>
+							</div>
+							<hr>
+
+							<h6 class="text-center mt-3">Logistik alat bahan sekali pakai</h6>
+							<div class="row mt-3">
+								<div class="col">
+									<button type="button" class="btn btn-primary btn-block" onclick="addAlatBahanSekaliPakai()">Tambah logistik alat bahan sekali pakai</button>
+								</div>
+							</div>
+							<div id="renderInputAlatBahanSekaliPakai"></div>
+							<hr>
+
+							<h6 class="text-center mt-3">Logistik obat injeksi</h6>
+							<div class="row mt-3">
+								<div class="col">
+									<button type="button" class="btn btn-primary btn-block" onclick="addObatInjeksi()">Tambah logistik obat injeksi</button>
+								</div>
+							</div>
+							<div id="renderInputObatInjeksi"></div>
+							<hr>
+
+							<h6 class="text-center mt-3">Logistik obat oral</h6>
+							<div class="row mt-3">
+								<div class="col">
+									<button type="button" class="btn btn-primary btn-block" onclick="addObatOral()">Tambah logistik obat oral</button>
+								</div>
+							</div>
+							<div id="renderInputObatOral"></div>
+							<hr>
+
+							<h6 class="text-center mt-3">Logistik obat sigma usus externum</h6>
+							<div class="row mt-3">
+								<div class="col">
+									<button type="button" class="btn btn-primary btn-block" onclick="addObatSigmaUsusExternum()">Tambah logistik obat sigma usus externum</button>
+								</div>
+							</div>
+							<div id="renderInputObatSigmaUsusExternum"></div>
+							<hr>
+
+
+
+							<div class="row mt-3">
+								<div class="col">
+									<h6 class="text-left mt-3">Biaya Dokter</h6>
+								</div>
+								<div class="col-3 float-right">
+									<input type="number" class="form-control" name="biaya_dokter" onkeyup="hitungTotal()" id="biaya_dokter" value="10000">
+								</div>
+							</div>
+							<hr>
+							<div class="row mt-3">
+								<div class="col">
+									<h4 class="text-left mt-3">TOTAL</h4>
+								</div>
+								<div class="col">
+									<h6 id="total" class="text-right mt-3"></h6>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col text-right">
+									<button type="submit" class="btn btn-primary mt-3">Simpan Rekam Medis</button>
+									<a role="button" class="btn btn-primary mt-3 text-white" onclick="formSuratRujukan()">Cetak Rujukan</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- TAB PEMERIKSAAN -->
+
+				<!-- HIDDEN FORM SURAT RUJUKAN -->
+				<form method="POST" action="<?=base_url()?>Dokter/submitCetak/suratrujukan" target="_blank" onsubmit="SuratRujukan()" id="suratrujukan">
+
 					<input type="text" name="nomor_pasien" id="nomor_pasien_rujukan" class="sembunyikan">
-					
+
 					<textarea id="subjektif_rujukan" name="subjektif" class="sembunyikan"></textarea>
-					
+
 					<input type="text" name="gcs_e" id="gcs_e_rujukan" class="sembunyikan">
 					<input type="text" name="gcs_v" id="gcs_v_rujukan" class="sembunyikan">
 					<input type="text" name="gcs_m" id="gcs_m_rujukan" class="sembunyikan">
@@ -1298,7 +1596,7 @@
 					<input type="checkbox" id="deformitas_kanan_rujukan" name="deformitas_kanan" value="1" class="sembunyikan">
 					<input type="checkbox" id="refchy_kiri_rujukan" name="refchy_kiri" value="1" class="sembunyikan">
 					<input type="checkbox" id="refchy_kanan_rujukan" name="refchy_kanan" value="1" class="sembunyikan">
-					
+
 					<input type="radio" id="refchy_opsi_rujukan" name="refchy_opsi_rujukan" value="Isokor" class="sembunyikan">
 					<input type="radio" id="refchy_opsi_rujukan" name="refchy_opsi_rujukan" value="Anisokor" class="sembunyikan">
 					<input type="text" name="kepala_ket_tambahan" id="kepala_ket_tambahan_rujukan" class="sembunyikan">
@@ -1311,7 +1609,7 @@
 					<input type="checkbox" id="ronkhi_kanan_rujukan" name="ronkhi_kanan" value="1" class="sembunyikan">
 					<input type="checkbox" id="vesikuler_kiri_rujukan" name="vesikuler_kiri" value="1" class="sembunyikan">
 					<input type="checkbox" id="vesikuler_kanan_rujukan" name="vesikuler_kanan" value="1" class="sembunyikan">
-					
+
 					<input type="radio" id="jantung_ictuscordis_rujukan" name="jantung_ictuscordis" value="Tampak" class="sembunyikan">
 					<input type="radio" id="jantung_ictuscordis_rujukan" name="jantung_ictuscordis" value="Tak Tampak" class="sembunyikan">
 					<input type="radio" id="jantung_s1_s2_rujukan" name="jantung_s1_s2" value="Reguler" class="sembunyikan">
@@ -1335,7 +1633,7 @@
 					<input type="text" name="hepatomegali" id="hepatomegali_rujukan" class="sembunyikan">
 					<input type="text" name="spleenomegali" id="spleenomegali_rujukan" class="sembunyikan">
 					<input type="text" name="abdomen_ket_tambahan" id="abdomen_ket_tambahan_rujukan" class="sembunyikan">
-					
+
 					<input type="checkbox" id="akral_hangat1_rujukan" name="akral_hangat1" value="1" class="sembunyikan">
 					<input type="checkbox" id="akral_hangat2_rujukan" name="akral_hangat2" value="1" class="sembunyikan">
 					<input type="checkbox" id="akral_hangat3_rujukan" name="akral_hangat3" value="1" class="sembunyikan">
@@ -1351,7 +1649,7 @@
 					<input type="radio" id="pitting_rujukan" name="pitting" value="Non-pitting" class="sembunyikan">
 					<input type="radio" id="pitting_rujukan" name="pitting" value="Pitting" class="sembunyikan">
 					<input type="text" name="ekstermitas_ket_tambahan" id="ekstermitas_kettambahan_rujukan" class="sembunyikan">
-					
+
 					<input type="text" name="lain_lain" id="lain_lain_rujukan" class="sembunyikan">
 					<input type="text" name="planning" id="planning_rujukan" class="sembunyikan">
 					<input type="text" name="terapi1" id="terapi1_rujukan" class="sembunyikan">
@@ -1461,7 +1759,7 @@
 									<input type="hidden" class="form-control" name="temperature_ax" id="temperature_ax_sehat">
 								</div>
 							</div>
-							
+
 							<div class="row mt-3">
 								<div class="col text-right">
 									<button type="submit" class="btn btn-primary" onclick="setTimeout(SuratSehat, 1000)" >Cetak</button>		
