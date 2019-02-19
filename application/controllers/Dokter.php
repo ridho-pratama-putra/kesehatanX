@@ -171,8 +171,10 @@ class Dokter extends CI_Controller {
 
 			$data = array();
 			foreach ($dataReturn as $key => $value) {
-				$data[$key]['id'] = $value->id."|".$value->nama;
+				$data[$key]['id'] = $value->id;
 				$data[$key]['text'] = $value->nama;
+				$data[$key]['sediaan'] = $value->sediaan;
+				$data[$key]['bentuk'] = $value->bentuk;
 				$data[$key]['stok'] = $value->stok;
 				$data[$key]['harga'] = $value->harga_jual_satuan;
 				// if ($value->kadaluarsa < date("Y-m-d-d")) {
@@ -188,4 +190,54 @@ class Dokter extends CI_Controller {
 		}		
 	}
 
-}
+	/*
+	* bakal dipanggil saat penmbahan suatu obat ke troli
+	*/
+	function masukkanTroli()
+	{
+		// baca stok, kalau masih bisa dikurangi, ya kurangi, kalau tidak bisa dikurangi beri alert
+
+		// kurangi stoknya
+		$kurangi = $this->model->rawQuery("UPDATE logistik_".$this->input->post("jenis_logistik")." SET stok = stok - ".$this->input->post("jumlah")." WHERE id = ".$this->input->post("id_logistik"));
+		if ($kurangi) {
+			// masukkan ke troli
+			$create = $this->model->create(
+				"logistik_troli",
+				array(
+					"jenis_logistik" 	=> $this->input->post("jenis_logistik"),
+					"id_logistik" 		=> $this->input->post("id_logistik"),
+					"id_dokter" 		=> $this->session->userdata('logged_in')['id_user'],
+					"id_pasien" 		=> $this->input->post("id_pasien"),
+					"jumlah"			=> $this->input->post("jumlah")
+				)
+			);
+
+			$readLogistik = $this->model->read("logistik_".$this->input->post("jenis_logistik"),array("id"=>$this->input->post("id_logistik")))->result();
+
+			$create = json_decode($create);
+			if ($create->status) {
+				// read obat yang berkaitan unuk dirender di cliien
+				$read = $this->model->rawQuery("
+					SELECT 
+					logistik_".$this->input->post("jenis_logistik").".nama,
+					logistik_".$this->input->post("jenis_logistik").".sediaan,
+					logistik_".$this->input->post("jenis_logistik").".bentuk,
+					logistik_".$this->input->post("jenis_logistik").".harga_jual_satuan,
+					logistik_troli.jumlah
+					FROM
+					logistik_troli
+					INNER JOIN logistik_".$this->input->post("jenis_logistik")." ON logistik_troli.id_logistik = logistik_".$this->input->post("jenis_logistik").".id
+					WHERE logistik_troli.id_dokter = ".$this->session->userdata('logged_in')['id_user']." AND logistik_troli.id_pasien =".$this->input->post("id_pasien"))->result();
+
+				foreach ($read as $key => $value) {
+					$read[$key]->subtotal = ($read[$key]->jumlah * $read[$key]->harga_jual_satuan);
+				}
+				echo json_encode($read);
+			}else{
+				echo json_encode(array("status"=>"gagal create di logistik_troli","message"=>$create->error_message->message));
+			}
+		}else{
+			echo json_encode(array("status"=>"gagal","message"=>"gagal update stok di tabel logistik_".$this->input->post("jenis_logistik")));
+		}
+	}
+}                                                                  

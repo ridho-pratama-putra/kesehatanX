@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-02-18 15:33:47
+Date: 2019-02-19 17:50:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `antrian` (
   `nomor_pasien` varchar(255) NOT NULL,
   `jam_datang` datetime NOT NULL,
   PRIMARY KEY (`nomor_antrian`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of antrian
@@ -10572,12 +10572,14 @@ CREATE TABLE `logistik_alat_bahan_sekali_pakai` (
   `harga_jual_satuan` varchar(255) DEFAULT NULL,
   `stok` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of logistik_alat_bahan_sekali_pakai
 -- ----------------------------
 INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('1', 'Silk 2/0 + Jarum', '22', '75cm', 'IHS Medikom', 'Padat', '4000', '15000', '6');
+INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('2', 'Catgut Chromic 3/0 + Jarum', '22', '75cm', 'BuringFarma', 'Padat', '10000', '25000', '2');
+INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('3', 'Catgut Plain 2/0 + Jarum', '22', '75cm', 'IHS Medikom', 'Padat', '6500', '15000', '3');
 
 -- ----------------------------
 -- Table structure for logistik_obat_injeksi
@@ -10593,12 +10595,14 @@ CREATE TABLE `logistik_obat_injeksi` (
   `harga_jual_satuan` varchar(255) DEFAULT NULL,
   `stok` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of logistik_obat_injeksi
 -- ----------------------------
 INSERT INTO `logistik_obat_injeksi` VALUES ('1', 'Kanamycin', '1', '1g', 'Vial 1g', '13000', '75000', '10');
+INSERT INTO `logistik_obat_injeksi` VALUES ('2', 'Ketorolac', '12', '30mg/ml', 'Ampul 1ml', '6600', '20000', '10');
+INSERT INTO `logistik_obat_injeksi` VALUES ('3', 'Antrain', '12', '500mg/ml', 'Ampul 2ml', '9800', '15000', '5');
 
 -- ----------------------------
 -- Table structure for logistik_obat_oral
@@ -10647,6 +10651,24 @@ CREATE TABLE `logistik_obat_sigma_usus_externum` (
 -- ----------------------------
 INSERT INTO `logistik_obat_sigma_usus_externum` VALUES ('1', 'Chloramphenicol', '1', '0,5 %', '10ml', 'Drop-Eye', '11000', '15000', '8');
 INSERT INTO `logistik_obat_sigma_usus_externum` VALUES ('2', 'Gentamicin Sulfate', '1', '0,1%', '5g', 'Zalf-Skin', '0', '0', '0');
+
+-- ----------------------------
+-- Table structure for logistik_troli
+-- ----------------------------
+DROP TABLE IF EXISTS `logistik_troli`;
+CREATE TABLE `logistik_troli` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `jenis_logistik` varchar(255) DEFAULT NULL,
+  `id_logistik` varchar(255) DEFAULT NULL,
+  `id_dokter` varchar(255) DEFAULT NULL,
+  `id_pasien` varchar(255) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of logistik_troli
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for log_logistik
@@ -10728,12 +10750,11 @@ CREATE TABLE `proses_antrian` (
   `nomor_antrian` int(11) NOT NULL AUTO_INCREMENT,
   `nomor_pasien` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nomor_antrian`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of proses_antrian
 -- ----------------------------
-INSERT INTO `proses_antrian` VALUES ('1', '001-013-02-01-09-2018');
 
 -- ----------------------------
 -- Table structure for rekam_medis
@@ -10797,12 +10818,11 @@ CREATE TABLE `rekam_medis` (
   `dokter_pemeriksa` varchar(255) DEFAULT NULL,
   `planning` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of rekam_medis
 -- ----------------------------
-INSERT INTO `rekam_medis` VALUES ('1', '1', '2019-02-18 11:01:41', null, null, '123', '80', null, null, '78', '87', '32', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for settingan
@@ -10817,7 +10837,7 @@ CREATE TABLE `settingan` (
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-02-18 10:23:53');
+INSERT INTO `settingan` VALUES ('1', '2019-02-19 08:24:31');
 
 -- ----------------------------
 -- Table structure for user

@@ -11,11 +11,6 @@
 </style>
 <script type="text/javascript">
 
-	var addObatInjeksi;var addObatOral;var addObatSigmaUsusExternum;var addAlatBahanSekaliPakai	
-	var flagidobatinjeksi = 0;
-	var flagidobatoral = 0;
-	var flagidobatsigmaususeksternum = 0;
-	var flagidalatbahansekalipakai = 0;
 	$(document).ready(function() {
 		// inisialisasi tabel rekam medis
 		$('#example').DataTable({
@@ -108,56 +103,29 @@
 			validClass: "my-valid-class"
 		});
 
-		// untuk add input form logistik obat injeksi
-		addObatInjeksi = function addObatInjeksi() {
-			flagidobatinjeksi += 1;
-			$('#renderInputObatInjeksi').append(	"<div class='row mt-3 mb-3'>"+
-				"<div class='col-4'>"+
-				"<select class='obat-injeksi form-control' name='obat_injeksi[]' style='height: 90%' id='obatinjeksi"+flagidobatinjeksi+"'>"+
-				"<option selected=' disabled='>Pilih logistik</option>"+
-				"</select>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control' name='jumlah_obat_injeksi[]' id='jumlahinjeksi"+flagidobatinjeksi+"' min='0' onkeyup='ubahHarga("+flagidobatinjeksi+")'></input>"+
-				"</div>"+
-				"<div class='col-2'>"+
-				"<input type='number' class='form-control' name='harga_obat_injeksi[]' id='hargainjeksi"+flagidobatinjeksi+"' readonly></input>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control texxt-right ' name='per_item_injeksi[]' id='periteminjeksi"+flagidobatinjeksi+"' ></input>"+
-				"</div>"+
-												// "<div class='col'>"+
-												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatinjeksi+"' readonly=''></input>"+
-												// "</div>"+
-												"</div>");
-
-			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
-			$(".obat-injeksi").select2({
-				ajax: {
-					url: '<?=base_url()?>Dokter/cariLogistik/obat_injeksi',
-					dataType: 'json',
-					delay: 1000,
-					data: function (term) {
-						return {
-							term: term // search term
-						};
-					},
-					processResults: function (data) {
-						// console.log(data);
-
-						return {
-							results: data
-						};
-					}
+		// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+		$(".obat-injeksi").select2({
+			ajax: {
+				url: '<?=base_url()?>Dokter/cariLogistik/obat_injeksi',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term) {
+					return {
+						term: term // search term
+					};
 				},
-				escapeMarkup: function (markup) { return markup; },
-				minimumInputLength: 1,
-				theme : "bootstrap",
-				templateResult: formatRepo,
-				templateSelection: formatRepoSelection
-			});
+				processResults: function (data) {
+					// console.log(data);
 
-			function formatRepo (data) {
+					return {
+						results: data
+					};
+				}
+			},
+			escapeMarkup: function (markup) { return markup; },
+			minimumInputLength: 1,
+			theme : "bootstrap",
+			templateResult: function formatRepo (data) {
 				if (data.loading) {
 					return data.text;
 				}
@@ -168,334 +136,103 @@
 				"</div>";
 
 				return markup;
-			}
-
-			function formatRepoSelection (data) {
+			},
+			templateSelection: function formatRepoSelection (data) {
 				// console.log(data);
-				$('#hargainjeksi'+flagidobatinjeksi).val(data.harga);
-				$('#jumlahinjeksi'+flagidobatinjeksi).attr(
+				$('#hargainjeksi').val(data.harga);
+				$('#jumlahinjeksi').attr(
 				{
 					"max" : data.stok
 				}
 				);
 
 				if (typeof(data.sediaan) !== 'undefined') {
-					$('#jumlahinjeksi'+flagidobatinjeksi).attr(
+					$('#jumlahinjeksi').attr(
 					{
-						"placeholder" : "contoh : 2x ("+data.sediaan+")"
+						"placeholder" : "contoh : 2 ( x "+data.sediaan+")"
 					}
 					);
 				}
-				$('#periteminjeksi'+flagidobatinjeksi).val($('#jumlahinjeksi'+flagidobatinjeksi).val() * $('#hargainjeksi'+flagidobatinjeksi).val());
+				$('#periteminjeksi').val($('#jumlahinjeksi').val() * $('#hargainjeksi').val());
 				return data.text;
 			}
+		});
 
-		}
 
-		// untuk add input form logistik obat injeksi
-		addObatOral = function addObatOral() {
-			flagidobatoral += 1;
-			$('#renderInputObatOral').append(	"<div class='row mt-3 mb-3'>"+
-				"<div class='col-4'>"+
-				"<select class='obat-oral form-control' name='obat_oral[]' style='height: 90%' id='obatoral"+flagidobatoral+"'>"+
-				"<option selected=' disabled='>Pilih logistik</option>"+
-				"</select>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control' name='jumlah_obat_oral[]' id='jumlahoral"+flagidobatoral+"' min='0' onkeyup='ubahHarga("+flagidobatoral+")'></input>"+
-				"</div>"+
-				"<div class='col-2'>"+
-				"<input type='number' class='form-control' name='harga_obat_oral[]' id='hargaoral"+flagidobatoral+"' readonly></input>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control texxt-right ' name='per_item_oral[]' id='peritemoral"+flagidobatoral+"' ></input>"+
-				"</div>"+
-												// "<div class='col'>"+
-												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatoral+"' readonly=''></input>"+
-												// "</div>"+
-												"</div>");
-
-			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
-			$(".obat-oral").select2({
-				ajax: {
-					url: '<?=base_url()?>Dokter/cariLogistik/obat_oral',
-					dataType: 'json',
-					delay: 1000,
-					data: function (term) {
-						return {
-							term: term // search term
-						};
-					},
-					processResults: function (data) {
-						// console.log(data);
-
-						return {
-							results: data
-						};
-					}
-				},
-				escapeMarkup: function (markup) { return markup; },
-				minimumInputLength: 1,
-				theme : "bootstrap",
-				templateResult: formatRepo,
-				templateSelection: formatRepoSelection
-			});
-
-			function formatRepo (data) {
-				if (data.loading) {
-					return data.text;
-				}
-
-				var markup = "<div class='clearfix'>";
-
-				markup += data.text+" :: Stok sekarang "+data.stok+
-				"</div>";
-
-				return markup;
-			}
-
-			function formatRepoSelection (data) {
-				// console.log(data);
-				$('#hargaoral'+flagidobatoral).val(data.harga);
-				$('#jumlahoral'+flagidobatoral).attr(
-				{
-					"max" : data.stok
-				}
-				);
-
-				if (typeof(data.sediaan) !== 'undefined') {
-					$('#jumlahoral'+flagidobatoral).attr(
-					{
-						"placeholder" : "contoh : 2x ("+data.sediaan+")"
-					}
-					);
-				}
-				$('#peritemoral'+flagidobatoral).val($('#jumlahoral'+flagidobatoral).val() * $('#hargaoral'+flagidobatoral).val());
-				return data.text;
-			}
-
-		}
-
-		// untuk add input form logistik obat injeksi
-		addObatSigmaUsusExternum = function addObatSigmaUsusExternum() {
-			flagidobatsigmaususeksternum += 1;
-			$('#renderInputObatSigmaUsusExternum').append(	"<div class='row mt-3 mb-3'>"+
-				"<div class='col-4'>"+
-				"<select class='obat-sigmaususeksternum form-control' name='obat_sigmaususeksternum[]' style='height: 90%' id='obatsigmaususeksternum"+flagidobatsigmaususeksternum+"'>"+
-				"<option selected=' disabled='>Pilih logistik</option>"+
-				"</select>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control' name='jumlah_obat_sigmaususeksternum[]' id='jumlahsigmaususeksternum"+flagidobatsigmaususeksternum+"' min='0' onkeyup='ubahHarga("+flagidobatsigmaususeksternum+")'></input>"+
-				"</div>"+
-				"<div class='col-2'>"+
-				"<input type='number' class='form-control' name='harga_obat_sigmaususeksternum[]' id='hargasigmaususeksternum"+flagidobatsigmaususeksternum+"' readonly></input>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control texxt-right ' name='per_item_sigmaususeksternum[]' id='peritemsigmaususeksternum"+flagidobatsigmaususeksternum+"' ></input>"+
-				"</div>"+
-												// "<div class='col'>"+
-												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidobatsigmaususeksternum+"' readonly=''></input>"+
-												// "</div>"+
-												"</div>");
-
-			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
-			$(".obat-sigmaususeksternum").select2({
-				ajax: {
-					url: '<?=base_url()?>Dokter/cariLogistik/obat_sigma_usus_eksternum',
-					dataType: 'json',
-					delay: 1000,
-					data: function (term) {
-						return {
-							term: term // search term
-						};
-					},
-					processResults: function (data) {
-						// console.log(data);
-
-						return {
-							results: data
-						};
-					}
-				},
-				escapeMarkup: function (markup) { return markup; },
-				minimumInputLength: 1,
-				theme : "bootstrap",
-				templateResult: formatRepo,
-				templateSelection: formatRepoSelection
-			});
-
-			function formatRepo (data) {
-				if (data.loading) {
-					return data.text;
-				}
-
-				var markup = "<div class='clearfix'>";
-
-				markup += data.text+" :: Stok sekarang "+data.stok+
-				"</div>";
-
-				return markup;
-			}
-
-			function formatRepoSelection (data) {
-				// console.log(data);
-				$('#hargasigmaususeksternum'+flagidobatsigmaususeksternum).val(data.harga);
-				$('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).attr(
-				{
-					"max" : data.stok
-				}
-				);
-
-				if (typeof(data.sediaan) !== 'undefined') {
-					$('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).attr(
-					{
-						"placeholder" : "contoh : 2x ("+data.sediaan+")"
-					}
-					);
-				}
-				$('#peritemsigmaususeksternum'+flagidobatsigmaususeksternum).val($('#jumlahsigmaususeksternum'+flagidobatsigmaususeksternum).val() * $('#hargasigmaususeksternum'+flagidobatoral).val());
-				return data.text;
-			}
-
-		}
-
-		// untuk add input form logistik obat injeksi
-		addAlatBahanSekaliPakai = function addAlatBahanSekaliPakai() {
-			flagidalatbahansekalipakai += 1;
-			$('#renderInputAlatBahanSekaliPakai').append(	"<div class='row mt-3 mb-3'>"+
-				"<div class='col-4'>"+
-				"<select class='alat-bahan-sekali-pakai form-control' name='alat_bahan_sekali_pakai[]' style='height: 90%' id='alatbahansekalipakai"+flagidalatbahansekalipakai+"'>"+
-				"<option selected=' disabled='>Pilih logistik</option>"+
-				"</select>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control' name='jumlah_obat_oral[]' id='jumlahalatbahansekalipakai"+flagidalatbahansekalipakai+"' min='0' onkeyup='ubahHarga("+flagidalatbahansekalipakai+")'></input>"+
-				"</div>"+
-				"<div class='col-2'>"+
-				"<input type='number' class='form-control' name='harga_alat_bahan_sekali_pakai[]' id='hargaalatbahansekalipakai"+flagidalatbahansekalipakai+"' readonly></input>"+
-				"</div>"+
-				"<div class='col-3'>"+
-				"<input type='number' class='form-control texxt-right ' name='per_item_alat_bahan_sekali_pakai[]' id='peritemalatbahansekalipakai"+flagidalatbahansekalipakai+"' ></input>"+
-				"</div>"+
-												// "<div class='col'>"+
-												// 	"<input type='text' class='form-control' name='satuan[]' placeholder='satuan' id='satuan"+flagidalatbahansekalipakai+"' readonly=''></input>"+
-												// "</div>"+
-												"</div>");
-
-			// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
-			$(".alat-bahan-sekali-pakai").select2({
-				ajax: {
-					url: '<?=base_url()?>Dokter/cariLogistik/alat_bahan_sekali_pakai',
-					dataType: 'json',
-					delay: 1000,
-					data: function (term) {
-						return {
-							term: term // search term
-						};
-					},
-					processResults: function (data) {
-						// console.log(data);
-
-						return {
-							results: data
-						};
-					}
-				},
-				escapeMarkup: function (markup) { return markup; },
-				minimumInputLength: 1,
-				theme : "bootstrap",
-				templateResult: formatRepo,
-				templateSelection: formatRepoSelection
-			});
-
-			function formatRepo (data) {
-				if (data.loading) {
-					return data.text;
-				}
-
-				var markup = "<div class='clearfix'>";
-
-				markup += data.text+" :: Stok sekarang "+data.stok+
-				"</div>";
-
-				return markup;
-			}
-
-			function formatRepoSelection (data) {
-				// console.log(data);
-				$('#hargaalatbahansekalipakai'+flagidalatbahansekalipakai).val(data.harga);
-				$('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).attr(
-				{
-					"max" : data.stok
-				}
-				);
-
-				if (typeof(data.sediaan) !== 'undefined') {
-					$('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).attr(
-					{
-						"placeholder" : "contoh : 2x ("+data.sediaan+")"
-					}
-					);
-				}
-				$('#peritemalatbahansekalipakai'+flagidalatbahansekalipakai).val($('#jumlahalatbahansekalipakai'+flagidalatbahansekalipakai).val() * $('#hargaalatbahansekalipakai'+flagidalatbahansekalipakai).val());
-				return data.text;
-			}
-
-		}
-
-		// panggil hitung total agar mucul biaya yang harus dibayar
-		hitungTotal();
 	});
 
-
-	// ubah harga saat memasukkan jumlah obat yang akan diberikan
-	function ubahHarga(argument) {
-		$('#periteminjeksi'+argument).val($('#jumlahinjeksi'+argument).val() * $('#hargainjeksi'+argument).val());
-		$('#peritemoral'+argument).val($('#jumlahoral'+argument).val() * $('#hargaoral'+argument).val());
-		$('#peritemsigmaususeksternum'+argument).val($('#jumlahsigmaususeksternum'+argument).val() * $('#hargasigmaususeksternum'+argument).val());
-		$('#peritemalatbahansekalipakai'+argument).val($('#jumlahalatbahansekalipakai'+argument).val() * $('#hargaalatbahansekalipakai'+argument).val());
-		hitungTotal();
+	function ubahHargaObatInjeksi() {
+		$("#periteminjeksi").val($("#hargainjeksi").val() * $("#jumlahinjeksi").val());
 	}
 
-	// hitung total biaya yang harus dibayar
-	function hitungTotal() {
-		$('#total').html();
-		var total = 0;
+	function addObatInjeksi() {
+		var totalBayarObatInjeksi = 0;
 		
-		if (flagidobatinjeksi > 0) {
-			for (var i = 1; i <= flagidobatinjeksi; i++) {
-				total = (total + parseInt($('#periteminjeksi'+i).val(), 10));
-				
+		$.post("<?=base_url()?>Dokter/masukkanTroli",{
+			jenis_logistik	: "obat_injeksi",
+			id_logistik		: $("#obatinjeksi").val(),
+			jumlah 			: $("#jumlahinjeksi").val(),
+			harga 			: $("#hargainjeksi").val(),
+			id_pasien 		: $('#id-pasien').val()
+		},function(res){
+			var elementToRender = "";
+			elementToRender += 
+			"<table class='table table-bordered'>"+
+			"<thead>"+
+			"<tr>"+
+			"<th scope='col'>Nama Obat</th>"+
+			"<th scope='col'>Bentuk</th>"+
+			"<th scope='col'>Sediaan</th>"+
+			"<th scope='col'>Jumlah</th>"+
+			"<th scope='col'>Subtotal</th>"+
+			"</tr>"+
+			"</thead>"+
+			"<tbody>"
+			for (var i = res.length - 1; i >= 0; i--) {
+				totalBayarObatInjeksi += res[i].subtotal
+				elementToRender +=
+				"<tr>"+
+				"<th scope='row'>"+res[i].nama+"</th>"+
+				"<td>"+res[i].bentuk+"</td>"+
+				"<td>"+res[i].sediaan+"</td>"+
+				"<td>"+res[i].jumlah+"</td>"+
+				"<td>"+res[i].subtotal+"</td>"+
+				"</tr>"
 			}
-		}
-		if (flagidobatoral > 0) {
-			for (var i = 1; i <= flagidobatoral; i++) {
-				total = (total + parseInt($('#perItemoral'+i).val(), 10));
-			}
-		}
-		if (flagidobatsigmaususeksternum> 0) {
-			for (var i = 1; i <= flagidobatsigmaususeksternum; i++) {
-				total = (total + parseInt($('#peritemsigmaususeksternum'+i).val(), 10));
-			}
-		}
-		if (flagidalatbahansekalipakai > 0) {
-			for (var i = 1; i <= flagidalatbahansekalipakai; i++) {
-				total = (total + parseInt($('#perItemalatbahansekalipakai'+i).val(), 10));
-			}
-		}
-		total = (total + parseInt($('#biaya_dokter').val(), 10));
+			elementToRender += 
+			"</tbody>"+
+			"</table>"
+			$("#tabel-obat-injeksi-yang-sudah-diambil").html("")
+			$("#tabel-obat-injeksi-yang-sudah-diambil").html(elementToRender)
+			
+			// reset form add obat injeksi
+			$("#obatinjeksi").val("").trigger("change")
+			$("#jumlahinjeksi").val("")
+			$("#jumlahinjeksi").attr("placeholder","")
+			$("#hargainjeksi").val("")
+			$("#periteminjeksi").val("")
 
-		if (isNaN(total)) {
-			total=0;
+			// tampilkan penjumlahan obat untuk obat injeksi doang
+			$("#total-harga-obat-injeksi").html()
+			$("#total-harga-obat-injeksi").html(totalBayarObatInjeksi)
+			hitungTotal()
+		}, "json")
+	}
+
+	function hitungTotal() {
+		var total = 0
+		if ($("#total-harga-obat-injeksi").html() !== "") {
+			total += parseInt($("#total-harga-obat-injeksi").html(),10)
 		}
-		$('#total').html('Rp. '+total);
+
+		$("#total").html(total)
 	}
 	
 	// setting tampilan live clock
 	var serverTime = new Date(<?php print date('Y, m, d, H, i, s, 0'); ?>);
 	var clientTime = new Date();
 	var Diff = serverTime.getTime() - clientTime.getTime();    
+	
 	function displayServerTime(){
 		var clientTime = new Date();
 		var time = new Date(clientTime.getTime() + Diff);
@@ -598,7 +335,7 @@
 	// saat klik tombol surat rujukan. isi hidden form surat rujukan, karena secara tampilan satu form dengan pemeriksaan tapi secara koding beda tag form
 	function formSuratRujukan() {
 		// set input type hidden
-		$('#nomor_pasien_rujukan').val($('#nomor_pasien_pemeriksaan').val());
+		$('#nomor_pasien_rujukan').val($('#nomor-pasien').val());
 		
 		$('#subjektif_rujukan').val($('#subjektif_pemeriksaan').val());
 		$('#gcs_e_rujukan').val($('#gcs_e_pemeriksaan').val());
@@ -896,7 +633,8 @@
 				<!-- TAB PEMERIKSAAN -->
 				<div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="profile-tab">
 					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
-						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor_pasien_pemeriksaan">
+						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor-pasien">
+						<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>" id="id-pasien">
 						<div class="container">
 							<h5 class="text-center mt-3">Subjektif</h5>
 							<textarea class="form-control" aria-label="With textarea" placeholder="Subjektif" name="subjektif" id="subjektif_pemeriksaan"></textarea>
@@ -1489,21 +1227,51 @@
 							<hr>
 
 							<h6 class="text-center mt-3">Logistik alat bahan sekali pakai</h6>
+							
 							<div class="row mt-3">
 								<div class="col">
 									<button type="button" class="btn btn-primary btn-block" onclick="addAlatBahanSekaliPakai()">Tambah logistik alat bahan sekali pakai</button>
 								</div>
 							</div>
-							<div id="renderInputAlatBahanSekaliPakai"></div>
+							
 							<hr>
 
 							<h6 class="text-center mt-3">Logistik obat injeksi</h6>
-							<div class="row mt-3">
-								<div class="col">
-									<button type="button" class="btn btn-primary btn-block" onclick="addObatInjeksi()">Tambah logistik obat injeksi</button>
+							<div class="mt-3">
+								<div class="card">
+									<div class="card-body" id="tabel-obat-injeksi-yang-sudah-diambil">
+										
+									</div>
 								</div>
 							</div>
-							<div id="renderInputObatInjeksi"></div>
+							<div class="mt-3">
+								<div class="card card-body mt-3 mb-3">
+									<div class="row mt-1">
+										<select class="obat-injeksi form-control" style="height: 90%" id="obatinjeksi">
+											<option selected="" disabled="">Pilih logistik</option>
+										</select>
+									</div>
+									<div class="row mt-1">
+										<input type="number" class="form-control" id="jumlahinjeksi" min="1" onkeyup="ubahHargaObatInjeksi()"></input>
+									</div>
+									<div class="row mt-1">
+										<input type="number" class="form-control" id="hargainjeksi" readonly=""></input>
+									</div>
+									<div class="row mt-1">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon1">Rp. </span>
+											</div>
+											<input type="number" class="form-control text-right" id="periteminjeksi" ></input>
+										</div>
+									</div>
+									<div class="row mt-1">
+										<button type="button" class="btn btn-primary" onclick="addObatInjeksi()">+</button>
+									</div>
+								</div>
+							</div>
+							
+							<div class="text-right">Total <div id="total-harga-obat-injeksi"></div></div>
 							<hr>
 
 							<h6 class="text-center mt-3">Logistik obat oral</h6>
