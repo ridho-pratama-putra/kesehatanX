@@ -158,16 +158,199 @@
 			}
 		});
 
+		// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+		$(".obat-oral").select2({
+			ajax: {
+				url: '<?=base_url()?>Dokter/cariLogistik/obat_oral',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term) {
+					return {
+						term: term // search term
+					};
+				},
+				processResults: function (data) {
+					// console.log(data);
 
+					return {
+						results: data
+					};
+				}
+			},
+			escapeMarkup: function (markup) { return markup; },
+			minimumInputLength: 1,
+			theme : "bootstrap",
+			templateResult: function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			},
+			templateSelection: function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargaoral').val(data.harga);
+				$('#jumlahoral').attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahoral').attr(
+					{
+						"placeholder" : "contoh : 2 ( x "+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemoral').val($('#jumlahoral').val() * $('#hargaoral').val());
+				return data.text;
+			}
+		});
+
+		// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+		$(".obat-sigma-usus-externum").select2({
+			ajax: {
+				url: '<?=base_url()?>Dokter/cariLogistik/obat_sigma_usus_externum',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term) {
+					return {
+						term: term // search term
+					};
+				},
+				processResults: function (data) {
+					// console.log(data);
+
+					return {
+						results: data
+					};
+				}
+			},
+			escapeMarkup: function (markup) { return markup; },
+			minimumInputLength: 1,
+			theme : "bootstrap",
+			templateResult: function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			},
+			templateSelection: function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargasigmaususexternum').val(data.harga);
+				$('#jumlahsigmaususexternum').attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahsigmaususexternum').attr(
+					{
+						"placeholder" : "contoh : 2 ( x "+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemsigmaususexternum').val($('#jumlahsigmaususexternum').val() * $('#hargasigmaususexternum').val());
+				return data.text;
+			}
+		});
+
+		// saat obat terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
+		$(".alat-bahan-sekali-pakai").select2({
+			ajax: {
+				url: '<?=base_url()?>Dokter/cariLogistik/alat_bahan_sekali_pakai',
+				dataType: 'json',
+				delay: 1000,
+				data: function (term) {
+					return {
+						term: term // search term
+					};
+				},
+				processResults: function (data) {
+					// console.log(data);
+
+					return {
+						results: data
+					};
+				}
+			},
+			escapeMarkup: function (markup) { return markup; },
+			minimumInputLength: 1,
+			theme : "bootstrap",
+			templateResult: function formatRepo (data) {
+				if (data.loading) {
+					return data.text;
+				}
+
+				var markup = "<div class='clearfix'>";
+
+				markup += data.text+" :: Stok sekarang "+data.stok+
+				"</div>";
+
+				return markup;
+			},
+			templateSelection: function formatRepoSelection (data) {
+				// console.log(data);
+				$('#hargaalatbahansekalipakai').val(data.harga);
+				$('#jumlahalatbahansekalipakai').attr(
+				{
+					"max" : data.stok
+				}
+				);
+
+				if (typeof(data.sediaan) !== 'undefined') {
+					$('#jumlahalatbahansekalipakai').attr(
+					{
+						"placeholder" : "contoh : 2 ( x "+data.sediaan+")"
+					}
+					);
+				}
+				$('#peritemalatbahansekalipakai').val($('#jumlahalatbahansekalipakai').val() * $('#hargaalatbahansekalipakai').val());
+				return data.text;
+			}
+		});
 	});
+</script>
+<script type="text/javascript">
+	function convertToRupiah(angka){
+		var rupiah = '';		
+		var angkarev = angka.toString().split('').reverse().join('');
+		for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+			return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+	}
 
 	function ubahHargaObatInjeksi() {
 		$("#periteminjeksi").val($("#hargainjeksi").val() * $("#jumlahinjeksi").val());
 	}
 
+	function ubahHargaObatSigmaUsusExternum() {
+		$("#peritemsigmaususexternum").val($("#hargasigmaususexternum").val() * $("#jumlahsigmaususexternum").val());
+	}
+
+	function ubahHargaObatOral() {
+		$("#peritemoral").val($("#hargaoral").val() * $("#jumlahoral").val());
+	}
+
+	function ubahHargaAlatBahanSekaliPakai() {
+		$("#peritemalatbahansekalipakai").val($("#hargaalatbahansekalipakai").val() * $("#jumlahalatbahansekalipakai").val());
+	}
+
 	function addObatInjeksi() {
 		var totalBayarObatInjeksi = 0;
-		
+
 		$.post("<?=base_url()?>Dokter/masukkanTroli",{
 			jenis_logistik	: "obat_injeksi",
 			id_logistik		: $("#obatinjeksi").val(),
@@ -204,35 +387,207 @@
 			"</table>"
 			$("#tabel-obat-injeksi-yang-sudah-diambil").html("")
 			$("#tabel-obat-injeksi-yang-sudah-diambil").html(elementToRender)
-			
-			// reset form add obat injeksi
-			$("#obatinjeksi").val("").trigger("change")
-			$("#jumlahinjeksi").val("")
-			$("#jumlahinjeksi").attr("placeholder","")
-			$("#hargainjeksi").val("")
-			$("#periteminjeksi").val("")
 
-			// tampilkan penjumlahan obat untuk obat injeksi doang
-			$("#total-harga-obat-injeksi").html()
-			$("#total-harga-obat-injeksi").html(totalBayarObatInjeksi)
-			hitungTotal()
-		}, "json")
+				// reset form add obat injeksi
+				$("#obatinjeksi").val("").trigger("change")
+				$("#jumlahinjeksi").val("")
+				$("#jumlahinjeksi").attr("placeholder","Pilih logistik")
+				$("#hargainjeksi").val("")
+				$("#periteminjeksi").val("")
+
+				// tampilkan penjumlahan obat untuk obat injeksi doang
+				$("#total-harga-obat-injeksi").html()
+				$("#total-harga-obat-injeksi").html(totalBayarObatInjeksi)
+				hitungTotal()
+			}, "json")
 	}
 
-	function hitungTotal() {
+	function addObatOral() {
+		var totalBayarObatOral = 0;
+
+		$.post("<?=base_url()?>Dokter/masukkanTroli",{
+			jenis_logistik	: "obat_oral",
+			id_logistik		: $("#obatoral").val(),
+			jumlah 			: $("#jumlahoral").val(),
+			harga 			: $("#hargaoral").val(),
+			id_pasien 		: $('#id-pasien').val()
+		},function(res){
+			var elementToRender = "";
+			elementToRender += 
+			"<table class='table table-bordered'>"+
+			"<thead>"+
+			"<tr>"+
+			"<th scope='col'>Nama Obat</th>"+
+			"<th scope='col'>Bentuk</th>"+
+			"<th scope='col'>Sediaan</th>"+
+			"<th scope='col'>Jumlah</th>"+
+			"<th scope='col'>Subtotal</th>"+
+			"</tr>"+
+			"</thead>"+
+			"<tbody>"
+			for (var i = res.length - 1; i >= 0; i--) {
+				totalBayarObatOral += res[i].subtotal
+				elementToRender +=
+				"<tr>"+
+				"<th scope='row'>"+res[i].nama+"</th>"+
+				"<td>"+res[i].bentuk+"</td>"+
+				"<td>"+res[i].sediaan+"</td>"+
+				"<td>"+res[i].jumlah+"</td>"+
+				"<td>"+res[i].subtotal+"</td>"+
+				"</tr>"
+			}
+			elementToRender += 
+			"</tbody>"+
+			"</table>"
+			$("#tabel-obat-oral-yang-sudah-diambil").html("")
+			$("#tabel-obat-oral-yang-sudah-diambil").html(elementToRender)
+
+				// reset form add obat oral
+				$("#obatoral").val("").trigger("change")
+				$("#jumlahoral").val("")
+				$("#jumlahoral").attr("placeholder","Pilih logistik")
+				$("#hargaoral").val("")
+				$("#peritemoral").val("")
+
+				// tampilkan penjumlahan obat untuk obat oral doang
+				$("#total-harga-obat-oral").html()
+				$("#total-harga-obat-oral").html(totalBayarObatOral)
+				hitungTotal()
+			}, "json")
+	}
+
+	function addObatSigmaUsusExternum() {
+		var totalBayarObatSigmaUsusExternum = 0;
+
+		$.post("<?=base_url()?>Dokter/masukkanTroli",{
+			jenis_logistik	: "obat_sigma_usus_externum",
+			id_logistik		: $("#obatsigmaususexternum").val(),
+			jumlah 			: $("#jumlahsigmaususexternum").val(),
+			harga 			: $("#hargasigmaususexternum").val(),
+			id_pasien 		: $('#id-pasien').val()
+		},function(res){
+			var elementToRender = "";
+			elementToRender += 
+			"<table class='table table-bordered'>"+
+			"<thead>"+
+			"<tr>"+
+			"<th scope='col'>Nama Obat</th>"+
+			"<th scope='col'>Bentuk</th>"+
+			"<th scope='col'>Sediaan</th>"+
+			"<th scope='col'>Jumlah</th>"+
+			"<th scope='col'>Subtotal</th>"+
+			"</tr>"+
+			"</thead>"+
+			"<tbody>"
+			for (var i = res.length - 1; i >= 0; i--) {
+				totalBayarObatSigmaUsusExternum += res[i].subtotal
+				elementToRender +=
+				"<tr>"+
+				"<th scope='row'>"+res[i].nama+"</th>"+
+				"<td>"+res[i].bentuk+"</td>"+
+				"<td>"+res[i].sediaan+"</td>"+
+				"<td>"+res[i].jumlah+"</td>"+
+				"<td>"+res[i].subtotal+"</td>"+
+				"</tr>"
+			}
+			elementToRender += 
+			"</tbody>"+
+			"</table>"
+			$("#tabel-obat-sigma-usus-externum-yang-sudah-diambil").html("")
+			$("#tabel-obat-sigma-usus-externum-yang-sudah-diambil").html(elementToRender)
+
+					// reset form add obat sigma-usus-externum
+					$("#obatsigmaususexternum").val("").trigger("change")
+					$("#jumlahsigmaususexternum").val("")
+					$("#jumlahsigmaususexternum").attr("placeholder","Pilih logistik")
+					$("#hargasigmaususexternum").val("")
+					$("#peritemsigmaususexternum").val("")
+
+					// tampilkan penjumlahan obat untuk obat sigma-usus-externum doang
+					$("#total-harga-obat-sigma-usus-externum").html()
+					$("#total-harga-obat-sigma-usus-externum").html(totalBayarObatSigmaUsusExternum)
+					hitungTotal()
+				}, "json")
+	}
+
+	function addObatAlatBahanSekaliPakai() {
+		var totalBayarObatAlatBahanSekaliPakai = 0;
+
+		$.post("<?=base_url()?>Dokter/masukkanTroli",{
+			jenis_logistik	: "alat_bahan_sekali_pakai",
+			id_logistik		: $("#alatbahansekalipakai").val(),
+			jumlah 			: $("#jumlahalatbahansekalipakai").val(),
+			harga 			: $("#hargaalatbahansekalipakai").val(),
+			id_pasien 		: $('#id-pasien').val()
+		},function(res){
+			var elementToRender = "";
+			elementToRender += 
+			"<table class='table table-bordered'>"+
+			"<thead>"+
+			"<tr>"+
+			"<th scope='col'>Nama Obat</th>"+
+			"<th scope='col'>Bentuk</th>"+
+			"<th scope='col'>Sediaan</th>"+
+			"<th scope='col'>Jumlah</th>"+
+			"<th scope='col'>Subtotal</th>"+
+			"</tr>"+
+			"</thead>"+
+			"<tbody>"
+			for (var i = res.length - 1; i >= 0; i--) {
+				totalBayarObatAlatBahanSekaliPakai += res[i].subtotal
+				elementToRender +=
+				"<tr>"+
+				"<th scope='row'>"+res[i].nama+"</th>"+
+				"<td>"+res[i].bentuk+"</td>"+
+				"<td>"+res[i].sediaan+"</td>"+
+				"<td>"+res[i].jumlah+"</td>"+
+				"<td>"+res[i].subtotal+"</td>"+
+				"</tr>"
+			}
+			elementToRender += 
+			"</tbody>"+
+			"</table>"
+			$("#tabel-alat-bahan-sekali-pakai-yang-sudah-diambil").html("")
+			$("#tabel-alat-bahan-sekali-pakai-yang-sudah-diambil").html(elementToRender)
+
+					// reset form add obat sigma-usus-externum
+					$("#obatalatbahansekalipakai").val("").trigger("change")
+					$("#jumlahalatbahansekalipakai").val("")
+					$("#jumlahalatbahansekalipakai").attr("placeholder","Pilih logistik")
+					$("#hargaalatbahansekalipakai").val("")
+					$("#peritemalatbahansekalipakai").val("")
+
+					// tampilkan penjumlahan obat untuk obat sigma-usus-externum doang
+					$("#total-harga-alat-bahan-sekali-pakai").html()
+					$("#total-harga-alat-bahan-sekali-pakai").html(totalBayarObatAlatBahanSekaliPakai)
+					hitungTotal()
+				}, "json")
+	}
+
+	function hitungTotal() 
+	{
 		var total = 0
 		if ($("#total-harga-obat-injeksi").html() !== "") {
 			total += parseInt($("#total-harga-obat-injeksi").html(),10)
 		}
+		if ($("#total-harga-obat-oral").html() !== "") {
+			total += parseInt($("#total-harga-obat-oral").html(),10)
+		}
 
-		$("#total").html(total)
+		if ($("#total-harga-obat-sigma-usus-externum").html() !== "") {
+			total += parseInt($("#total-harga-obat-sigma-usus-externum").html(),10)
+		}
+
+		total += parseInt($("#biaya_dokter").val(),10)
+
+		$("#total").html(convertToRupiah(total))
 	}
-	
+
 	// setting tampilan live clock
 	var serverTime = new Date(<?php print date('Y, m, d, H, i, s, 0'); ?>);
 	var clientTime = new Date();
 	var Diff = serverTime.getTime() - clientTime.getTime();    
-	
+
 	function displayServerTime(){
 		var clientTime = new Date();
 		var time = new Date(clientTime.getTime() + Diff);
@@ -242,8 +597,8 @@
 		document.getElementById("clock").innerHTML = (sh.length==1?"0"+sh:sh) + ":" + (sm.length==1?"0"+sm:sm) + ":" + (ss.length==1?"0"+ss:ss);
 	}
 
-    // set nilai tanggal terakhir setelah pengesetan durasi pada form surat sakit
-    function updateTglAkhir() {
+	// set nilai tanggal terakhir setelah pengesetan durasi pada form surat sakit
+	function updateTglAkhir() {
 		// function untuk update tanggal akhir
 		var tanggal_awal 	= document.getElementById("tanggal_awal").value;
 		var jumlah			= document.getElementById("selama").value;
@@ -1226,70 +1581,152 @@
 							</div>
 							<hr>
 
-							<h6 class="text-center mt-3">Logistik alat bahan sekali pakai</h6>
-							
-							<div class="row mt-3">
-								<div class="col">
-									<button type="button" class="btn btn-primary btn-block" onclick="addAlatBahanSekaliPakai()">Tambah logistik alat bahan sekali pakai</button>
-								</div>
-							</div>
-							
-							<hr>
-
-							<h6 class="text-center mt-3">Logistik obat injeksi</h6>
-							<div class="mt-3">
-								<div class="card">
-									<div class="card-body" id="tabel-obat-injeksi-yang-sudah-diambil">
-										
+							<div class="card">
+								<div class="card-body" >
+									<h6 class="text-center mt-3">Logistik alat bahan sekali pakai</h6>
+									<div class="mt-3" id="tabel-alat-bahan-sekali-pakai-yang-sudah-diambil">
 									</div>
-								</div>
-							</div>
-							<div class="mt-3">
-								<div class="card card-body mt-3 mb-3">
-									<div class="row mt-1">
-										<select class="obat-injeksi form-control" style="height: 90%" id="obatinjeksi">
-											<option selected="" disabled="">Pilih logistik</option>
-										</select>
-									</div>
-									<div class="row mt-1">
-										<input type="number" class="form-control" id="jumlahinjeksi" min="1" onkeyup="ubahHargaObatInjeksi()"></input>
-									</div>
-									<div class="row mt-1">
-										<input type="number" class="form-control" id="hargainjeksi" readonly=""></input>
-									</div>
-									<div class="row mt-1">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1">Rp. </span>
+									<div class="mt-3">
+										<div class="card card-body mt-3 mb-3">
+											<div class="row mt-1">
+												<select class="alat-bahan-sekali-pakai form-control" style="height: 90%" id="alatbahansekalipakai">
+													<option selected="" disabled="">Pilih logistik</option>
+												</select>
 											</div>
-											<input type="number" class="form-control text-right" id="periteminjeksi" ></input>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="jumlahalatbahansekalipakai" min="1" onkeyup="ubahHargaAlatBahanSekaliPakai()"></input>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="hargaalatbahansekalipakai" readonly=""></input>
+											</div>
+											<div class="row mt-1">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text" id="basic-addon1">Rp. </span>
+													</div>
+													<input type="number" class="form-control text-right" id="peritemalatbahansekalipakai" ></input>
+												</div>
+											</div>
+											<div class="row mt-1">
+												<button type="button" class="btn btn-primary" onclick="addObatAlatBahanSekaliPakai()">+</button>
+											</div>
 										</div>
 									</div>
-									<div class="row mt-1">
-										<button type="button" class="btn btn-primary" onclick="addObatInjeksi()">+</button>
-									</div>
+									<div class="text-right">Total Alat bahan sekali pakai<div id="total-harga-alat-bahan-sekali-pakai"></div></div>
 								</div>
 							</div>
 							
-							<div class="text-right">Total <div id="total-harga-obat-injeksi"></div></div>
 							<hr>
 
-							<h6 class="text-center mt-3">Logistik obat oral</h6>
-							<div class="row mt-3">
-								<div class="col">
-									<button type="button" class="btn btn-primary btn-block" onclick="addObatOral()">Tambah logistik obat oral</button>
+							<div class="card">
+								<div class="card-body" >
+									<h6 class="text-center mt-3">Logistik obat injeksi</h6>
+									<div class="mt-3" id="tabel-obat-injeksi-yang-sudah-diambil">
+									</div>
+									<div class="mt-3">
+										<div class="card card-body mt-3 mb-3">
+											<div class="row mt-1">
+												<select class="obat-injeksi form-control" style="height: 90%" id="obatinjeksi">
+													<option selected="" disabled="">Pilih logistik</option>
+												</select>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="jumlahinjeksi" min="1" onkeyup="ubahHargaObatInjeksi()"></input>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="hargainjeksi" readonly=""></input>
+											</div>
+											<div class="row mt-1">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text" id="basic-addon1">Rp. </span>
+													</div>
+													<input type="number" class="form-control text-right" id="periteminjeksi" ></input>
+												</div>
+											</div>
+											<div class="row mt-1">
+												<button type="button" class="btn btn-primary" onclick="addObatInjeksi()">+</button>
+											</div>
+										</div>
+									</div>
+
+									<div class="text-right">Total Obat Injeksi<div id="total-harga-obat-injeksi"></div></div>
 								</div>
 							</div>
-							<div id="renderInputObatOral"></div>
+
 							<hr>
 
-							<h6 class="text-center mt-3">Logistik obat sigma usus externum</h6>
-							<div class="row mt-3">
-								<div class="col">
-									<button type="button" class="btn btn-primary btn-block" onclick="addObatSigmaUsusExternum()">Tambah logistik obat sigma usus externum</button>
+							<div class="card">
+								<div class="card-body" >
+									<h6 class="text-center mt-3">Logistik obat oral</h6>
+									<div class="mt-3" id="tabel-obat-oral-yang-sudah-diambil"> 
+									</div>
+									<div class="mt-3">
+										<div class="card card-body mt-3 mb-3">
+											<div class="row mt-1">
+												<select class="obat-oral form-control" style="height: 90%" id="obatoral">
+													<option selected="" disabled="">Pilih logistik</option>
+												</select>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="jumlahoral" min="1" onkeyup="ubahHargaObatOral()"></input>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="hargaoral" readonly=""></input>
+											</div>
+											<div class="row mt-1">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text" id="basic-addon1">Rp. </span>
+													</div>
+													<input type="number" class="form-control text-right" id="peritemoral" ></input>
+												</div>
+											</div>
+											<div class="row mt-1">
+												<button type="button" class="btn btn-primary" onclick="addObatOral()">+</button>
+											</div>
+										</div>
+									</div>							
+									<div class="text-right">Total Obat Oral<div id="total-harga-obat-oral"></div></div>
 								</div>
 							</div>
-							<div id="renderInputObatSigmaUsusExternum"></div>
+
+							<hr>
+
+							<div class="card">
+								<div class="card-body" >
+									<h6 class="text-center mt-3">Logistik obat S.UE</h6>
+									<div class="mt-3" id="tabel-obat-sigma-usus-externum-yang-sudah-diambil">					
+									</div>
+									<div class="mt-3">
+										<div class="card card-body mt-3 mb-3">
+											<div class="row mt-1">
+												<select class="obat-sigma-usus-externum form-control" style="height: 90%" id="obatsigmaususexternum">
+													<option selected="" disabled="">Pilih logistik</option>
+												</select>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="jumlahsigmaususexternum" min="1" onkeyup="ubahHargaObatSigmaUsusExternum()"></input>
+											</div>
+											<div class="row mt-1">
+												<input type="number" class="form-control" id="hargasigmaususexternum" readonly=""></input>
+											</div>
+											<div class="row mt-1">
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text" id="basic-addon1">Rp. </span>
+													</div>
+													<input type="number" class="form-control text-right" id="peritemsigmaususexternum" ></input>
+												</div>
+											</div>
+											<div class="row mt-1">
+												<button type="button" class="btn btn-primary" onclick="addObatSigmaUsusExternum()">+</button>
+											</div>
+										</div>
+									</div>
+									<div class="text-right">Total Obat S.UE<div id="total-harga-obat-sigma-usus-externum"></div></div>
+								</div>
+							</div>
 							<hr>
 
 
