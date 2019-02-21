@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-02-19 17:50:32
+Date: 2019-02-21 20:10:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,6 +29,35 @@ CREATE TABLE `antrian` (
 -- ----------------------------
 -- Records of antrian
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for assesment
+-- ----------------------------
+DROP TABLE IF EXISTS `assesment`;
+CREATE TABLE `assesment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_assessment_for_rekam_medis` varchar(255) DEFAULT NULL,
+  `tipe` varchar(250) DEFAULT NULL,
+  `detil` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of assesment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for available_id_assessment
+-- ----------------------------
+DROP TABLE IF EXISTS `available_id_assessment`;
+CREATE TABLE `available_id_assessment` (
+  `available_id_assessment` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of available_id_assessment
+-- ----------------------------
+INSERT INTO `available_id_assessment` VALUES ('8');
 
 -- ----------------------------
 -- Table structure for golongan_logistik
@@ -10624,7 +10653,7 @@ CREATE TABLE `logistik_obat_oral` (
 -- ----------------------------
 -- Records of logistik_obat_oral
 -- ----------------------------
-INSERT INTO `logistik_obat_oral` VALUES ('1', '1', 'Amoxicillin', '500mg', 'Capsul', '100', '30000', '600', '60');
+INSERT INTO `logistik_obat_oral` VALUES ('1', '1', 'Amoxicillin', '500mg', 'Capsul', '100', '30000', '600', '59');
 INSERT INTO `logistik_obat_oral` VALUES ('2', '1', 'Amoxicillin', '250mg', 'Capsul', '0', '0', '0', '0');
 INSERT INTO `logistik_obat_oral` VALUES ('3', '1', 'Amoxicillin', '125mg/5ml', 'Syrup 60ml', '1', '2850', '7500', '9');
 INSERT INTO `logistik_obat_oral` VALUES ('4', '1', 'Cefadroxil', '500mg', 'Capsul', '100', '65000', '1000', '30');
@@ -10765,7 +10794,7 @@ CREATE TABLE `rekam_medis` (
   `id_pasien` int(11) DEFAULT NULL,
   `tanggal_jam` datetime DEFAULT NULL,
   `subjektif` text,
-  `gcs_evm_opsi` varchar(50) DEFAULT NULL,
+  `gcs_evm_opsi` varchar(255) DEFAULT NULL,
   `tinggi_badan` varchar(10) DEFAULT NULL,
   `berat_badan` varchar(10) DEFAULT NULL,
   `sistol` varchar(10) DEFAULT NULL,
@@ -10818,11 +10847,13 @@ CREATE TABLE `rekam_medis` (
   `dokter_pemeriksa` varchar(255) DEFAULT NULL,
   `planning` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of rekam_medis
 -- ----------------------------
+INSERT INTO `rekam_medis` VALUES ('1', '1', '2019-02-20 11:45:42', 'subjektif', 'E: 9 V: 8 M: 7', '123', '123', '12', '12', '123', '123', '123', 'head too toe', ' Anemis +/  Cianosis  /+ Deformitas +/+ Refleks cahaya +/+', null, 'htt kepaala tambahan', null, 'Wheezing +/  Vesikuler +/+', null, null, 'jantung suara tambahan', null, null, null, '1', '1', null, null, null, '1', null, '1', 'abdomen heptomegali', 'abdomen spleenomegali', 'abdomen keterangan tambahan', null, null, null, null, null, '1', null, '1', null, null, '1', null, null, 'ekstermitas keterangan tambahan', 'lainlaine', '2', null, null, null, '2', 'planning. ');
+INSERT INTO `rekam_medis` VALUES ('2', '1', '2019-02-20 11:49:44', 'subjektif', 'E: 9 V: 8 M: 7', '123', '123', '12', '12', '123', '123', '123', 'head too toe', ' Anemis +/  Cianosis  /+ Deformitas +/+ Refleks cahaya +/+', null, 'htt kepaala tambahan', null, 'Wheezing +/  Vesikuler +/+', null, null, 'jantung suara tambahan', null, null, null, '1', '1', null, null, null, '1', null, '1', 'abdomen heptomegali', 'abdomen spleenomegali', 'abdomen keterangan tambahan', null, null, null, null, null, '1', null, '1', null, null, '1', null, null, 'ekstermitas keterangan tambahan', 'lainlaine', '7', null, null, null, '2', 'planning. ');
 
 -- ----------------------------
 -- Table structure for settingan
@@ -10837,7 +10868,7 @@ CREATE TABLE `settingan` (
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-02-19 08:24:31');
+INSERT INTO `settingan` VALUES ('1', '2019-02-20 08:35:53');
 
 -- ----------------------------
 -- Table structure for user

@@ -832,7 +832,7 @@
 	}
 
 </script>
-
+<div class="mt-3 mb-3"><?=$this->session->flashdata('alert')?></div>
 <h3 class="text-center mt-3"><strong>Pemeriksaan Dokter</strong></h3>
 
 <div class="container">
