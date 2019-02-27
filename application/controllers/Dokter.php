@@ -177,6 +177,10 @@ class Dokter extends CI_Controller {
 				$data[$key]['bentuk'] = $value->bentuk;
 				$data[$key]['stok'] = $value->stok;
 				$data[$key]['harga'] = $value->harga_jual_satuan;
+				if ($jenis_logistik == "alat_bahan_sekali_pakai") {
+					$data[$key]['provider'] = $value->provider;
+				}
+
 				// if ($value->kadaluarsa < date("Y-m-d-d")) {
 				// 	$data[$key]['expired'] = " :: Sudah kadaluarsa".tgl_indo($value->kadaluarsa);
 				// }else{
