@@ -43,21 +43,18 @@ class Account extends CI_Controller {
 					'sip'		=>	$record->sip,
 				);
 				alert('alert','success','Berhasil','Selamat datang '.$session_data['nama_user']);
-				
 				$this->session->set_userdata('logged_in', $session_data);
-				
 				if ($record->hak_akses == 'admin') {
 					redirect('logistik-obat-oral');
 				}elseif ($record->hak_akses == 'dokter') {
 					redirect('logistik-obat-oral');
 				}elseif ($record->hak_akses == 'petugas') {
-					redirect('logistik-obat-oral');
+					redirect('antrian-petugas');
 				}
 			}else{
 				alert('alert','danger','Gagal','Login gagal. Anda tidak terdaftar atau akun anda belum diverifikasi oleh admin. Hubungi admin untuk verifikasi akun anda');
 				redirect("login");
 			}
-
 		}else{
 			$data['heading']		=	"Null POST";
 			$data['message']		=	"<p>Tidak ada data yang di post</p>";
@@ -72,7 +69,6 @@ class Account extends CI_Controller {
 		$this->session->unset_userdata('loginSession');
 		redirect(base_url());
 	}
-
 }
 // UNSET THINGS
 // $this->session->unset_userdata('sesi');

@@ -216,22 +216,28 @@ class Petugas extends CI_Controller
 		$data['antrian']		=	$this->model->rawQuery('
 			SELECT 
 			pasien.nama, 
+			antrian.id_pasien,
+			pasien.id,
+			antrian.id_rekam_medis,
 			antrian.jam_datang, 
 			antrian.nomor_antrian, 
 			pasien.pembayaran, 
 			pasien.nomor_pasien 
 			FROM antrian 
-			INNER JOIN pasien on antrian.nomor_pasien=pasien.nomor_pasien
+			INNER JOIN pasien on antrian.id_pasien = pasien.id
 			WHERE DATE(jam_datang) = DATE(CURRENT_DATE()) ORDER BY nomor_antrian
 			')->result();
 
 		$data['proses_antrian']	=	$this->model->rawQuery('
 			SELECT 
-			proses_antrian.nomor_pasien,
+			proses_antrian.id_pasien,
 			pasien.nama, 
+			proses_antrian.id_pasien, 
+			pasien.id,
+			proses_antrian.id_rekam_medis, 
 			pasien.pembayaran 
 			FROM proses_antrian 
-			INNER JOIN pasien on proses_antrian.nomor_pasien=pasien.nomor_pasien
+			INNER JOIN pasien on proses_antrian.id_pasien = pasien.id
 			')->result();
 		echo json_encode($data);
 	}
@@ -250,7 +256,7 @@ class Petugas extends CI_Controller
 			$this->load->view('petugas/navbar',$data);
 			$this->load->view('petugas/pemeriksaan_awal',$data);
 		}else{
-			redirect("cari-pasien");
+			redirect("cari-pasien-petugas");
 		}
 	}
 
@@ -323,8 +329,9 @@ class Petugas extends CI_Controller
 		// die();
 
 		// create ke tabel RM dengan isi objektif
-		$this->model->create('rekam_medis',$postedData);
-		$result = json_decode($this->model->create("antrian",array("nomor_pasien"=>$this->input->post("nomor_pasien"),"jam_datang"=>date("Y-m-d H:i:s"))),false);
+		$insert_into_rekam_medis = $this->model->create_id('rekam_medis',$postedData);
+		$insert_into_rekam_medis = json_decode($insert_into_rekam_medis);
+		$result = json_decode($this->model->create("antrian",array("id_pasien"=>$this->input->post("id_pasien"),"jam_datang"=>date("Y-m-d H:i:s"),"id_rekam_medis"=> $insert_into_rekam_medis->message)),false);
 
 		if ($result->status) {
 			alert("alert","success","Berhasil","Data berhasil dimasukkan");
@@ -338,34 +345,31 @@ class Petugas extends CI_Controller
 	/*
 	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian
 	*/
-	function SubmitAntrian($aksi,$nomor_pasien)
+	function submitAntrian($aksi,$id_pasien,$id_rekam_medis)
 	{
 		if ($aksi == 'proses') {
 			$this->model->create(
 				'proses_antrian',
 				array(
-					'nomor_pasien'	=>	$nomor_pasien
+					'id_pasien'	=>	$id_pasien,
+					'id_rekam_medis'	=>	$id_rekam_medis
 				)
 			);
 		}elseif ($aksi == 'hapus') {
-			$recordPasien = $this->model->read('pasien',array('nomor_pasien'=>$nomor_pasien))->result();
-			$this->model->rawQuery("DELETE FROM rekam_medis WHERE id_pasien ='".$recordPasien[0]->id."' AND YEAR(tanggal_jam)='".date('Y')."' AND MONTH(tanggal_jam)='".date('m')."' AND DAY(tanggal_jam)='".date('d')."' ORDER BY id DESC LIMIT 1");
+			$this->model->rawQuery("DELETE FROM rekam_medis WHERE id ='".$id_rekam_medis."'");
 
+			// record akan selalu ada hingga dokter melakukan submit pemeriksaan. jadi aman jika menggunakan acuan id
 			$this->model->delete(
 				'proses_antrian',
 				array(
-					'nomor_pasien'	=>	$nomor_pasien
+					'id_pasien'	=>	$id_pasien
 				));
 		}
 		$this->model->delete(
 			'antrian',
 			array(
-				'nomor_pasien'	=>	$nomor_pasien
+				'id_pasien'	=>	$id_pasien
 			));
 		redirect("antrian-petugas");
 	}
-
-
-
-
 }

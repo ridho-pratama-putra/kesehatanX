@@ -34,7 +34,7 @@ CREATE TABLE `antrian` (
 -- Table structure for assesment
 -- ----------------------------
 DROP TABLE IF EXISTS `assesment`;
-CREATE TABLE `assesment` (
+CREATE TABLE `assessment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_assessment_for_rekam_medis` varchar(255) DEFAULT NULL,
   `tipe` varchar(250) DEFAULT NULL,

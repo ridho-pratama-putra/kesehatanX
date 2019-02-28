@@ -34,23 +34,31 @@ class Dokter extends CI_Controller {
 		$data['antrian']		=	$this->model->rawQuery('
 			SELECT 
 			pasien.nama, 
+			antrian.id_pasien,
+			pasien.id,
+			antrian.id_rekam_medis,
 			antrian.jam_datang, 
 			antrian.nomor_antrian, 
 			pasien.pembayaran, 
 			pasien.nomor_pasien 
 			FROM antrian 
-			INNER JOIN pasien on antrian.nomor_pasien=pasien.nomor_pasien
-			WHERE DATE(jam_datang) = DATE(CURRENT_DATE()) ORDER BY jam_datang
+			INNER JOIN pasien on antrian.id_pasien = pasien.id
+			WHERE DATE(jam_datang) = DATE(CURRENT_DATE()) ORDER BY nomor_antrian
 			')->result();
 
 		$data['proses_antrian']	=	$this->model->rawQuery('
 			SELECT 
-			proses_antrian.nomor_pasien,
+			proses_antrian.id_pasien,
 			pasien.nama, 
+			proses_antrian.id_pasien, 
+			pasien.id,
+			proses_antrian.id_rekam_medis,
+			pasien.nomor_pasien,
 			pasien.pembayaran 
 			FROM proses_antrian 
-			INNER JOIN pasien on proses_antrian.nomor_pasien=pasien.nomor_pasien
+			INNER JOIN pasien on proses_antrian.id_pasien = pasien.id
 			')->result();
+		// var_dump($data);
 		echo json_encode($data);
 	}
 
@@ -116,19 +124,17 @@ class Dokter extends CI_Controller {
 	/*
 	* form pemeriksaan setiap pasien
 	*/
-	function pemeriksaan($nomor_pasien)
+	function pemeriksaan($id_pasien,$id_rekam_medis)
 	{
 		$data 	= array(
 			"active"					=>	"pemeriksaan-langsung",
-			"pasien"					=>	$this->model->read('pasien',array('nomor_pasien'=>$nomor_pasien))->result(),
+			"pasien"					=>	$this->model->read('pasien',array('id'=>$id_pasien))->result(),
 		);
 		
 		if ($data['pasien'] != array()) {
 			$data['rekam_medis'] = $this->model->read('rekam_medis',
-				array('id_pasien'		=>	$data['pasien'][0]->id,
-					'MONTH(tanggal_jam)'=>	date('m'),
-					'YEAR(tanggal_jam)'	=>	date('Y'),
-					'DAY(tanggal_jam)'	=>	date('d')
+				array(
+					'id'=> $id_rekam_medis
 				))->result();
 			$this->load->view('dokter/header');
 			$this->load->view('dokter/navbar',$data);
@@ -137,7 +143,7 @@ class Dokter extends CI_Controller {
 		}else{
 			$this->load->view('dokter/header');
 			$this->load->view('dokter/navbar',$data);
-			$data['heading']	= "Halaman tidak ditemukan";
+			$data['heading']	= "Antrian pasien yang dimaksud tidak ditemukan";
 			$data['message']	= "<p> Klik <a href='".base_url()."'>disini </a>untuk kembali melihat daftar pasien yang sedang antri</p>";
 			$this->load->view('errors/html/error_404',$data);
 		}
@@ -203,6 +209,7 @@ class Dokter extends CI_Controller {
 
 		// kurangi stoknya
 		$kurangi = $this->model->rawQuery("UPDATE logistik_".$this->input->post("jenis_logistik")." SET stok = stok - ".$this->input->post("jumlah")." WHERE id = ".$this->input->post("id_logistik"));
+		
 		if ($kurangi) {
 			// masukkan ke troli
 			$create = $this->model->create(
@@ -216,7 +223,9 @@ class Dokter extends CI_Controller {
 				)
 			);
 
+			// baca id yang bersangkutan dan masukkan ke log logistik untuk keperluan tracking stok obat (ada laporannya). baca dulu data current stok lalu masukkan logistik_log
 			$readLogistik = $this->model->read("logistik_".$this->input->post("jenis_logistik"),array("id"=>$this->input->post("id_logistik")))->result();
+			$this->model->create("logistik_log",array("jenis_logistik" => $this->input->post("jenis_logistik"), "id_obat" => $readLogistik[0]->id, "stok_tersisa" => $readLogistik[0]->stok, "datetime"=>date("Y-m-d H:i:s")));
 
 			$create = json_decode($create);
 			if ($create->status) {
@@ -231,7 +240,10 @@ class Dokter extends CI_Controller {
 					FROM
 					logistik_troli
 					INNER JOIN logistik_".$this->input->post("jenis_logistik")." ON logistik_troli.id_logistik = logistik_".$this->input->post("jenis_logistik").".id
-					WHERE logistik_troli.id_dokter = ".$this->session->userdata('logged_in')['id_user']." AND logistik_troli.id_pasien =".$this->input->post("id_pasien"))->result();
+					WHERE 
+					logistik_troli.id_dokter = ".$this->session->userdata('logged_in')['id_user']." 
+					AND 
+					logistik_troli.id_pasien = ".$this->input->post("id_pasien")." AND logistik_troli.jenis_logistik = '".$this->input->post("jenis_logistik")."'")->result();
 
 				foreach ($read as $key => $value) {
 					$read[$key]->subtotal = ($read[$key]->jumlah * $read[$key]->harga_jual_satuan);
@@ -275,7 +287,7 @@ class Dokter extends CI_Controller {
 
 			/*insert ke tabel assesmet*/
 			$available_id_assessment = NULL;
-			if ($this->input->post('assessmentPrimer') !== NULL OR $this->input->post('assessmentSekunder') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
+			if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
 				
 				// 1. baca available available_id_assessment di tabel available_id_assessment
 				$available_id_assessment = $this->model->readS('available_id_assessment')->result();
@@ -286,15 +298,15 @@ class Dokter extends CI_Controller {
 
 				// 3. masukkan assessment inputan ke tabel assessment disertai available id yang sudah diambil
 				$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
-				if ($this->input->post('assessmentPrimer') != array()) {
-					foreach ($this->input->post('assessmentPrimer') as $key => $value) {
+				if ($this->input->post('assessmentPrimary') != array()) {
+					foreach ($this->input->post('assessmentPrimary') as $key => $value) {
 						$stringDiagnosa		 	.= "(NULL,'$available_id_assessment','primer','$value'),";
 					}
 				}
 
 				// manipulasi string untuk masuk ke assessment. tipenya sekunder
-				if ($this->input->post('assessmentSekunder') != array()) {
-					foreach ($this->input->post('assessmentSekunder') as $key => $value) {
+				if ($this->input->post('assessmentSecondary') != array()) {
+					foreach ($this->input->post('assessmentSecondary') as $key => $value) {
 						$stringDiagnosa 		.= "(NULL,'$available_id_assessment','sekunder','$value'),";
 					}
 				}
@@ -450,25 +462,6 @@ class Dokter extends CI_Controller {
 			}
 			/* manipulasi string untuk kolom planning */
 			
-			/*ekstrak value dari select2, pisahkan id beserta nama obatnya agar tidak baca lagi di database. nama obat disertakan untuk keperluan penambahan kolom planning*/
-			$id_obat = array();
-			$nama_obat = array();
-			if ($this->input->post('obat') !==NULL) {
-				foreach ($this->input->post('obat') as $key => $value) {
-					$temp = explode("|", $value);
-					array_push($id_obat, $temp[0]);
-					array_push($nama_obat, $temp[1]);
-				}
-			}
-			/*end ekstrak value dari select2, pisahkan id beserta nama obatnya agar tidak baca lagi di database. nama obat disertakan untuk keperluan penambahan kolom planning*/
-			
-
-			/*untuk setiap obat, lakukan penggabungan string ke $planning, nggk usah update stok logistik karena sudah otomatis dikurangi saat masukkan logsitik e troli*/
-			foreach ($id_obat as $key => $value) {
-				$planning .= $nama_obat[$key]." ".$this->input->post('jumlah_obat')[$key]." ".$this->input->post('satuan')[$key].". ";
-				// $this->model->rawQuery("UPDATE logistik SET stok = stok - ".$this->input->post('jumlah_obat')[$key]." WHERE id = $value");
-			}
-			/*end untuk setiap obat, lakukan pengurangan stok pada tabel logistik*/
 			$record = array(
 				'id_pasien'					=>	$this->input->post('id_pasien'),
 				'tanggal_jam'				=>	date('Y-m-d H:i:s'),
@@ -524,28 +517,27 @@ class Dokter extends CI_Controller {
 				'terapi_2'					=>	$this->input->post('terapi_2'),
 				'terapi_3'					=>	$this->input->post('terapi_3'),
 				'dokter_pemeriksa'			=>	$this->session->userdata('logged_in')['id_user'],
-				'planning'					=>	$planning
+				'planning'					=>	$planning.". Total biaya: ".$this->input->post('total_harga_logistik')
 			);
 
-			// echo "<pre>";
-			// var_dump($record);
-			// die();
 
+			// update ke tabel rekam medis
+			$updateIntoRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
+			$updateIntoRekamMedis = json_decode($updateIntoRekamMedis);
 
-
-			// insert ke tabel assessment
-			$insertIntoRekamMedis = $this->model->create('rekam_medis',$record);
-			$insertIntoRekamMedis = json_decode($insertIntoRekamMedis);
-
-			if ($insertIntoRekamMedis->status) {
-				$this->model->delete('proses_antrian',array('nomor_pasien'=>$this->input->post('nomor_pasien')));
+			if ($updateIntoRekamMedis->status) {
+				$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
+				$this->model->delete(
+					'logistik_troli',
+					array(
+						'id_dokter' => $this->session->userdata('logged_in')['id_user'],
+						'id_pasien' => $this->input->post('id_pasien')
+					)
+				);
 				alert('alert','success','Berhasil','Data berhasil dimasukkan');
 				redirect("antrian-dokter");
 			}else{
-				alert('alert','danger','Gagal','Kegagalan database'.$insertIntoRekamMedis->error_message->message);
-				// echo "<pre>";
-				// var_dump($this->input->post('nomor_pasien'));
-				// die();
+				alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
 				redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
 			}
 
@@ -554,6 +546,39 @@ class Dokter extends CI_Controller {
 			$data['message']	= "<p> Tidak ada data yang di post</p>";
 			$this->load->view('errors/html/error_404',$data);
 		}
+	}
+
+	/*
+	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian
+	*/
+	function submitAntrian($aksi,$id_pasien,$id_rekam_medis)
+	{
+		$this->model->delete(
+			'antrian',
+			array(
+				'id_pasien'	=>	$id_pasien
+			));
+		if ($aksi == 'proses') {
+			$this->model->create(
+				'proses_antrian',
+				array(
+					'id_pasien'	=>	$id_pasien,
+					'id_rekam_medis'	=>	$id_rekam_medis
+				)
+			);
+			redirect("pemeriksaan/$id_pasien/$id_rekam_medis");
+		}elseif ($aksi == 'hapus') {
+			$this->model->rawQuery("DELETE FROM rekam_medis WHERE id ='".$id_rekam_medis."'");
+
+			// record akan selalu ada hingga dokter melakukan submit pemeriksaan. jadi aman jika menggunakan acuan id
+			$this->model->delete(
+				'proses_antrian',
+				array(
+					'id_pasien'	=>	$id_pasien
+				));
+		}
+		
+		redirect("antrian-dokter");
 	}
 
 }                                                                  

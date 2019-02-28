@@ -15,10 +15,10 @@
             var LiveAntrian = JSON.parse(data);
             var TableContentAntrian = '';
             var TableContentProsesAntrian = '';
-            if (LiveAntrian.antrian != '') {
+            if (LiveAntrian.antrian.length != 0) {
                 var nomorAntrian = 1;
                 for (var i in LiveAntrian.antrian ) {
-                    TableContentAntrian += "<tr><td>"+nomorAntrian+"</td><td>"+LiveAntrian.antrian[i].nama+"</td><td>"+LiveAntrian.antrian[i].jam_datang+"</td><td>"+LiveAntrian.antrian[i].pembayaran+"</td><td><div class='btn-group' role='group' aria-label='Basic example'><a href='<?=base_url()?>Dokter/submitAntrian/proses/"+LiveAntrian.antrian[i].nomor_pasien+"' class='btn btn-success btn-sm tombol-proses'>Proses</a><a href='<?=base_url()?>Dokter/submitAntrian/hapus/"+LiveAntrian.antrian[i].nomor_pasien+"' class='btn btn-danger btn-sm tombol-proses'>Hapus</a></div></td></tr>";
+                    TableContentAntrian += "<tr><td>"+nomorAntrian+"</td><td>"+LiveAntrian.antrian[i].nama+"</td><td>"+LiveAntrian.antrian[i].jam_datang+"</td><td>"+LiveAntrian.antrian[i].pembayaran+"</td><td><div class='btn-group' role='group' aria-label='Basic example'><a href='<?=base_url()?>submit-antrian-dokter-proses/"+LiveAntrian.antrian[i].id+"/"+LiveAntrian.antrian[i].id_rekam_medis+"' class='btn btn-success btn-sm tombol-proses'>Proses</a><a href='<?=base_url()?>submit-antrian-dokter-hapus/"+LiveAntrian.antrian[i].id+"/"+LiveAntrian.antrian[i].id_rekam_medis+"' class='btn btn-danger btn-sm tombol-proses'>Hapus</a></div></td></tr>";
                     nomorAntrian++;
                 }
                 // console.log(TableContentAntrian);
@@ -26,10 +26,10 @@
             }
             $("#pasienAntri").html(TableContentAntrian);
 
-            if (LiveAntrian.proses_antrian != '') {
+            if (LiveAntrian.proses_antrian.length != 0) {
                 var nomorProsesAntrian = 1;
                 for (var i in LiveAntrian.proses_antrian ) {
-                    TableContentProsesAntrian += "<tr><td>"+nomorProsesAntrian+"</td><td>"+LiveAntrian.proses_antrian[i].nama+"</td><td>"+LiveAntrian.proses_antrian[i].pembayaran+"</td><td><div class='btn-group' role='group' aria-label='Basic example'><a href='<?= base_url()?>pemeriksaan/"+LiveAntrian.proses_antrian[i].nomor_pasien+"' class='btn btn-success btn-sm btn-block tombol-proses'>Proses</a><a href='<?=base_url()?>Dokter/submitAntrian/hapus/"+LiveAntrian.proses_antrian[i].nomor_pasien+"' class='btn btn-danger btn-sm tombol-proses'>Hapus</a></td></tr>"
+                    TableContentProsesAntrian += "<tr><td>"+nomorProsesAntrian+"</td><td>"+LiveAntrian.proses_antrian[i].nama+"</td><td>"+LiveAntrian.proses_antrian[i].pembayaran+"</td><td><div class='btn-group' role='group' aria-label='Basic example'><a href='<?= base_url()?>pemeriksaan/"+LiveAntrian.proses_antrian[i].id+"/"+LiveAntrian.proses_antrian[i].id_rekam_medis+"' class='btn btn-success btn-sm btn-block tombol-proses'>Proses</a><a href='<?=base_url()?>submit-antrian-dokter-hapus/"+LiveAntrian.proses_antrian[i].id+"/"+LiveAntrian.proses_antrian[i].id_rekam_medis+"' class='btn btn-danger btn-sm tombol-proses'>Hapus</a></td></tr>"
                     nomorProsesAntrian++;
                 }
                 // console.log(TableContentProsesAntrian);

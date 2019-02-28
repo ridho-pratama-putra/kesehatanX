@@ -89,9 +89,6 @@ $route['logistik-obat-sigma-usus-externum-edit/(:num)']	= 'Logistik/editLogistik
 $route['logistik-obat-sigma-usus-externum-submit-edit']	= 'Logistik/submitEditLogistik/obat_sigma_usus_externum';
 $route['logistik-obat-sigma-usus-externum-hapus/(:num)']= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
 
-
-
-
 $route['dashboard-admin'] 								= 'Admin/dashboard';
 $route['verifikasi-user'] 								= 'Admin/verifikasi';
 $route['submit-verifikasi-user'] 						= 'Admin/SubmitVerifikasiUser';
@@ -104,14 +101,13 @@ $route['submit-pemeriksaan-awal'] 						= 'Petugas/submitPemeriksaanAwal';
 $route['antrian-petugas'] 								= 'Petugas/antrian';
 $route['cari-pasien-petugas'] 							= 'Petugas/cariPasien';
 $route['redirector-petugas'] 							= 'Petugas/redirector';
-$route['submit-antrian-proses/(:any)']					= 'Petugas/submitAntrian/proses/$1';
-$route['submit-antrian-hapus/(:any)']					= 'Petugas/submitAntrian/hapus/$1';
-
-
-
+$route['submit-antrian-petugas-proses/(:num)/(:num)']	= 'Petugas/submitAntrian/proses/$1/$2';
+$route['submit-antrian-petugas-hapus/(:num)/(:num)']	= 'Petugas/submitAntrian/hapus/$1/$2';
 
 $route['antrian-dokter']								= 'Dokter/antrian';
 $route['pemeriksaan-langsung']							= 'Dokter/pemeriksaanLangsung';
 $route['cari-pasien-dokter']							= 'Dokter/cariPasien';
 $route['redirector-dokter'] 							= 'Dokter/redirector';
-$route['pemeriksaan/(:any)'] 							= 'Dokter/pemeriksaan/$1';
+$route['pemeriksaan/(:any)/(:num)']						= 'Dokter/pemeriksaan/$1/$2';
+$route['submit-antrian-dokter-proses/(:num)/(:num)']	= 'Dokter/submitAntrian/proses/$1/$2';
+$route['submit-antrian-dokter-hapus/(:num)/(:num)']		= 'Dokter/submitAntrian/hapus/$1/$2';
