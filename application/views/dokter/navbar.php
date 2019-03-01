@@ -25,9 +25,9 @@
       <li class="nav-item" id="pemeriksaan-langsung">
         <a class="nav-link" href="<?php echo base_url()?>pemeriksaan-langsung">Pemeriksaan Langsung</a>
       </li>
-      <li class="nav-item" id="rekam-medis">
-        <a class="nav-link" href="<?php echo base_url()?>rekam-medis">Rekam Medis</a>
-      </li>
+      <!-- <li class="nav-item" id="rekam-medis">
+        <a class="nav-link" href="<?php echo base_url()?>rekam-medis">Cari Rekam Medis</a>
+      </li> -->
       <li class="nav-item" id="list-pasien">
         <a class="nav-link" href="<?php echo base_url()?>list-pasien">List Pasien</a>
       </li>

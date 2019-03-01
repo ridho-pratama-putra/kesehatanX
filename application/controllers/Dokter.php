@@ -129,6 +129,7 @@ class Dokter extends CI_Controller {
 		$data 	= array(
 			"active"					=>	"pemeriksaan-langsung",
 			"pasien"					=>	$this->model->read('pasien',array('id'=>$id_pasien))->result(),
+			"rekam_medis"			=>  $this->model->read('rekam_medis',array('id_pasien'=>$id_pasien))->result()
 		);
 		
 		if ($data['pasien'] != array()) {
@@ -136,9 +137,9 @@ class Dokter extends CI_Controller {
 			// if -> jika pemeriksaan langsung
 			// else -> jika dari antrian pasien
 			if ($id_rekam_medis == null) {
-				$data['rekam_medis'] = array();
+				$data['current_pemeriksaan'] = array();
 			}else{
-				$data['rekam_medis'] = $this->model->read('rekam_medis',
+				$data['current_pemeriksaan'] = $this->model->read('rekam_medis',
 					array(
 						'id'=> $id_rekam_medis
 					))->result();
@@ -611,6 +612,43 @@ class Dokter extends CI_Controller {
 		$this->load->view('dokter/navbar',$data);
 		$this->load->view('dokter/list_pasien',$data);
 		$this->load->view('dokter/footer');
+	}
+
+	/*
+	* function untuk edit data pasien
+	*/
+	function editIdentitasPasien($id){
+		$data 	= array(
+			"active"					=>	"list-pasien",
+			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result()
+		);
+		$this->load->view('dokter/header');
+		$this->load->view('dokter/navbar',$data);
+		$this->load->view('dokter/edit_pasien',$data);
+		$this->load->view('dokter/footer');
+	}
+
+	/*
+	* function untuk lihat detail identitas dan rekam medis pasien
+	*/
+	function detailRekamMedisPasien($id)
+	{
+		$data 	= array(
+			"active"					=>	"list-pasien",
+			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result()
+		);
+		$this->load->view('dokter/header');
+		$this->load->view('dokter/navbar',$data);
+		$this->load->view('dokter/detail_pasien',$data);
+		$this->load->view('dokter/footer');
+	}
+
+	/*
+	* function untuk hapus data pasien yang terdaftar. hapus data dan rekam medisnya
+	*/
+	function deletePasien($id)
+	{
+		# code...
 	}
 
 }                                                                  

@@ -112,5 +112,9 @@ $route['pemeriksaan/(:num)/(:num)']						= 'Dokter/pemeriksaan/$1/$2';
 $route['pemeriksaan/(:num)']							= 'Dokter/pemeriksaan/$1';
 $route['submit-antrian-dokter-proses/(:num)/(:num)']	= 'Dokter/submitAntrian/proses/$1/$2';
 $route['submit-antrian-dokter-hapus/(:num)/(:num)']		= 'Dokter/submitAntrian/hapus/$1/$2';
+
 $route['rekam-medis/(:num)']							= 'Dokter/rekamMedis/$1';
 $route['list-pasien']									= 'Dokter/listPasien';
+$route['edit-identitas-pasien/(:num)']					= 'Dokter/editIdentitasPasien/$1';
+$route['detail-rm-pasien/(:num)']						= 'Dokter/detailRekamMedisPasien/$1';
+$route['hapus-pasien/(:num)']							= 'Dokter/deletePasien/$1';

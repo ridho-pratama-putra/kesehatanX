@@ -35,7 +35,7 @@
                                 echo " ";
                             }
                         }
-                        
+
                         if ($value->kecamatan !== 'other') {
                             echo "Kecamatan ".$value->kecamatan." ";
                         }else{
@@ -57,9 +57,9 @@
                     <td><?=date('d M y',strtotime($value->tanggal_datang))?></td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-success">Detail</button>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-secondary">Hapus</button>
+                            <a href="<?=base_url()?>detail-rm-pasien/<?=$value->id?>" class="btn btn-success">RM</a>
+                            <a href="<?=base_url()?>edit-pasien/<?=$value->id?>" class="btn btn-primary">Edit</a>
+                            <a href="<?=base_url()?>hapus-pasien/<?=$value->id?>" class="btn btn-secondary">Hapus</a>
                         </div>
                     </td>
                 </tr>

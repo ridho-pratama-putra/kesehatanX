@@ -1058,7 +1058,7 @@
 					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
 						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor-pasien">
 						<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>" id="id-pasien">
-						<input type="hidden" name="id_rekam_medis" value="<?=(isset($rekam_medis[0]->id) ? $rekam_medis[0]->id : '')?>" id="id-rekam-medis">
+						<input type="hidden" name="id_rekam_medis" value="<?=(isset($current_pemeriksaan[0]->id) ? $current_pemeriksaan[0]->id : '')?>" id="id-rekam-medis">
 						<div class="container">
 							<h5 class="text-center mt-3">Subjektif</h5>
 							<textarea class="form-control" aria-label="With textarea" placeholder="Subjektif" name="subjektif" id="subjektif_pemeriksaan"></textarea>
@@ -1073,7 +1073,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="tinggi_badan_pemeriksaan" name="tinggi_badan" value="<?=(isset($rekam_medis[0]->tinggi_badan) ? $rekam_medis[0]->tinggi_badan : '')?>">
+												<input type="number" class="form-control" id="tinggi_badan_pemeriksaan" name="tinggi_badan" value="<?=(isset($current_pemeriksaan[0]->tinggi_badan) ? $current_pemeriksaan[0]->tinggi_badan : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">cm</div>
 												</div>
@@ -1087,7 +1087,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="berat_badan_pemeriksaan" name="berat_badan" value="<?=(isset($rekam_medis[0]->berat_badan) ? $rekam_medis[0]->berat_badan : '')?>">
+												<input type="number" class="form-control" id="berat_badan_pemeriksaan" name="berat_badan" value="<?=(isset($current_pemeriksaan[0]->berat_badan) ? $current_pemeriksaan[0]->berat_badan : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">kg</div>
 												</div>
@@ -1104,9 +1104,9 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control mr-1" id="sistol_pemeriksaan" name="sistol" value="<?=(isset($rekam_medis[0]->sistol) ? $rekam_medis[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>>
+												<input type="number" class="form-control mr-1" id="sistol_pemeriksaan" name="sistol" value="<?=(isset($current_pemeriksaan[0]->sistol) ? $current_pemeriksaan[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>>
 												/
-												<input type="number" class="form-control ml-1" id="diastol_pemeriksaan" name="diastol" value="<?=(isset($rekam_medis[0]->diastol) ? $rekam_medis[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>><div class="input-group-append">
+												<input type="number" class="form-control ml-1" id="diastol_pemeriksaan" name="diastol" value="<?=(isset($current_pemeriksaan[0]->diastol) ? $current_pemeriksaan[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>><div class="input-group-append">
 													<div class="input-group-text">mmHg</div>
 												</div>
 											</div>
@@ -1119,7 +1119,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="nadi_pemeriksaan" name="nadi" value="<?=(isset($rekam_medis[0]->nadi) ? $rekam_medis[0]->nadi : '')?>">
+												<input type="number" class="form-control" id="nadi_pemeriksaan" name="nadi" value="<?=(isset($current_pemeriksaan[0]->nadi) ? $current_pemeriksaan[0]->nadi : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">rpm</div>
 												</div>
@@ -1136,7 +1136,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="respiratory_rate_pemeriksaan" name="respiratory_rate" value="<?=(isset($rekam_medis[0]->respiratory_rate) ? $rekam_medis[0]->respiratory_rate : '')?>">
+												<input type="number" class="form-control" id="respiratory_rate_pemeriksaan" name="respiratory_rate" value="<?=(isset($current_pemeriksaan[0]->respiratory_rate) ? $current_pemeriksaan[0]->respiratory_rate : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">rpm</div>
 												</div>
@@ -1150,7 +1150,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="temperature_ax_pemeriksaan" name="temperature_ax" value="<?=(isset($rekam_medis[0]->temperature_ax) ? $rekam_medis[0]->temperature_ax : '')?>">
+												<input type="number" class="form-control" id="temperature_ax_pemeriksaan" name="temperature_ax" value="<?=(isset($current_pemeriksaan[0]->temperature_ax) ? $current_pemeriksaan[0]->temperature_ax : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">&deg;C</div>
 												</div>
