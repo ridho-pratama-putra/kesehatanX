@@ -100,7 +100,7 @@ class Dokter extends CI_Controller {
 			$dataReturn = $this->model->orLike('pasien',array('nama'=>$dataForm['term']['term'],'nomor_pasien'=>$dataForm['term']['term']))->result();
 			$data = array();
 			foreach ($dataReturn as $key => $value) {
-				$data[$key]['id'] = $value->nomor_pasien;
+				$data[$key]['id'] = $value->id;
 				$data[$key]['text'] = $value->nama." / ".$value->nomor_pasien;
 			}
 			echo json_encode($data);
@@ -124,7 +124,7 @@ class Dokter extends CI_Controller {
 	/*
 	* form pemeriksaan setiap pasien
 	*/
-	function pemeriksaan($id_pasien,$id_rekam_medis)
+	function pemeriksaan($id_pasien,$id_rekam_medis = null)
 	{
 		$data 	= array(
 			"active"					=>	"pemeriksaan-langsung",
@@ -132,10 +132,17 @@ class Dokter extends CI_Controller {
 		);
 		
 		if ($data['pasien'] != array()) {
-			$data['rekam_medis'] = $this->model->read('rekam_medis',
-				array(
-					'id'=> $id_rekam_medis
-				))->result();
+
+			// if -> jika pemeriksaan langsung
+			// else -> jika dari antrian pasien
+			if ($id_rekam_medis == null) {
+				$data['rekam_medis'] = array();
+			}else{
+				$data['rekam_medis'] = $this->model->read('rekam_medis',
+					array(
+						'id'=> $id_rekam_medis
+					))->result();
+			}
 			$this->load->view('dokter/header');
 			$this->load->view('dokter/navbar',$data);
 			$this->load->view('dokter/pemeriksaan',$data);
@@ -521,11 +528,19 @@ class Dokter extends CI_Controller {
 			);
 
 
-			// update ke tabel rekam medis
-			$updateIntoRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
-			$updateIntoRekamMedis = json_decode($updateIntoRekamMedis);
+			// if -> pemeriksaan dari antrian
+			// else -> pemeriksaan dari pemeriksaan langsung
+			echo "<pre>";
+			var_dump($this->input->post('id_rekam_medis'));
+			if ($this->input->post('id_rekam_medis') !== null) {
+				$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
+				$queryToRekamMedis = json_decode($queryToRekamMedis);
+			}else{
+				$queryToRekamMedis = $this->model->create('rekam_medis',$record);
+				$queryToRekamMedis = json_decode($queryToRekamMedis);
+			}
 
-			if ($updateIntoRekamMedis->status) {
+			if ($queryToRekamMedis->status) {
 				$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
 				$this->model->delete(
 					'logistik_troli',

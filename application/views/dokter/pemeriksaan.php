@@ -1014,33 +1014,37 @@
 									<tbody>
 										<?php
 										$i = 1;
-										foreach($rekam_medis as $key => $value) { ?>
-											<tr>
-												<td>
-													<?=$i?>
-												</td>
-												<td>
-													<?=tgl_indo(substr($value->tanggal_jam,0,10))." ".substr($value->tanggal_jam,11,8)?>
-												</td>
-												<td>
-													<?=$value->subjektif?>
-												</td>
-												<td>
-													<ul>
-														<li class="no-bullets">TB/BB : <?=$value->tinggi_badan?> cm/ <?=$value->berat_badan?> Kg</li>
-														<li class="no-bullets">TD : <?=$value->sistol?>/<?=$value->diastol?> mmHg</li>
-														<li class="no-bullets">RR : <?=$value->respiratory_rate?></li>
-														<li class="no-bullets">N  : <?=$value->nadi?> rpm</li>
-														<li class="no-bullets">TAx: <?=$value->temperature_ax?> &deg;C</li>
-														<li class="no-bullets">Head to Toe : <?=$value->headtotoe?></li>
-													</ul>
-												</td>
-												<td></td>
-												<td><?=$value->planning?></td>
-												<td><button type="button" class="btn btn-primary" >CETAK</button> </td>
-											</tr>
-											<?php $i++; 
+										if ($rekam_medis !== array()) {
+											
+											foreach($rekam_medis as $key => $value) { ?>
+												<tr>
+													<td>
+														<?=$i?>
+													</td>
+													<td>
+														<?=tgl_indo(substr($value->tanggal_jam,0,10))." ".substr($value->tanggal_jam,11,8)?>
+													</td>
+													<td>
+														<?=$value->subjektif?>
+													</td>
+													<td>
+														<ul>
+															<li class="no-bullets">TB/BB : <?=$value->tinggi_badan?> cm/ <?=$value->berat_badan?> Kg</li>
+															<li class="no-bullets">TD : <?=$value->sistol?>/<?=$value->diastol?> mmHg</li>
+															<li class="no-bullets">RR : <?=$value->respiratory_rate?></li>
+															<li class="no-bullets">N  : <?=$value->nadi?> rpm</li>
+															<li class="no-bullets">TAx: <?=$value->temperature_ax?> &deg;C</li>
+															<li class="no-bullets">Head to Toe : <?=$value->headtotoe?></li>
+														</ul>
+													</td>
+													<td></td>
+													<td><?=$value->planning?></td>
+													<td><button type="button" class="btn btn-primary" >CETAK</button> </td>
+												</tr>
+												<?php $i++; 
+											}
 										}
+
 										?>
 									</tbody>
 								</table>
@@ -1054,7 +1058,7 @@
 					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
 						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor-pasien">
 						<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>" id="id-pasien">
-						<input type="hidden" name="id_rekam_medis" value="<?=$rekam_medis[0]->id?>" id="id-rekam-medis">
+						<input type="hidden" name="id_rekam_medis" value="<?=(isset($rekam_medis[0]->id) ? $rekam_medis[0]->id : '')?>" id="id-rekam-medis">
 						<div class="container">
 							<h5 class="text-center mt-3">Subjektif</h5>
 							<textarea class="form-control" aria-label="With textarea" placeholder="Subjektif" name="subjektif" id="subjektif_pemeriksaan"></textarea>
