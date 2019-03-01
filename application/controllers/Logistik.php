@@ -29,7 +29,8 @@ class Logistik extends CI_Controller {
 	function readGolongan()
 	{
 		$data 	= array(
-			"active"					=>	"golongan-logistik",
+			// "active"					=>	"golongan-logistik",
+			"active"					=>	"logistik",
 			"record"					=>	$this->model->readS("golongan_logistik")->result()
 		);
 		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
@@ -87,10 +88,14 @@ class Logistik extends CI_Controller {
 	*/
 	function readLogistik($jenis_logistik){
 		$active = array(
-			"alat_bahan_sekali_pakai" 	=>	"logistik-alat-bahan-sekali-pakai",
-			"obat_injeksi"				=>	"logistik-obat-injeksi",
-			"obat_oral"					=>	"logistik-obat-oral",
-			"obat_sigma_usus_externum"	=>	"logistik-obat-sigma-usus-externum"
+			// "alat_bahan_sekali_pakai" 	=>	"logistik-alat-bahan-sekali-pakai",
+			// "obat_injeksi"				=>	"logistik-obat-injeksi",
+			// "obat_oral"					=>	"logistik-obat-oral",
+			// "obat_sigma_usus_externum"	=>	"logistik-obat-sigma-usus-externum"
+			"alat_bahan_sekali_pakai" 	=>	"logistik",
+			"obat_injeksi"				=>	"logistik",
+			"obat_oral"					=>	"logistik",
+			"obat_sigma_usus_externum"	=>	"logistik"
 		);
 
 		$data 	= array(

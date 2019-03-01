@@ -38,12 +38,12 @@
 					<td><?=$value->presentase?></td>
 					<td><?=$value->sediaan?></td>
 					<td><?=$value->bentuk?></td>
-					<td><?=$value->harga_beli_per_satuan?></td>
-					<td><?=$value->harga_jual_per_satuan?></td>
+					<td><?=$value->harga_beli_satuan?></td>
+					<td><?=$value->harga_jual_satuan?></td>
 					<td><?=$value->stok?></td>
 					<td><?=
-					($value->harga_jual_per_satuan !== '0' && $value->harga_beli_per_satuan !== '0') ?
-					number_format((float)(($value->harga_jual_per_satuan - $value->harga_beli_per_satuan)/($value->harga_beli_per_satuan))*100, 2, '.', '')
+					($value->harga_jual_satuan !== '0' && $value->harga_beli_satuan !== '0') ?
+					number_format((float)(($value->harga_jual_satuan - $value->harga_beli_satuan)/($value->harga_beli_satuan))*100, 2, '.', '')
 					: '0'
 					?> %</td>
 					<td>

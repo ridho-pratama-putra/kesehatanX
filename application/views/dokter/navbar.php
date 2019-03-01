@@ -6,26 +6,30 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" id="logistik-alat-bahan-sekali-pakai">
-        <a class="nav-link" href="<?php echo base_url()?>logistik-alat-bahan-sekali-pakai">Logistik alat bahan sekali pakai</a>
+      <li class="nav-item nav-link dropdown">
+        <div class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Logistik
+        </div>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="<?php echo base_url()?>logistik-alat-bahan-sekali-pakai">Logistik alat bahan sekali pakai</a>
+          <a class="dropdown-item" href="<?php echo base_url()?>logistik-obat-injeksi">Logistik obat injeksi</a>
+          <a class="dropdown-item" href="<?php echo base_url()?>logistik-obat-oral">Logistik obat oral</a>
+          <a class="dropdown-item" href="<?php echo base_url()?>logistik-obat-sigma-usus-externum">Logistik obat SUE</a>
+          <a class="dropdown-item" href="<?php echo base_url()?>golongan-logistik">Golongan logistik</a>
+        </div>
       </li>
-      <li class="nav-item" id="logistik-obat-injeksi">
-        <a class="nav-link" href="<?php echo base_url()?>logistik-obat-injeksi">Logistik obat injeksi</a>
-      </li>
-      <li class="nav-item" id="logistik-obat-oral">
-        <a class="nav-link" href="<?php echo base_url()?>logistik-obat-oral">Logistik obat oral</a>
-      </li>
-      <li class="nav-item" id="logistik-obat-sigma-usus-externum">
-        <a class="nav-link" href="<?php echo base_url()?>logistik-obat-sigma-usus-externum">Logistik obat SUE</a>
-      </li>
-      <li class="nav-item" id="golongan-logistik">
-        <a class="nav-link" href="<?php echo base_url()?>golongan-logistik">Golongan logistik</a>
-      </li>
+
       <li class="nav-item" id="antrian">
         <a class="nav-link" href="<?php echo base_url()?>antrian-dokter">Antrian</a>
       </li>
       <li class="nav-item" id="pemeriksaan-langsung">
         <a class="nav-link" href="<?php echo base_url()?>pemeriksaan-langsung">Pemeriksaan Langsung</a>
+      </li>
+      <li class="nav-item" id="rekam-medis">
+        <a class="nav-link" href="<?php echo base_url()?>rekam-medis">Rekam Medis</a>
+      </li>
+      <li class="nav-item" id="list-pasien">
+        <a class="nav-link" href="<?php echo base_url()?>list-pasien">List Pasien</a>
       </li>
     </ul>
 

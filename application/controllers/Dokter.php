@@ -530,9 +530,7 @@ class Dokter extends CI_Controller {
 
 			// if -> pemeriksaan dari antrian
 			// else -> pemeriksaan dari pemeriksaan langsung
-			echo "<pre>";
-			var_dump($this->input->post('id_rekam_medis'));
-			if ($this->input->post('id_rekam_medis') !== null) {
+			if ($this->input->post('id_rekam_medis') !== '') {
 				$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
 				$queryToRekamMedis = json_decode($queryToRekamMedis);
 			}else{
@@ -549,7 +547,11 @@ class Dokter extends CI_Controller {
 						'id_pasien' => $this->input->post('id_pasien')
 					)
 				);
-				alert('alert','success','Berhasil','Data berhasil dimasukkan');
+				if ($this->input->post('id_rekam_medis') !== '') {
+					alert('alert','success','Berhasil','Data berhasil diupdate');
+				}else{
+					alert('alert','success','Berhasil','Data berhasil dimasukkan');
+				}
 				redirect("antrian-dokter");
 			}else{
 				alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
@@ -594,6 +596,21 @@ class Dokter extends CI_Controller {
 		}
 		
 		redirect("antrian-dokter");
+	}
+
+	/*
+	* function untuk menampilkan halam pasien yang telah terdafta dalam bentuk tabel
+	*/
+	function listPasien()
+	{
+		$data 	= array(
+			"active"					=>	"list-pasien",
+			"pasien"					=>	$this->model->readS("pasien")->result()
+		);
+		$this->load->view('dokter/header');
+		$this->load->view('dokter/navbar',$data);
+		$this->load->view('dokter/list_pasien',$data);
+		$this->load->view('dokter/footer');
 	}
 
 }                                                                  

@@ -85,13 +85,13 @@ class Petugas extends CI_Controller
 		// ambil kode kelurahan
 		$kelurahan = $this->input->post('kelurahan');
 		$kd_kelurahan = substr($kelurahan, 0,3);
-		$kelurahan_lain = '';
+		$kelurahan_lain = NULL;
 		if ($kelurahan == "013 Lain-lain") {
 			$kelurahan_lain = $this->input->post('kelurahan_lain');
 		}
 
 		// manipulasi kecamatan
-		$kecamatan_lain = '';
+		$kecamatan_lain = NULL;
 		$kecamatan = $this->input->post('kecamatan');
 		if ($kecamatan == 'other') {
 			$kecamatan_lain = $this->input->post('kecamatan_lain');
@@ -140,16 +140,19 @@ class Petugas extends CI_Controller
 			$pembayaran .= ' : '.$this->input->post('nomor_bpjs');
 		}
 
+		$nama_ayah = NULL;
 		if ($this->input->post('nama_ayah') !== '' OR $this->input->post('nama_ayah') !== NULL) {
 			$nama_ayah = $this->input->post('nama_ayah');
-		}else{
-			$nama_ayah = NULL;
 		}
 
+		$nama_ibu = NULL;
 		if ($this->input->post('nama_ibu') !== '' OR $this->input->post('nama_ibu') !== NULL) {
 			$nama_ibu = $this->input->post('nama_ibu');
-		}else{
-			$nama_ibu = NULL;
+		}
+
+		$nomor_bpjs = NULL;
+		if ($this->input->post('nomor_bpjs') !== "") {
+			$nomor_bpjs = $this->input->post('nomor_bpjs');
 		}
 
 		$dataForm = array(	'nama'			=>ucwords($this->input->post('nama_lengkap')),
@@ -162,7 +165,7 @@ class Petugas extends CI_Controller
 			'kecamatan'		=>$kecamatan,
 			'kota'			=>$kota,
 			'jenis_kelamin'	=>$this->input->post('jenis_kelamin'),
-			'nomor_bpjs'	=>$this->input->post('nomor_bpjs'),
+			'nomor_bpjs'	=>$nomor_bpjs,
 			'pekerjaan'		=>ucwords($this->input->post('pekerjaan')),
 			'pembayaran'	=>$pembayaran,
 			'tanggal_datang'=>date("y-m-d"),
