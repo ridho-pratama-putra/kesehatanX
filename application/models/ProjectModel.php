@@ -60,7 +60,7 @@ class ProjectModel extends CI_Model {
 	* $tabel (string) nama tabel
 	* $data (asosiatif array) record yang akan masuk.
 	* json_decode() pada controller untuk membuka(bungkus) return.
-	* kebutuhan encode karena ada kemungkinan dihandle ajax dan lebih enak transaksi melalui json
+	* kebutuhan encode karena ada kemungkinan dihandle ajax dan transaksi melalui json
 	*/
 	public function create($table,$data){
 		$query = $this->db->insert($table, $data);

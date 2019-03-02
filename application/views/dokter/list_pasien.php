@@ -71,7 +71,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#tabel-list-pasien').DataTable();
+            $('#tabel-list-pasien').DataTable({
+                stateSave: true
+            });
         } );
     </script>
 </div>

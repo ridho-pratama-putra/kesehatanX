@@ -273,7 +273,7 @@ class Dokter extends CI_Controller {
 
 		if ($this->input->post() !== array()) {
 
-			$gcs = '';
+			$gcs = NULL;
 			if ($this->input->post('gcs_e') !== '') {
 				$gcs .= "E: ".$this->input->post('gcs_e');
 			}
@@ -293,50 +293,6 @@ class Dokter extends CI_Controller {
 			
 			/*NOTE : jantung nggk perlu di manipulasi string karena setiap input field korelasi 1-1 dengan kolom*/
 
-			/*insert ke tabel assesmet*/
-			$available_id_assessment = NULL;
-			if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
-				
-				// 1. baca available available_id_assessment di tabel available_id_assessment
-				$available_id_assessment = $this->model->readS('available_id_assessment')->result();
-				$available_id_assessment = $available_id_assessment[0]->available_id_assessment;
-
-				// 2. segera update available_id_assessment di tabel available_id_assessment. agar saat digunakan oleh dokter lain tidak crash
-				$this->model->rawQuery("UPDATE available_id_assessment SET available_id_assessment = available_id_assessment + 1 WHERE available_id_assessment ='$available_id_assessment'");
-
-				// 3. masukkan assessment inputan ke tabel assessment disertai available id yang sudah diambil
-				$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
-				if ($this->input->post('assessmentPrimary') != array()) {
-					foreach ($this->input->post('assessmentPrimary') as $key => $value) {
-						$stringDiagnosa		 	.= "(NULL,'$available_id_assessment','primer','$value'),";
-					}
-				}
-
-				// manipulasi string untuk masuk ke assessment. tipenya sekunder
-				if ($this->input->post('assessmentSecondary') != array()) {
-					foreach ($this->input->post('assessmentSecondary') as $key => $value) {
-						$stringDiagnosa 		.= "(NULL,'$available_id_assessment','sekunder','$value'),";
-					}
-				}
-
-				// manipulasi string untuk masuk ke assessment. tipenya lainlain
-				if ($this->input->post('assessmentLain') != array()) {
-					foreach ($this->input->post('assessmentLain') as $key => $value) {
-						$stringDiagnosa 	 	.= "(NULL,'$available_id_assessment','lainlain','$value'),";
-					}
-				}
-
-				// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
-				if ($this->input->post('assessmentPemeriksaanLab') != '') {
-					$stringDiagnosa				.= "(NULL,'$available_id_assessment','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
-				}
-				$stringDiagnosa				= rtrim($stringDiagnosa,",");
-
-				// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
-				$this->model->rawQuery($stringDiagnosa);
-			}
-			/*end insert ke tabel assesmet*/
-
 			/*kepala*/
 			$kepala = NULL;
 			if ($this->input->post('anemis_kiri') !== NULL OR $this->input->post('anemis_kanan') !== NULL) {
@@ -344,13 +300,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('anemis_kiri') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 				$kepala .= "/";
 				if ($this->input->post('anemis_kanan') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 			}
 
@@ -359,13 +315,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('ikterik_kiri') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 				$kepala .= "/";
 				if ($this->input->post('ikterik_kanan') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 			}
 
@@ -374,13 +330,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('cianosis_kiri') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 				$kepala .= "/";
 				if ($this->input->post('cianosis_kanan') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 			}
 
@@ -389,13 +345,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('deformitas_kiri') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 				$kepala .= "/";
 				if ($this->input->post('deformitas_kanan') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 			}
 
@@ -404,14 +360,19 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('refchy_kiri') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
 				$kepala .= "/";
 				if ($this->input->post('refchy_kanan') == '1') {
 					$kepala .= "+";
 				}else{
-					$kepala .= " ";
+					$kepala .= "-";
 				}
+			}
+
+			$kepala_ket_tambahan = NULL;
+			if ($this->input->post('kepala_ket_tambahan') !== '') {
+				$kepala_ket_tambahan = $this->input->post('kepala_ket_tambahan');
 			}
 			/*end kepala*/
 
@@ -422,13 +383,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('wheezing_kiri') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 				$paru .= "/";
 				if ($this->input->post('wheezing_kanan') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 			}
 
@@ -437,13 +398,13 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('ronkhi_kiri') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 				$paru .= "/";
 				if ($this->input->post('ronkhi_kanan') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 			}
 
@@ -452,45 +413,38 @@ class Dokter extends CI_Controller {
 				if ($this->input->post('vesikuler_kiri') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 				$paru .= "/";
 				if ($this->input->post('vesikuler_kanan') == '1') {
 					$paru .= "+";
 				}else{
-					$paru .= " ";
+					$paru .= "-";
 				}
 			}
 			/*end paru*/
-
-			/* manipulasi string untuk kolom planning */
-			$planning = NULL;
-			if ($this->input->post('planning') !== '') {
-				$planning .= $this->input->post('planning').". ";
-			}
-			/* manipulasi string untuk kolom planning */
 			
 			$record = array(
 				'id_pasien'					=>	$this->input->post('id_pasien'),
 				'tanggal_jam'				=>	date('Y-m-d H:i:s'),
-				'subjektif'					=>	$this->input->post('subjektif'),
+				'subjektif'					=>	($this->input->post('subjektif') !== '' ? $this->input->post('subjektif') : NULL),
 				'gcs_evm_opsi'				=>	$gcs,
-				'tinggi_badan'				=>	$this->input->post('tinggi_badan'),
-				'berat_badan'				=>	$this->input->post('berat_badan'),
-				'sistol'					=>	$this->input->post('sistol'),
-				'diastol'					=>	$this->input->post('diastol'),
-				'nadi'						=>	$this->input->post('nadi'),
-				'respiratory_rate'			=>	$this->input->post('respiratory_rate'),
-				'temperature_ax'			=>	$this->input->post('temperature_ax'),
-				'headtotoe'					=>	$this->input->post('headtotoe'),
+				'tinggi_badan'				=>	($this->input->post('tinggi_badan') !== '' ? $this->input->post('tinggi_badan') : NULL),
+				'berat_badan'				=>	($this->input->post('berat_badan') !== '' ? $this->input->post('berat_badan') : NULL),
+				'sistol'					=>	($this->input->post('sistol') !== '' ? $this->input->post('sistol') : NULL),
+				'diastol'					=>	($this->input->post('diastol') !== '' ? $this->input->post('diastol') : NULL),
+				'nadi'						=>	($this->input->post('nadi') !== '' ? $this->input->post('nadi') : NULL),
+				'respiratory_rate'			=>	($this->input->post('respiratory_rate') !== '' ? $this->input->post('respiratory_rate') : NULL),
+				'temperature_ax'			=>	($this->input->post('temperature_ax') !== '' ? $this->input->post('temperature_ax') : NULL),
+				'headtotoe'					=>	($this->input->post('headtotoe') !== '' ? $this->input->post('headtotoe') : NULL),
 				'kepala'					=>	$kepala,
-				'kepala_isokor_anisokor'	=>	$this->input->post('refchy_opsi'),
-				'kepala_ket_tambahan'		=>	$this->input->post('kepala_ket_tambahan'),
-				'paru_simetris_asimetris'	=>	$this->input->post('paru_simetris_asimetris'),
+				'kepala_isokor_anisokor'	=>	$this->input->post('refchy_opsi_pemeriksaan'),
+				'kepala_ket_tambahan'		=>	$kepala_ket_tambahan,
+				'paru_simetris_asimetris'	=>	$this->input->post('paru_simetris_asimetris_pemeriksaan'),
 				'paru'						=>	$paru,
 				'jantung_ictuscordis'		=>	$this->input->post('jantung_ictuscordis'),
 				'jantung_s1_s2'				=>	$this->input->post('jantung_s1_s2'),
-				'jantung_suaratambahan'		=>	$this->input->post('jantung_suaratambahan'),
+				'jantung_suaratambahan'		=>	($this->input->post('jantung_suaratambahan') !== '' ? $this->input->post('jantung_suaratambahan') : NULL),
 				'thorak_ket_tambahan'		=>	$this->input->post('thorak_ket_tambahan'),
 				'abdomen_BU'				=>	$this->input->post('BU'),
 				'nyeri_tekan1'				=>	$this->input->post('nyeri_tekan1'),
@@ -502,9 +456,9 @@ class Dokter extends CI_Controller {
 				'nyeri_tekan7'				=>	$this->input->post('nyeri_tekan7'),
 				'nyeri_tekan8'				=>	$this->input->post('nyeri_tekan8'),
 				'nyeri_tekan9'				=>	$this->input->post('nyeri_tekan9'),
-				'hepatomegali'				=>	$this->input->post('hepatomegali'),
-				'spleenomegali'				=>	$this->input->post('spleenomegali'),
-				'abdomen_ket_tambahan'		=>	$this->input->post('abdomen_ket_tambahan'),
+				'hepatomegali'				=>	($this->input->post('hepatomegali') !== '' ? $this->input->post('hepatomegali') : NULL),
+				'spleenomegali'				=>	($this->input->post('spleenomegali') !== '' ? $this->input->post('spleenomegali') : NULL),
+				'abdomen_ket_tambahan'		=>	($this->input->post('abdomen_ket_tambahan') !== '' ? $this->input->post('abdomen_ket_tambahan') : NULL),
 				'akral_hangat1'				=>	$this->input->post('akral_hangat1'),
 				'akral_hangat2'				=>	$this->input->post('akral_hangat2'),
 				'akral_hangat3'				=>	$this->input->post('akral_hangat3'),
@@ -518,26 +472,65 @@ class Dokter extends CI_Controller {
 				'edema_3'					=>	$this->input->post('edema_3'),
 				'edema_4'					=>	$this->input->post('edema_4'),
 				'pitting_nonpitting'		=>	$this->input->post('pitting_nonpitting'),
-				'ekstermitas_ket_tambahan'	=>	$this->input->post('ekstermitas_ket_tambahan'),
-				'lain_lain'					=>	$this->input->post('lain_lain'),
-				'id_assessment'				=>	$available_id_assessment,
-				'terapi_1'					=>	$this->input->post('terapi_1'),
-				'terapi_2'					=>	$this->input->post('terapi_2'),
-				'terapi_3'					=>	$this->input->post('terapi_3'),
+				'ekstermitas_ket_tambahan'	=>	($this->input->post('ekstermitas_ket_tambahan') !== '' ? $this->input->post('ekstermitas_ket_tambahan') : NULL),
+				'lain_lain'					=>	($this->input->post('lain_lain') !== '' ? $this->input->post('lain_lain') : NULL),
+				'terapi_1'					=>	($this->input->post('terapi_3') !== '' ? $this->input->post('terapi_3') : NULL),
+				'terapi_2'					=>	($this->input->post('terapi_1') !== '' ? $this->input->post('terapi_1') : NULL),
+				'terapi_3'					=>	($this->input->post('terapi_2') !== '' ? $this->input->post('terapi_2') : NULL),
 				'dokter_pemeriksa'			=>	$this->session->userdata('logged_in')['id_user'],
-				'planning'					=>	$planning.". Total biaya: ".$this->input->post('total_harga_logistik')
+				'planning'					=>	($this->input->post('planning') !== '' ? $this->input->post('planning').". " : '')." Biaya dokter: ".$this->input->post('biaya_dokter').". Total biaya: ".$this->input->post('total_harga_logistik')
 			);
 
-
-			// if -> pemeriksaan dari antrian
-			// else -> pemeriksaan dari pemeriksaan langsung
+			// run query ke rekam medis, update atau create. kemudian get id nya untuk keperluan insert assessment ke tabel yang berelasi (tabel assesssment)
+			// if -> pemeriksaan dari antrian (update)
+			// else -> pemeriksaan dari pemeriksaan langsung (create)
 			if ($this->input->post('id_rekam_medis') !== '') {
 				$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
 				$queryToRekamMedis = json_decode($queryToRekamMedis);
+				$id_rekam_medis = $this->input->post('id_rekam_medis');
 			}else{
-				$queryToRekamMedis = $this->model->create('rekam_medis',$record);
+				$queryToRekamMedis = $this->model->create_id('rekam_medis',$record);
 				$queryToRekamMedis = json_decode($queryToRekamMedis);
+				$id_rekam_medis = $queryToRekamMedis->message;
 			}
+
+			/*insert ke tabel assesmet*/
+			if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
+
+											// 1. baca created_id (jika itu dari pemeriksaan langsung) atau current_id_rekam_medis (jika dari antrian pasien yang ditulis oleh petugas)
+
+											// 2. masukkan assessment inputan ke tabel assessment disertai id rekam medis yang berkaitan
+				$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
+				if ($this->input->post('assessmentPrimary') != array()) {
+					foreach ($this->input->post('assessmentPrimary') as $key => $value) {
+						$stringDiagnosa		 	.= "(NULL,'$id_rekam_medis','primer','$value'),";
+					}
+				}
+
+											// manipulasi string untuk masuk ke assessment. tipenya sekunder
+				if ($this->input->post('assessmentSecondary') != array()) {
+					foreach ($this->input->post('assessmentSecondary') as $key => $value) {
+						$stringDiagnosa 		.= "(NULL,'$id_rekam_medis','sekunder','$value'),";
+					}
+				}
+
+											// manipulasi string untuk masuk ke assessment. tipenya lainlain
+				if ($this->input->post('assessmentLain') != array()) {
+					foreach ($this->input->post('assessmentLain') as $key => $value) {
+						$stringDiagnosa 	 	.= "(NULL,'$id_rekam_medis','lainlain','$value'),";
+					}
+				}
+
+											// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
+				if ($this->input->post('assessmentPemeriksaanLab') != '') {
+					$stringDiagnosa				.= "(NULL,'$id_rekam_medis','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
+				}
+				$stringDiagnosa				= rtrim($stringDiagnosa,",");
+
+											// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
+				$this->model->rawQuery($stringDiagnosa);
+			}
+			/*end insert ke tabel assesmet*/
 
 			if ($queryToRekamMedis->status) {
 				$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
@@ -558,7 +551,6 @@ class Dokter extends CI_Controller {
 				alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
 				redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
 			}
-
 		}else{
 			$data['heading']	= "Halaman tidak ditemukan";
 			$data['message']	= "<p> Tidak ada data yang di post</p>";
@@ -629,13 +621,23 @@ class Dokter extends CI_Controller {
 	}
 
 	/*
-	* function untuk lihat detail identitas dan rekam medis pasien
+	* function untuk lihat detail identitas dan rekam medis pasien. berdsarkan id
 	*/
 	function detailRekamMedisPasien($id)
 	{
 		$data 	= array(
 			"active"					=>	"list-pasien",
-			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result()
+			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result(),
+			"rekam_medis"				=>	$this->model->rawQuery("
+				SELECT 
+				rekam_medis.*,
+				user.nama,
+				(SELECT GROUP_CONCAT(assessment.tipe,' ',assessment.detil SEPARATOR ' ; ') FROM assessment WHERE assessment.id_assessment_for_rekam_medis = rekam_medis.id) AS kelompok 
+				FROM 
+				rekam_medis 
+				LEFT JOIN user ON rekam_medis.dokter_pemeriksa = user.id 
+				WHERE rekam_medis.id_pasien=$id
+				")->result()
 		);
 		$this->load->view('dokter/header');
 		$this->load->view('dokter/navbar',$data);

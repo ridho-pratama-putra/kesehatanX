@@ -48,10 +48,10 @@ class Petugas extends CI_Controller
 	*/
 	function SubmitPendaftaran()
 	{
-		// echo "<pre>";
-		// var_dump($this->input->post());
-		// die();
-		$nik = $this->input->post('nik');
+		$nik = NULL;
+		if ($this->input->post('nik') !== '' && $this->input->post('nik') !== NULL) {
+			$nik = $this->input->post('nik');
+		}
 
 		// cek apakah nik tidak ada isinya? jika tidak ada maka langsung skip pembacaan nik duplikat di database dan langsung insert. jika ada maka cek dulu di db adakah duplikasi
 		if ($nik !== '') {
@@ -63,8 +63,6 @@ class Petugas extends CI_Controller
 				redirect("Petugas/pendaftaran");
 			}
 		}
-		// echo "string";
-		// die();
 
 		// ambil id terakhir
 		$no_urut 	= $this->model->rawQuery("SELECT AUTO_INCREMENT AS no_urut FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kesehatan' AND TABLE_NAME = 'pasien'")->result();
@@ -83,23 +81,24 @@ class Petugas extends CI_Controller
 		}
 
 		// ambil kode kelurahan
+		$kelurahan_lain = NULL;
 		$kelurahan = $this->input->post('kelurahan');
 		$kd_kelurahan = substr($kelurahan, 0,3);
-		$kelurahan_lain = NULL;
-		if ($kelurahan == "013 Lain-lain") {
+		if ($kelurahan == "013 Lain-lain" && $this->input->post('kelurahan_lain') !== '') {
 			$kelurahan_lain = $this->input->post('kelurahan_lain');
 		}
 
 		// manipulasi kecamatan
 		$kecamatan_lain = NULL;
 		$kecamatan = $this->input->post('kecamatan');
-		if ($kecamatan == 'other') {
+		if ($kecamatan == 'other' && $this->input->post('kecamatan_lain') !== '') {
 			$kecamatan_lain = $this->input->post('kecamatan_lain');
 		}
 
 		// manipulasi kota
+		$kota_lain = NULL;
 		$kota = $this->input->post('kota');
-		if ($kota == 'other') {
+		if ($kota == 'other' && $this->input->post('kota_lain') !== '') {
 			$kota_lain = $this->input->post('kota_lain');
 		}
 
@@ -141,17 +140,17 @@ class Petugas extends CI_Controller
 		}
 
 		$nama_ayah = NULL;
-		if ($this->input->post('nama_ayah') !== '' OR $this->input->post('nama_ayah') !== NULL) {
-			$nama_ayah = $this->input->post('nama_ayah');
+		if ($this->input->post('nama_ayah') !== NULL && $this->input->post('nama_ayah') !== '') {
+			$nama_ayah = ucwords($this->input->post('nama_ayah'));
 		}
 
 		$nama_ibu = NULL;
-		if ($this->input->post('nama_ibu') !== '' OR $this->input->post('nama_ibu') !== NULL) {
-			$nama_ibu = $this->input->post('nama_ibu');
+		if ($this->input->post('nama_ibu') !== NULL && $this->input->post('nama_ibu') !== '') {
+			$nama_ibu = ucwords($this->input->post('nama_ibu'));
 		}
 
 		$nomor_bpjs = NULL;
-		if ($this->input->post('nomor_bpjs') !== "") {
+		if ($this->input->post('nomor_bpjs') !== '' && $this->input->post('nomor_bpjs') !== NULL) {
 			$nomor_bpjs = $this->input->post('nomor_bpjs');
 		}
 
@@ -169,23 +168,21 @@ class Petugas extends CI_Controller
 			'pekerjaan'		=>ucwords($this->input->post('pekerjaan')),
 			'pembayaran'	=>$pembayaran,
 			'tanggal_datang'=>date("y-m-d"),
-			'nama_ayah'		=>ucwords($nama_ayah),
-			'nama_ibu'		=>ucwords($nama_ibu),
+			'nama_ayah'		=>$nama_ayah,
+			'nama_ibu'		=>$nama_ibu,
 			'nomor_pasien'	=>$no_urut."-".$kd_kelurahan."-".$kode_jenis_kelamin."-".$kode_usia."-".$bulan_datang."-".$tahun_datang
 		);
 
-		if ($kelurahan_lain !== '') {
+		if ($kelurahan_lain !== NULL) {
 			$dataForm['kelurahan_lain'] = ucwords($kelurahan_lain);
 		}
-		if ($kecamatan_lain !== '') {
+		if ($kecamatan_lain !== NULL) {
 			$dataForm['kecamatan_lain'] = ucwords($kecamatan_lain);
 		}
-		if ($kota_lain !== '') {
+		if ($kota_lain !== NULL) {
 			$dataForm['kota_lain'] = ucwords($kota_lain);
 		}
 
-		// var_dump($dataForm);
-		// die();
 		$result = json_decode($this->model->create('pasien',$dataForm),false);
 		if ($result->status) {
 			alert('alert','success','Berhasil','Registrasi berhasil');

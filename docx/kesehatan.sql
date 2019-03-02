@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-02-21 20:10:39
+Date: 2019-03-03 00:14:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,8 +21,9 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `antrian`;
 CREATE TABLE `antrian` (
   `nomor_antrian` int(11) NOT NULL AUTO_INCREMENT,
-  `nomor_pasien` varchar(255) NOT NULL,
+  `id_pasien` varchar(255) NOT NULL,
   `jam_datang` datetime NOT NULL,
+  `id_rekam_medis` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nomor_antrian`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -31,9 +32,9 @@ CREATE TABLE `antrian` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for assesment
+-- Table structure for assessment
 -- ----------------------------
-DROP TABLE IF EXISTS `assesment`;
+DROP TABLE IF EXISTS `assessment`;
 CREATE TABLE `assessment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_assessment_for_rekam_medis` varchar(255) DEFAULT NULL,
@@ -43,21 +44,8 @@ CREATE TABLE `assessment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of assesment
+-- Records of assessment
 -- ----------------------------
-
--- ----------------------------
--- Table structure for available_id_assessment
--- ----------------------------
-DROP TABLE IF EXISTS `available_id_assessment`;
-CREATE TABLE `available_id_assessment` (
-  `available_id_assessment` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of available_id_assessment
--- ----------------------------
-INSERT INTO `available_id_assessment` VALUES ('8');
 
 -- ----------------------------
 -- Table structure for golongan_logistik
@@ -10611,6 +10599,29 @@ INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('2', 'Catgut Chromic 3/0 
 INSERT INTO `logistik_alat_bahan_sekali_pakai` VALUES ('3', 'Catgut Plain 2/0 + Jarum', '22', '75cm', 'IHS Medikom', 'Padat', '6500', '15000', '3');
 
 -- ----------------------------
+-- Table structure for logistik_log
+-- ----------------------------
+DROP TABLE IF EXISTS `logistik_log`;
+CREATE TABLE `logistik_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `jenis_logistik` varchar(255) DEFAULT NULL,
+  `id_obat` varchar(255) DEFAULT NULL,
+  `stok_tersisa` varchar(255) DEFAULT NULL,
+  `datetime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of logistik_log
+-- ----------------------------
+INSERT INTO `logistik_log` VALUES ('1', 'obat_oral', '1', '56', '2019-03-02 11:16:18');
+INSERT INTO `logistik_log` VALUES ('2', 'obat_oral', '3', '8', '2019-03-02 13:00:35');
+INSERT INTO `logistik_log` VALUES ('3', 'obat_oral', '3', '7', '2019-03-02 16:35:30');
+INSERT INTO `logistik_log` VALUES ('4', 'obat_oral', '1', '55', '2019-03-02 16:36:14');
+INSERT INTO `logistik_log` VALUES ('5', 'obat_injeksi', '1', '9', '2019-03-02 16:36:43');
+INSERT INTO `logistik_log` VALUES ('6', 'obat_injeksi', '1', '8', '2019-03-02 16:37:02');
+
+-- ----------------------------
 -- Table structure for logistik_obat_injeksi
 -- ----------------------------
 DROP TABLE IF EXISTS `logistik_obat_injeksi`;
@@ -10721,24 +10732,24 @@ CREATE TABLE `log_logistik` (
 DROP TABLE IF EXISTS `pasien`;
 CREATE TABLE `pasien` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(500) NOT NULL,
-  `nik` varchar(50) NOT NULL,
-  `tempat_lahir` varchar(500) NOT NULL,
-  `tanggal_lahir` date NOT NULL,
-  `usia` int(50) NOT NULL,
-  `jalan` varchar(500) NOT NULL,
+  `nama` varchar(500) DEFAULT NULL,
+  `nik` varchar(50) DEFAULT NULL,
+  `tempat_lahir` varchar(500) DEFAULT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
+  `usia` int(50) DEFAULT NULL,
+  `jalan` varchar(500) DEFAULT NULL,
   `kota` varchar(255) DEFAULT NULL,
   `kota_lain` varchar(255) DEFAULT NULL,
-  `jenis_kelamin` varchar(50) NOT NULL,
-  `pekerjaan` varchar(500) NOT NULL,
+  `jenis_kelamin` varchar(50) DEFAULT NULL,
+  `pekerjaan` varchar(500) DEFAULT NULL,
   `kecamatan` varchar(255) DEFAULT NULL,
   `kecamatan_lain` varchar(255) DEFAULT NULL,
-  `kelurahan` varchar(250) NOT NULL,
+  `kelurahan` varchar(250) DEFAULT NULL,
   `kelurahan_lain` varchar(255) DEFAULT NULL,
-  `pembayaran` varchar(250) NOT NULL,
+  `pembayaran` varchar(250) DEFAULT NULL,
   `nomor_bpjs` varchar(255) DEFAULT NULL,
-  `nomor_pasien` varchar(50) NOT NULL,
-  `tanggal_datang` date NOT NULL,
+  `nomor_pasien` varchar(50) DEFAULT NULL,
+  `tanggal_datang` date DEFAULT NULL,
   `nama_ibu` varchar(255) DEFAULT NULL,
   `nama_ayah` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -10747,29 +10758,28 @@ CREATE TABLE `pasien` (
 -- ----------------------------
 -- Records of pasien
 -- ----------------------------
-INSERT INTO `pasien` VALUES ('1', 'Zakiva Ambila', '', 'Malang', '2010-02-02', '8', 'Danau Sentani No A 18', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '001-013-02-01-09-2018', '2018-12-25', '', '');
-INSERT INTO `pasien` VALUES ('2', 'Alda Ayana', '', 'Sidoarjo', '2004-01-20', '14', 'Perum Puri Cempaka Putih 1 Blok P No 1 PP Nurul Hayat', 'Malang', '', 'Perempuan', 'Pelajar', 'Kedungkandang', null, '001 Arjowinangun', null, 'Umum', null, '002-013-02-01-09-2018', '2018-12-26', '', '');
-INSERT INTO `pasien` VALUES ('3', 'Masyanada', '', 'Tuban', '2003-04-09', '15', 'Puri Cempaka Putih PP Nurul Hikmah', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '003-013-02-02-09-2018', '2018-12-26', '', '');
-INSERT INTO `pasien` VALUES ('4', 'Nayla Imtiaz', '', 'Surabaya', '2005-11-01', '13', 'PP Darul Ulum Agung ', 'Malang', '', 'Perempuan', 'Pelajar DU\'A', 'other', null, '013 Lain-lain', null, 'Umum', null, '004-013-02-01-09-2018', '2018-12-26', '', '');
-INSERT INTO `pasien` VALUES ('5', 'Sinta', '', 'Mojokerto', '2001-07-15', '17', 'PP Darul \'ulum Agung', 'Malang', '', 'Perempuan', 'Pelajar Darul \'Ulum Agung', 'other', null, '013 Lain-lain', null, 'Umum', null, '005-013-02-02-09-2018', '2018-12-26', '', '');
-INSERT INTO `pasien` VALUES ('6', 'Saiful Anwar', '950415590125', 'Malang', '1995-04-11', '23', '', 'other', 'Batu', 'Laki-laki', 'Mahasiswa', 'other', null, '013 Lain-lain', null, 'Umum', null, '006-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('7', 'Stela Amelia Putri', '', 'Malang', '2005-07-04', '13', '', 'Malang', '', 'Perempuan', 'Pelajar', 'Kedungkandang', null, '005 Kedung Kandang', null, 'Umum', null, '007-005-02-01-09-2018', '2019-01-08', 'Mak Sani', '');
-INSERT INTO `pasien` VALUES ('8', 'Aditya Kusuma', '', 'Malang', '2005-11-01', '13', 'Jodipan / PP Darul \'ulum Agung', 'Malang', '', 'Laki-laki', 'Pelajar', 'other', 'Jodipan', '013 Lain-lain', 'Jodipan', 'Umum', null, '008-013-01-01-09-2018', '2018-12-26', 'Fitri', 'Muhammad Yasin');
-INSERT INTO `pasien` VALUES ('9', 'Nurul Isnaini', '', 'Malang', '2002-03-28', '16', 'Muharto', 'Malang', '', 'Perempuan', 'Pelajar', 'Kedungkandang', null, '006 Kota Lama', null, 'Umum', null, '009-006-02-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('10', 'Siti Kholilah', '', 'Malang', '2001-11-11', '17', 'Kalisari', 'Malang', '', 'Perempuan', 'Pelajar XII IPS', 'Kedungkandang', null, '003 Buring', null, 'Umum', null, '010-003-02-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('11', 'Wildan Fatih', '', 'Sidoarjo', '2002-03-14', '16', '', '', '', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '011-013-01-02-09-2018', '2019-01-07', '', '');
-INSERT INTO `pasien` VALUES ('12', 'Fatiha Nur Ratih', '', 'Cirebon', '2004-02-11', '14', 'PP Darul Ulum Agung', 'other', 'Jogja', 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '012-013-02-01-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('13', 'Mubarok', '', 'Pekalongan', '2006-10-17', '12', '', 'other', 'Pekalongan', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '013-013-01-01-09-2018', '2019-01-08', 'Iskandar', 'Iskandar');
-INSERT INTO `pasien` VALUES ('14', 'Rico Setyawan', '', 'Bojonegoro', '2000-07-22', '18', 'Lesanpuro PP Darul Ulum Agung', 'Malang', '', 'Laki-laki', 'Pelajar (santri Balap)', 'other', null, '013 Lain-lain', null, 'Umum', null, '014-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('15', 'M. Fauzan Farhat', '', 'Mojokerto', '2005-02-28', '13', 'PP Darul Ulum Agung', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '015-013-01-01-09-2018', '2019-01-08', 'Meriliana', 'H. Muchtarin');
-INSERT INTO `pasien` VALUES ('16', 'Muhamad Yusac Ekodi', '', 'Sidoarjo', '1994-03-13', '24', 'PP DU\'A', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '016-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('17', 'Rizka Alfian', '', 'Malang', '1990-07-22', '28', 'Kolonel Sugiono Gang 8 No 62', 'Malang', '', 'Laki-laki', 'Wiraswasta', 'other', null, '013 Lain-lain', null, 'Umum', null, '017-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('18', 'Rahmat Maulana', '', 'Riau', '2003-07-23', '15', 'PP DU\'A', 'other', 'Riau', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '018-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('19', 'Darmawan Gusti', '', 'Malang', '1997-12-04', '21', 'Ciptomulyo Gg 8 / PP DU\'A', 'Malang', '', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '019-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('20', 'Thoriq Abdul Aziz', '', 'Jombang', '1997-07-04', '21', 'PP DU\'A', 'other', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '020-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('21', 'Kholikul Anam', '', 'Jombang', '1993-11-10', '25', 'PP DU\'A', 'other', 'Jombang', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '021-013-01-02-09-2018', '2019-01-08', '', '');
-INSERT INTO `pasien` VALUES ('22', 'Muhammad Sahari Riski ', '', 'Malang', '2005-04-03', '13', 'Kolonel Sugiono (PP DU\'A)', 'Malang', '', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '022-013-01-01-09-2018', '2019-01-08', 'Agus Hariyanto', 'Eni W');
-INSERT INTO `pasien` VALUES ('23', 'Cek Db', '', 'Malang', '1997-02-19', '21', 'Mayjen Sungkono Rt 01 Rw 01', 'other', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', '', '023-013-01-02-02-2019', '2019-02-16', '', '');
+INSERT INTO `pasien` VALUES ('1', 'Zakiva Ambila', null, 'Malang', '2010-02-02', '8', 'Danau Sentani No A 18', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '001-013-02-01-09-2018', '2018-12-25', null, null);
+INSERT INTO `pasien` VALUES ('2', 'Alda Ayana', null, 'Sidoarjo', '2004-01-20', '14', 'Perum Puri Cempaka Putih 1 Blok P No 1 PP Nurul Hayat', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '001 Arjowinangun', null, 'Umum', null, '002-013-02-01-09-2018', '2018-12-26', null, null);
+INSERT INTO `pasien` VALUES ('3', 'Masyanada', null, 'Tuban', '2003-04-09', '15', 'Puri Cempaka Putih PP Nurul Hikmah', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '003-013-02-02-09-2018', '2018-12-26', null, null);
+INSERT INTO `pasien` VALUES ('4', 'Nayla Imtiaz', null, 'Surabaya', '2005-11-01', '13', 'PP Darul Ulum Agung ', 'Malang', null, 'Perempuan', 'Pelajar DU\'A', 'other', null, '013 Lain-lain', null, 'Umum', null, '004-013-02-01-09-2018', '2018-12-26', null, null);
+INSERT INTO `pasien` VALUES ('5', 'Sinta', null, 'Mojokerto', '2001-07-15', '17', 'PP Darul \'ulum Agung', 'Malang', null, 'Perempuan', 'Pelajar Darul \'Ulum Agung', 'other', null, '013 Lain-lain', null, 'Umum', null, '005-013-02-02-09-2018', '2018-12-26', null, null);
+INSERT INTO `pasien` VALUES ('6', 'Saiful Anwar', '950415590125', 'Malang', '1995-04-11', '23', null, 'other', 'Batu', 'Laki-laki', 'Mahasiswa', 'other', null, '013 Lain-lain', null, 'Umum', null, '006-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('7', 'Stela Amelia Putri', null, 'Malang', '2005-07-04', '13', null, 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '005 Kedung Kandang', null, 'Umum', null, '007-005-02-01-09-2018', '2019-01-08', 'Mak Sani', null);
+INSERT INTO `pasien` VALUES ('8', 'Aditya Kusuma', null, 'Malang', '2005-11-01', '13', 'Jodipan / PP Darul \'ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', 'Jodipan', '013 Lain-lain', 'Jodipan', 'Umum', null, '008-013-01-01-09-2018', '2018-12-26', 'Fitri', 'Muhammad Yasin');
+INSERT INTO `pasien` VALUES ('9', 'Nurul Isnaini', null, 'Malang', '2002-03-28', '16', 'Muharto', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '006 Kota Lama', null, 'Umum', null, '009-006-02-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('10', 'Siti Kholilah', null, 'Malang', '2001-11-11', '17', 'Kalisari', 'Malang', null, 'Perempuan', 'Pelajar XII IPS', 'Kedungkandang', null, '003 Buring', null, 'Umum', null, '010-003-02-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('11', 'Wildan Fatih', null, 'Sidoarjo', '2002-03-14', '16', null, null, null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '011-013-01-02-09-2018', '2019-01-07', null, null);
+INSERT INTO `pasien` VALUES ('12', 'Fatiha Nur Ratih', null, 'Cirebon', '2004-02-11', '14', 'PP Darul Ulum Agung', 'other', 'Jogja', 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '012-013-02-01-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('13', 'Mubarok', null, 'Pekalongan', '2006-10-17', '12', null, 'other', 'Pekalongan', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '013-013-01-01-09-2018', '2019-01-08', 'Iskandar', 'Iskandar');
+INSERT INTO `pasien` VALUES ('14', 'Rico Setyawan', null, 'Bojonegoro', '2000-07-22', '18', 'Lesanpuro PP Darul Ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar (santri Balap)', 'other', null, '013 Lain-lain', null, 'Umum', null, '014-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('15', 'M. Fauzan Farhat', null, 'Mojokerto', '2005-02-28', '13', 'PP Darul Ulum Agung', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '015-013-01-01-09-2018', '2019-01-08', 'Meriliana', 'H. Muchtarin');
+INSERT INTO `pasien` VALUES ('16', 'Muhamad Yusac Ekodi', null, 'Sidoarjo', '1994-03-13', '24', 'PP DU\'A', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '016-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('17', 'Rizka Alfian', null, 'Malang', '1990-07-22', '28', 'Kolonel Sugiono Gang 8 No 62', 'Malang', null, 'Laki-laki', 'Wiraswasta', 'other', null, '013 Lain-lain', null, 'Umum', null, '017-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('18', 'Rahmat Maulana', null, 'Riau', '2003-07-23', '15', 'PP DU\'A', 'other', 'Riau', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '018-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('19', 'Darmawan Gusti', null, 'Malang', '1997-12-04', '21', 'Ciptomulyo Gg 8 / PP DU\'A', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '019-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('20', 'Thoriq Abdul Aziz', null, 'Jombang', '1997-07-04', '21', 'PP DU\'A', 'other', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '020-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('21', 'Kholikul Anam', null, 'Jombang', '1993-11-10', '25', 'PP DU\'A', 'other', 'Jombang', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '021-013-01-02-09-2018', '2019-01-08', null, null);
+INSERT INTO `pasien` VALUES ('22', 'Muhammad Sahari Riski ', null, 'Malang', '2005-04-03', '13', 'Kolonel Sugiono (PP DU\'A)', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '022-013-01-01-09-2018', '2019-01-08', 'Agus Hariyanto', 'Eni W');
 
 -- ----------------------------
 -- Table structure for proses_antrian
@@ -10777,7 +10787,8 @@ INSERT INTO `pasien` VALUES ('23', 'Cek Db', '', 'Malang', '1997-02-19', '21', '
 DROP TABLE IF EXISTS `proses_antrian`;
 CREATE TABLE `proses_antrian` (
   `nomor_antrian` int(11) NOT NULL AUTO_INCREMENT,
-  `nomor_pasien` varchar(255) DEFAULT NULL,
+  `id_pasien` varchar(255) DEFAULT NULL,
+  `id_rekam_medis` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nomor_antrian`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -10840,20 +10851,32 @@ CREATE TABLE `rekam_medis` (
   `pitting_nonpitting` varchar(255) DEFAULT NULL,
   `ekstermitas_ket_tambahan` text,
   `lain_lain` varchar(255) DEFAULT NULL,
-  `id_assessment` varchar(255) DEFAULT NULL,
   `terapi_1` varchar(255) DEFAULT NULL,
   `terapi_2` varchar(255) DEFAULT NULL,
   `terapi_3` varchar(255) DEFAULT NULL,
   `dokter_pemeriksa` varchar(255) DEFAULT NULL,
   `planning` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of rekam_medis
 -- ----------------------------
-INSERT INTO `rekam_medis` VALUES ('1', '1', '2019-02-20 11:45:42', 'subjektif', 'E: 9 V: 8 M: 7', '123', '123', '12', '12', '123', '123', '123', 'head too toe', ' Anemis +/  Cianosis  /+ Deformitas +/+ Refleks cahaya +/+', null, 'htt kepaala tambahan', null, 'Wheezing +/  Vesikuler +/+', null, null, 'jantung suara tambahan', null, null, null, '1', '1', null, null, null, '1', null, '1', 'abdomen heptomegali', 'abdomen spleenomegali', 'abdomen keterangan tambahan', null, null, null, null, null, '1', null, '1', null, null, '1', null, null, 'ekstermitas keterangan tambahan', 'lainlaine', '2', null, null, null, '2', 'planning. ');
-INSERT INTO `rekam_medis` VALUES ('2', '1', '2019-02-20 11:49:44', 'subjektif', 'E: 9 V: 8 M: 7', '123', '123', '12', '12', '123', '123', '123', 'head too toe', ' Anemis +/  Cianosis  /+ Deformitas +/+ Refleks cahaya +/+', null, 'htt kepaala tambahan', null, 'Wheezing +/  Vesikuler +/+', null, null, 'jantung suara tambahan', null, null, null, '1', '1', null, null, null, '1', null, '1', 'abdomen heptomegali', 'abdomen spleenomegali', 'abdomen keterangan tambahan', null, null, null, null, null, '1', null, '1', null, null, '1', null, null, 'ekstermitas keterangan tambahan', 'lainlaine', '7', null, null, null, '2', 'planning. ');
+INSERT INTO `rekam_medis` VALUES ('1', '3', '2019-03-02 11:28:40', null, 'E: 12', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
+INSERT INTO `rekam_medis` VALUES ('2', '3', '2019-03-02 11:36:55', null, null, '123', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
+INSERT INTO `rekam_medis` VALUES ('3', '3', '2019-03-02 12:07:35', null, null, null, null, null, null, null, null, null, null, ' Anemis +/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', null, 'keterangan tambahan kepala', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
+INSERT INTO `rekam_medis` VALUES ('4', '3', '2019-03-02 12:09:07', null, null, null, null, null, null, null, null, null, null, ' Anemis +/- Ikterik +/- Cianosis -/+', 'Isokor', 'keterangan tambahan kepal', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
+INSERT INTO `rekam_medis` VALUES ('5', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', null, null, '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', null, null, 'suara tambahan', 'ketarangan jantung tambahan', null, null, '1', '1', null, '1', '1', null, null, '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', null, null, null, null, null, null, '1', null, null, null, null, '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', null, null, null, '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('6', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('7', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('8', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('9', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('10', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('11', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('12', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('13', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('14', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('15', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
 
 -- ----------------------------
 -- Table structure for settingan
@@ -10868,7 +10891,7 @@ CREATE TABLE `settingan` (
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-02-20 08:35:53');
+INSERT INTO `settingan` VALUES ('1', '2019-03-03 00:00:23');
 
 -- ----------------------------
 -- Table structure for user

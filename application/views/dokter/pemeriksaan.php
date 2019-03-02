@@ -363,6 +363,8 @@
 			},
 			placeholder: "Pilih logistik"
 		});
+
+		hitungTotal()
 	});
 </script>
 <script type="text/javascript">
@@ -425,7 +427,13 @@
 				$("#tabel-obat-injeksi-yang-sudah-diambil").html(elementToRender)
 
 				var obat_injeksi_yang_terpilih = $('#select-obat-injeksi').select2('data')[0]
-				document.getElementById('textarea-planning-pemeriksaan').value += ('. '+$("#input-jumlah-obat-injeksi").val()+' '+obat_injeksi_yang_terpilih.bentuk+' '+obat_injeksi_yang_terpilih.text+' '+obat_injeksi_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-injeksi").val()))
+				
+				// tambahkan titik jika di teksarea sudah ada isinya.
+				var tambah_separator_titik = '';
+				if ($.trim($("#textarea-planning-pemeriksaan").val())) {
+					tambah_separator_titik = '. ';
+				}
+				document.getElementById('textarea-planning-pemeriksaan').value += (tambah_separator_titik+$("#input-jumlah-obat-injeksi").val()+' '+obat_injeksi_yang_terpilih.bentuk+' '+obat_injeksi_yang_terpilih.text+' '+obat_injeksi_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-injeksi").val()))
 
 				// reset form add obat injeksi
 				$("#select-obat-injeksi").val("").trigger("change")
@@ -486,8 +494,12 @@
 				$("#tabel-obat-oral-yang-sudah-diambil").html(elementToRender)
 
 				var obat_oral_yang_terpilih = $('#select-obat-oral').select2('data')[0]
-
-				document.getElementById('textarea-planning-pemeriksaan').value += ('. '+$("#input-jumlah-obat-oral").val()+' '+obat_oral_yang_terpilih.bentuk+' '+obat_oral_yang_terpilih.text+' '+obat_oral_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-oral").val()))
+				// tambahkan titik jika di teksarea sudah ada isinya.
+				var tambah_separator_titik = '';
+				if ($.trim($("#textarea-planning-pemeriksaan").val())) {
+					tambah_separator_titik = '. ';
+				}
+				document.getElementById('textarea-planning-pemeriksaan').value += (tambah_separator_titik+$("#input-jumlah-obat-oral").val()+' '+obat_oral_yang_terpilih.bentuk+' '+obat_oral_yang_terpilih.text+' '+obat_oral_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-oral").val()))
 
 				// reset form add obat oral
 				$("#select-obat-oral").val("").trigger("change")
@@ -548,8 +560,12 @@
 				$("#tabel-obat-sigma-usus-externum-yang-sudah-diambil").html(elementToRender)
 
 				var obat_sigma_usus_externum_yang_terpilih = $('#select-obat-sigma-usus-externum').select2('data')[0]
-
-				document.getElementById('textarea-planning-pemeriksaan').value += ('. '+$("#input-jumlah-obat-sigma-usus-externum").val()+' '+obat_sigma_usus_externum_yang_terpilih.bentuk+' '+obat_sigma_usus_externum_yang_terpilih.text+' '+obat_sigma_usus_externum_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-sigma-usus-externum").val()))
+				// tambahkan titik jika di teksarea sudah ada isinya.
+				var tambah_separator_titik = '';
+				if ($.trim($("#textarea-planning-pemeriksaan").val())) {
+					tambah_separator_titik = '. ';
+				}
+				document.getElementById('textarea-planning-pemeriksaan').value += (tambah_separator_titik+$("#input-jumlah-obat-sigma-usus-externum").val()+' '+obat_sigma_usus_externum_yang_terpilih.bentuk+' '+obat_sigma_usus_externum_yang_terpilih.text+' '+obat_sigma_usus_externum_yang_terpilih.sediaan+' '+convertToRupiah($("#input-harga-per-item-obat-sigma-usus-externum").val()))
 
 				// reset form add obat sigma-usus-externum
 				$("#obatsigmaususexternum").val("").trigger("change")
@@ -611,8 +627,12 @@
 
 				// masukkan ke kolom planning
 				var alat_bahan_sekali_pakai_yang_terpilih = $('#select-alat-bahan-sekali-pakai').select2('data')[0]
-
-				document.getElementById('textarea-planning-pemeriksaan').value += ('. '+$("#input-jumlah-alat-bahan-sekali-pakai").val()+' '+alat_bahan_sekali_pakai_yang_terpilih.text+' '+alat_bahan_sekali_pakai_yang_terpilih.provider+' '+convertToRupiah($("#input-harga-per-item-alat-bahan-sekali-pakai").val()))
+				// tambahkan titik jika di teksarea sudah ada isinya.
+				var tambah_separator_titik = '';
+				if ($.trim($("#textarea-planning-pemeriksaan").val())) {
+					tambah_separator_titik = '. ';
+				}
+				document.getElementById('textarea-planning-pemeriksaan').value += (tambah_separator_titik+$("#input-jumlah-alat-bahan-sekali-pakai").val()+' '+alat_bahan_sekali_pakai_yang_terpilih.text+' '+alat_bahan_sekali_pakai_yang_terpilih.provider+' '+convertToRupiah($("#input-harga-per-item-alat-bahan-sekali-pakai").val()))
 
 				// reset form add obat sigma-usus-externum
 				$("#select-alat-bahan-sekali-pakai").val("").trigger("change")
@@ -1437,7 +1457,7 @@
 										<div class="col-4">Keterangan Tambahan</div>
 										<div class="col-1">:</div>
 										<div class="col">
-											<input type="text" class="form-control" id="jantung_ket_tambahan_pemeriksaan" name="jantung_ket_tambahan">
+											<input type="text" class="form-control" id="jantung_ket_tambahan_pemeriksaan" name="thorak_ket_tambahan">
 										</div>
 									</div>
 								</div>
