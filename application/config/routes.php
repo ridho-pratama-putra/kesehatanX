@@ -116,5 +116,6 @@ $route['submit-antrian-dokter-hapus/(:num)/(:num)']		= 'Dokter/submitAntrian/hap
 $route['rekam-medis/(:num)']							= 'Dokter/rekamMedis/$1';
 $route['list-pasien']									= 'Dokter/listPasien';
 $route['edit-identitas-pasien/(:num)']					= 'Dokter/editIdentitasPasien/$1';
+$route['submit-edit-identitas-pasien']					= 'Dokter/submitEditIdentitasPasien';
 $route['detail-rm-pasien/(:num)']						= 'Dokter/detailRekamMedisPasien/$1';
 $route['hapus-pasien/(:num)']							= 'Dokter/deletePasien/$1';

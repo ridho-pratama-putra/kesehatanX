@@ -33,7 +33,7 @@
 					echo ($value->gcs_evm_opsi !== NULL ? "GCS ".$value->gcs_evm_opsi."  " : '');
 					echo ($value->kepala !== NULL ? $value->kepala."  " : '');
 					echo ($value->kepala_isokor_anisokor !== NULL ? $value->kepala_isokor_anisokor."  " : '');
-					echo ($value->kepala_ket_tambahan !== NULL ? "Keterangan tambahan : ".$value->kepala_ket_tambahan."  " : '');
+					echo ($value->kepala_ket_tambahan !== NULL ? "Keterangan tambahan kepala: ".$value->kepala_ket_tambahan."  " : '');
 
 					echo ($value->paru_simetris_asimetris !== NULL || $value->paru !== NULL ? "<br>Paru " : '');
 					echo ($value->paru_simetris_asimetris !== NULL ? $value->paru_simetris_asimetris."  " : '');
@@ -43,7 +43,7 @@
 					echo ($value->jantung_ictuscordis !== NULL ? $value->jantung_ictuscordis."  " : '');
 					echo ($value->jantung_s1_s2 !== NULL ? $value->jantung_s1_s2."  " : '');
 					echo ($value->jantung_suaratambahan !== NULL ? "Keterangan suara tambahan : ".$value->jantung_suaratambahan."  " : '');
-					echo ($value->thorak_ket_tambahan !== NULL ? "Keterangan tambahan: ".$value->thorak_ket_tambahan."  " : '');
+					echo ($value->thorak_ket_tambahan !== NULL ? "Keterangan tambahan thorak : ".$value->thorak_ket_tambahan."  " : '');
 
 					echo ($value->abdomen_BU !== NULL || $value->nyeri_tekan1 !== NULL || $value->nyeri_tekan2 !== NULL || $value->nyeri_tekan3 !== NULL || $value->nyeri_tekan4 !== NULL || $value->nyeri_tekan5 !== NULL || $value->nyeri_tekan6 !== NULL || $value->nyeri_tekan7 !== NULL || $value->nyeri_tekan8 !== NULL || $value->nyeri_tekan9 !== NULL || $value->hepatomegali !== NULL || $value->spleenomegali !== NULL || $value->abdomen_ket_tambahan !== NULL? "<br>Abdomen " : '');
 					echo ($value->abdomen_BU !== NULL ? "BU: ".$value->abdomen_BU."  " : '');
@@ -57,9 +57,9 @@
 					echo ($value->nyeri_tekan7 !== NULL ? " 7 " : '');
 					echo ($value->nyeri_tekan8 !== NULL ? " 8 " : '');
 					echo ($value->nyeri_tekan9 !== NULL ? " 9 " : '');
-					echo ($value->hepatomegali !== NULL ? " Hepatomgali : ".$value->hepatomegali : '');
+					echo ($value->hepatomegali !== NULL ? " Hepatomegali : ".$value->hepatomegali : '');
 					echo ($value->spleenomegali !== NULL ? " Spleenomegali : ".$value->spleenomegali : '');
-					echo ($value->abdomen_ket_tambahan !== NULL ? " Keterangan tambahan : ".$value->abdomen_ket_tambahan : '');
+					echo ($value->abdomen_ket_tambahan !== NULL ? " Keterangan tambahan abdomen : ".$value->abdomen_ket_tambahan : '');
 
 					echo ($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL || $value->crt_1 !== NULL || $value->crt_2 !== NULL || $value->crt_2 !== NULL || $value->crt_3 !== NULL || $value->crt_4 !== NULL || $value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL? "<br>Ekstermitas " : '');
 					echo ($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL ? "Akral hangat: " : '');

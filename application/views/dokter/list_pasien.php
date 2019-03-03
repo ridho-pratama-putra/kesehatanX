@@ -1,4 +1,7 @@
 <div class="mt-3" style="width: 90%; margin-left: 5% ">
+    <div class="mt-3 mb-3">
+        <?=$this->session->flashdata("alert");?>
+    </div>
     <table id="tabel-list-pasien" class="display" style="width:100%">
         <thead>
             <tr>
@@ -58,7 +61,7 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a href="<?=base_url()?>detail-rm-pasien/<?=$value->id?>" class="btn btn-success">RM</a>
-                            <a href="<?=base_url()?>edit-pasien/<?=$value->id?>" class="btn btn-primary">Edit</a>
+                            <a href="<?=base_url()?>edit-identitas-pasien/<?=$value->id?>" class="btn btn-primary">Edit</a>
                             <a href="<?=base_url()?>hapus-pasien/<?=$value->id?>" class="btn btn-secondary">Hapus</a>
                         </div>
                     </td>
