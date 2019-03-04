@@ -11,17 +11,48 @@ class Dokter extends CI_Controller {
 		if ($this->session->userdata('logged_in')['akses'] != 'dokter' ){
 			redirect("Account/logout");
 		}
-		$data['last_sync'] 		=	$this->model->read('settingan',array('id'=>1))->result();
-		$now 					=	date("Y-m-d H:i:s");
-		if ($data['last_sync'] == array()) {
-			$this->model->create('settingan',array('id'=>1,'value'=>$now));
-		}else{
-			$datetime_now = new DateTime();
-			$datetime_database = new DateTime($data['last_sync'][0]->value);
-			if ($datetime_now->format('Y-m-d') > $datetime_database->format('Y-m-d')) {
-				$this->model->update('settingan',array('id'=>1),array('value'=>$now));
-				$this->model->rawQuery('TRUNCATE TABLE antrian');
-				$this->model->rawQuery('TRUNCATE TABLE proses_antrian');
+		
+		$now 							=	date("Y-m-d H:i:s");
+		$data['last_sync'] 				=	$this->model->read('settingan',array('id'=>1))->result();
+
+		$datetime_now = new DateTime();
+		$datetime_database = new DateTime($data['last_sync'][0]->value);
+		if ($datetime_now->format('Y-m-d') > $datetime_database->format('Y-m-d')) {
+			$this->model->update('settingan',array('id'=>1),array('value'=>$now));
+			$this->model->rawQuery('TRUNCATE TABLE antrian');
+			$this->model->rawQuery('TRUNCATE TABLE proses_antrian');
+			
+			$semua_record_pasien = $this->model->readS("pasien")->result();
+			
+			foreach ($semua_record_pasien as $key => $value) {
+				$tgl_lahir  = new DateTime($value->tanggal_lahir);
+				$now 		= new DateTime();
+				$usia		= $now->diff($tgl_lahir)->y;
+				if ($value->usia !== $usia) {
+					$kode_usia = NULL;
+					$nomor_pasien = explode("-", $value->nomor_pasien);
+					$perubahan_nomor_pasien = false;
+
+					if ($usia <= "14"){
+						$kode_usia = "01";
+					}elseif($usia >= "15" && $usia <= "49"){
+						$kode_usia = "02";
+					}elseif ($usia >= "50"){
+						$kode_usia = "03";
+					}
+
+					if ($nomor_pasien[3] !== $kode_usia) {
+						$perubahan_nomor_pasien = true;
+					}
+
+					if ($perubahan_nomor_pasien) {
+						$nomor_pasien_modifed = $nomor_pasien[0]."-".$nomor_pasien[1]."-".$nomor_pasien[2]."-".$nomor_pasien[3]."-".$nomor_pasien[4]."-".$nomor_pasien[5];
+						$this->model->update("pasien",array('id'=>$value->id),array('usia'=>$usia,'nomor_pasien'=>$nomor_pasien_modifed));
+					}else{
+						$this->model->update("pasien",array('id'=>$value->id),array('usia'=>$usia));
+					}
+
+				}
 			}
 		}
 	}
@@ -484,79 +515,79 @@ class Dokter extends CI_Controller {
 			// run query ke rekam medis, update atau create. kemudian get id nya untuk keperluan insert assessment ke tabel yang berelasi (tabel assesssment)
 			// if -> pemeriksaan dari antrian (update)
 			// else -> pemeriksaan dari pemeriksaan langsung (create)
-		if ($this->input->post('id_rekam_medis') !== '') {
-			$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
-			$queryToRekamMedis = json_decode($queryToRekamMedis);
-			$id_rekam_medis = $this->input->post('id_rekam_medis');
-		}else{
-			$queryToRekamMedis = $this->model->create_id('rekam_medis',$record);
-			$queryToRekamMedis = json_decode($queryToRekamMedis);
-			$id_rekam_medis = $queryToRekamMedis->message;
-		}
+if ($this->input->post('id_rekam_medis') !== '') {
+	$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
+	$queryToRekamMedis = json_decode($queryToRekamMedis);
+	$id_rekam_medis = $this->input->post('id_rekam_medis');
+}else{
+	$queryToRekamMedis = $this->model->create_id('rekam_medis',$record);
+	$queryToRekamMedis = json_decode($queryToRekamMedis);
+	$id_rekam_medis = $queryToRekamMedis->message;
+}
 
-		/*insert ke tabel assesmet*/
-		if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
+/*insert ke tabel assesmet*/
+if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
 
 													// 1. baca created_id (jika itu dari pemeriksaan langsung) atau current_id_rekam_medis (jika dari antrian pasien yang ditulis oleh petugas)
 
 													// 2. masukkan assessment inputan ke tabel assessment disertai id rekam medis yang berkaitan
-			$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
-			if ($this->input->post('assessmentPrimary') != array()) {
-				foreach ($this->input->post('assessmentPrimary') as $key => $value) {
-					$stringDiagnosa		 	.= "(NULL,'$id_rekam_medis','primer','$value'),";
-				}
-			}
-
-													// manipulasi string untuk masuk ke assessment. tipenya sekunder
-			if ($this->input->post('assessmentSecondary') != array()) {
-				foreach ($this->input->post('assessmentSecondary') as $key => $value) {
-					$stringDiagnosa 		.= "(NULL,'$id_rekam_medis','sekunder','$value'),";
-				}
-			}
-
-													// manipulasi string untuk masuk ke assessment. tipenya lainlain
-			if ($this->input->post('assessmentLain') != array()) {
-				foreach ($this->input->post('assessmentLain') as $key => $value) {
-					$stringDiagnosa 	 	.= "(NULL,'$id_rekam_medis','lainlain','$value'),";
-				}
-			}
-
-													// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
-			if ($this->input->post('assessmentPemeriksaanLab') != '') {
-				$stringDiagnosa				.= "(NULL,'$id_rekam_medis','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
-			}
-			$stringDiagnosa				= rtrim($stringDiagnosa,",");
-
-													// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
-			$this->model->rawQuery($stringDiagnosa);
-		}
-		/*end insert ke tabel assesmet*/
-
-		if ($queryToRekamMedis->status) {
-			$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
-			$this->model->delete(
-				'logistik_troli',
-				array(
-					'id_dokter' => $this->session->userdata('logged_in')['id_user'],
-					'id_pasien' => $this->input->post('id_pasien')
-				)
-			);
-			if ($this->input->post('id_rekam_medis') !== '') {
-				alert('alert','success','Berhasil','Data berhasil diupdate');
-			}else{
-				alert('alert','success','Berhasil','Data berhasil dimasukkan');
-			}
-			redirect("antrian-dokter");
-		}else{
-			alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
-			redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
-		}
-		}else{
-			$data['heading']	= "Halaman tidak ditemukan";
-			$data['message']	= "<p> Tidak ada data yang di post</p>";
-			$this->load->view('errors/html/error_404',$data);
+	$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
+	if ($this->input->post('assessmentPrimary') != array()) {
+		foreach ($this->input->post('assessmentPrimary') as $key => $value) {
+			$stringDiagnosa		 	.= "(NULL,'$id_rekam_medis','primer','$value'),";
 		}
 	}
+
+													// manipulasi string untuk masuk ke assessment. tipenya sekunder
+	if ($this->input->post('assessmentSecondary') != array()) {
+		foreach ($this->input->post('assessmentSecondary') as $key => $value) {
+			$stringDiagnosa 		.= "(NULL,'$id_rekam_medis','sekunder','$value'),";
+		}
+	}
+
+													// manipulasi string untuk masuk ke assessment. tipenya lainlain
+	if ($this->input->post('assessmentLain') != array()) {
+		foreach ($this->input->post('assessmentLain') as $key => $value) {
+			$stringDiagnosa 	 	.= "(NULL,'$id_rekam_medis','lainlain','$value'),";
+		}
+	}
+
+													// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
+	if ($this->input->post('assessmentPemeriksaanLab') != '') {
+		$stringDiagnosa				.= "(NULL,'$id_rekam_medis','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
+	}
+	$stringDiagnosa				= rtrim($stringDiagnosa,",");
+
+													// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
+	$this->model->rawQuery($stringDiagnosa);
+}
+/*end insert ke tabel assesmet*/
+
+if ($queryToRekamMedis->status) {
+	$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
+	$this->model->delete(
+		'logistik_troli',
+		array(
+			'id_dokter' => $this->session->userdata('logged_in')['id_user'],
+			'id_pasien' => $this->input->post('id_pasien')
+		)
+	);
+	if ($this->input->post('id_rekam_medis') !== '') {
+		alert('alert','success','Berhasil','Data berhasil diupdate');
+	}else{
+		alert('alert','success','Berhasil','Data berhasil dimasukkan');
+	}
+	redirect("antrian-dokter");
+}else{
+	alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
+	redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
+}
+}else{
+	$data['heading']	= "Halaman tidak ditemukan";
+	$data['message']	= "<p> Tidak ada data yang di post</p>";
+	$this->load->view('errors/html/error_404',$data);
+}
+}
 
 	/*
 	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian

@@ -14,17 +14,47 @@ class Petugas extends CI_Controller
 			redirect("Account/logout");
 		}
 
-		$data['last_sync'] 		=	$this->model->read('settingan',array('id'=>1))->result();
-		$now 					=	date("Y-m-d H:i:s");
-		if ($data['last_sync'] == array()) {
-			$this->model->create('settingan',array('id'=>1,'value'=>$now));
-		}else{
-			$datetime_now = new DateTime();
-			$datetime_database = new DateTime($data['last_sync'][0]->value);
-			if ($datetime_now->format('Y-m-d') > $datetime_database->format('Y-m-d')) {
-				$this->model->update('settingan',array('id'=>1),array('value'=>$now));
-				$this->model->rawQuery('TRUNCATE TABLE antrian');
-				$this->model->rawQuery('TRUNCATE TABLE proses_antrian');
+		$now 							=	date("Y-m-d H:i:s");
+		$data['last_sync'] 				=	$this->model->read('settingan',array('id'=>1))->result();
+
+		$datetime_now = new DateTime();
+		$datetime_database = new DateTime($data['last_sync'][0]->value);
+		if ($datetime_now->format('Y-m-d') > $datetime_database->format('Y-m-d')) {
+			$this->model->update('settingan',array('id'=>1),array('value'=>$now));
+			$this->model->rawQuery('TRUNCATE TABLE antrian');
+			$this->model->rawQuery('TRUNCATE TABLE proses_antrian');
+			
+			$semua_record_pasien = $this->model->readS("pasien")->result();
+			
+			foreach ($semua_record_pasien as $key => $value) {
+				$tgl_lahir  = new DateTime($value->tanggal_lahir);
+				$now 		= new DateTime();
+				$usia		= $now->diff($tgl_lahir)->y;
+				if ($value->usia !== $usia) {
+					$kode_usia = NULL;
+					$nomor_pasien = explode("-", $value->nomor_pasien);
+					$perubahan_nomor_pasien = false;
+
+					if ($usia <= "14"){
+						$kode_usia = "01";
+					}elseif($usia >= "15" && $usia <= "49"){
+						$kode_usia = "02";
+					}elseif ($usia >= "50"){
+						$kode_usia = "03";
+					}
+
+					if ($nomor_pasien[3] !== $kode_usia) {
+						$perubahan_nomor_pasien = true;
+					}
+
+					if ($perubahan_nomor_pasien) {
+						$nomor_pasien_modifed = $nomor_pasien[0]."-".$nomor_pasien[1]."-".$nomor_pasien[2]."-".$nomor_pasien[3]."-".$nomor_pasien[4]."-".$nomor_pasien[5];
+						$this->model->update("pasien",array('id'=>$value->id),array('usia'=>$usia,'nomor_pasien'=>$nomor_pasien_modifed));
+					}else{
+						$this->model->update("pasien",array('id'=>$value->id),array('usia'=>$usia));
+					}
+
+				}
 			}
 		}
 	}
@@ -65,7 +95,7 @@ class Petugas extends CI_Controller
 
 		// ambil id terakhir
 		$no_urut 	= $this->model->rawQuery("SELECT AUTO_INCREMENT AS no_urut FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'kesehatan' AND TABLE_NAME = 'pasien'")->result();
-		
+
 		// ambil id untuk dijadikan nomor identitas pasien
 		if ($no_urut == array()) {
 			$no_urut = "000";
@@ -128,7 +158,7 @@ class Petugas extends CI_Controller
 
 		// tahun datang
 		$tahun_datang = $now->format('Y');
-		
+
 		$nama_ayah = NULL;
 		if ($this->input->post('nama_ayah') !== NULL && $this->input->post('nama_ayah') !== '') {
 			$nama_ayah = ucwords($this->input->post('nama_ayah'));
@@ -312,15 +342,15 @@ class Petugas extends CI_Controller
 			'respiratory_rate'	=>	$this->input->post('frekuensi_pernapasan'),
 			'temperature_ax'	=>	$this->input->post('suhu'),
 			'id_pasien'		=>	$this->input->post('id_pasien'),
-			// 'nomor_pasien'		=>	$this->input->post('nomor_pasien'),
+// 'nomor_pasien'		=>	$this->input->post('nomor_pasien'),
 			'tanggal_jam'		=>	date("Y-m-d H:i:s")
 		);
 
-		// echo "<pre>";
-		// var_dump($postedData);
-		// die();
+// echo "<pre>";
+// var_dump($postedData);
+// die();
 
-		// create ke tabel RM dengan isi objektif
+// create ke tabel RM dengan isi objektif
 		$insert_into_rekam_medis = $this->model->create_id('rekam_medis',$postedData);
 		$insert_into_rekam_medis = json_decode($insert_into_rekam_medis);
 		$result = json_decode($this->model->create("antrian",array("id_pasien"=>$this->input->post("id_pasien"),"jam_datang"=>date("Y-m-d H:i:s"),"id_rekam_medis"=> $insert_into_rekam_medis->message)),false);
@@ -350,7 +380,7 @@ class Petugas extends CI_Controller
 		}elseif ($aksi == 'hapus') {
 			$this->model->rawQuery("DELETE FROM rekam_medis WHERE id ='".$id_rekam_medis."'");
 
-			// record akan selalu ada hingga dokter melakukan submit pemeriksaan. jadi aman jika menggunakan acuan id
+// record akan selalu ada hingga dokter melakukan submit pemeriksaan. jadi aman jika menggunakan acuan id
 			$this->model->delete(
 				'proses_antrian',
 				array(

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-03-03 00:14:33
+Date: 2019-03-04 22:41:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -10753,33 +10753,33 @@ CREATE TABLE `pasien` (
   `nama_ibu` varchar(255) DEFAULT NULL,
   `nama_ayah` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of pasien
 -- ----------------------------
-INSERT INTO `pasien` VALUES ('1', 'Zakiva Ambila', null, 'Malang', '2010-02-02', '8', 'Danau Sentani No A 18', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '001-013-02-01-09-2018', '2018-12-25', null, null);
-INSERT INTO `pasien` VALUES ('2', 'Alda Ayana', null, 'Sidoarjo', '2004-01-20', '14', 'Perum Puri Cempaka Putih 1 Blok P No 1 PP Nurul Hayat', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '001 Arjowinangun', null, 'Umum', null, '002-013-02-01-09-2018', '2018-12-26', null, null);
-INSERT INTO `pasien` VALUES ('3', 'Masyanada', null, 'Tuban', '2003-04-09', '15', 'Puri Cempaka Putih PP Nurul Hikmah', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '003-013-02-02-09-2018', '2018-12-26', null, null);
-INSERT INTO `pasien` VALUES ('4', 'Nayla Imtiaz', null, 'Surabaya', '2005-11-01', '13', 'PP Darul Ulum Agung ', 'Malang', null, 'Perempuan', 'Pelajar DU\'A', 'other', null, '013 Lain-lain', null, 'Umum', null, '004-013-02-01-09-2018', '2018-12-26', null, null);
-INSERT INTO `pasien` VALUES ('5', 'Sinta', null, 'Mojokerto', '2001-07-15', '17', 'PP Darul \'ulum Agung', 'Malang', null, 'Perempuan', 'Pelajar Darul \'Ulum Agung', 'other', null, '013 Lain-lain', null, 'Umum', null, '005-013-02-02-09-2018', '2018-12-26', null, null);
-INSERT INTO `pasien` VALUES ('6', 'Saiful Anwar', '950415590125', 'Malang', '1995-04-11', '23', null, 'other', 'Batu', 'Laki-laki', 'Mahasiswa', 'other', null, '013 Lain-lain', null, 'Umum', null, '006-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('7', 'Stela Amelia Putri', null, 'Malang', '2005-07-04', '13', null, 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '005 Kedung Kandang', null, 'Umum', null, '007-005-02-01-09-2018', '2019-01-08', 'Mak Sani', null);
-INSERT INTO `pasien` VALUES ('8', 'Aditya Kusuma', null, 'Malang', '2005-11-01', '13', 'Jodipan / PP Darul \'ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', 'Jodipan', '013 Lain-lain', 'Jodipan', 'Umum', null, '008-013-01-01-09-2018', '2018-12-26', 'Fitri', 'Muhammad Yasin');
-INSERT INTO `pasien` VALUES ('9', 'Nurul Isnaini', null, 'Malang', '2002-03-28', '16', 'Muharto', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '006 Kota Lama', null, 'Umum', null, '009-006-02-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('10', 'Siti Kholilah', null, 'Malang', '2001-11-11', '17', 'Kalisari', 'Malang', null, 'Perempuan', 'Pelajar XII IPS', 'Kedungkandang', null, '003 Buring', null, 'Umum', null, '010-003-02-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('11', 'Wildan Fatih', null, 'Sidoarjo', '2002-03-14', '16', null, null, null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '011-013-01-02-09-2018', '2019-01-07', null, null);
-INSERT INTO `pasien` VALUES ('12', 'Fatiha Nur Ratih', null, 'Cirebon', '2004-02-11', '14', 'PP Darul Ulum Agung', 'other', 'Jogja', 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '012-013-02-01-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('13', 'Mubarok', null, 'Pekalongan', '2006-10-17', '12', null, 'other', 'Pekalongan', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '013-013-01-01-09-2018', '2019-01-08', 'Iskandar', 'Iskandar');
-INSERT INTO `pasien` VALUES ('14', 'Rico Setyawan', null, 'Bojonegoro', '2000-07-22', '18', 'Lesanpuro PP Darul Ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar (santri Balap)', 'other', null, '013 Lain-lain', null, 'Umum', null, '014-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('15', 'M. Fauzan Farhat', null, 'Mojokerto', '2005-02-28', '13', 'PP Darul Ulum Agung', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '015-013-01-01-09-2018', '2019-01-08', 'Meriliana', 'H. Muchtarin');
-INSERT INTO `pasien` VALUES ('16', 'Muhamad Yusac Ekodi', null, 'Sidoarjo', '1994-03-13', '24', 'PP DU\'A', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '016-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('17', 'Rizka Alfian', null, 'Malang', '1990-07-22', '28', 'Kolonel Sugiono Gang 8 No 62', 'Malang', null, 'Laki-laki', 'Wiraswasta', 'other', null, '013 Lain-lain', null, 'Umum', null, '017-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('18', 'Rahmat Maulana', null, 'Riau', '2003-07-23', '15', 'PP DU\'A', 'other', 'Riau', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '018-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('19', 'Darmawan Gusti', null, 'Malang', '1997-12-04', '21', 'Ciptomulyo Gg 8 / PP DU\'A', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '019-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('20', 'Thoriq Abdul Aziz', null, 'Jombang', '1997-07-04', '21', 'PP DU\'A', 'other', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '020-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('21', 'Kholikul Anam', null, 'Jombang', '1993-11-10', '25', 'PP DU\'A', 'other', 'Jombang', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '021-013-01-02-09-2018', '2019-01-08', null, null);
-INSERT INTO `pasien` VALUES ('22', 'Muhammad Sahari Riski ', null, 'Malang', '2005-04-03', '13', 'Kolonel Sugiono (PP DU\'A)', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '022-013-01-01-09-2018', '2019-01-08', 'Agus Hariyanto', 'Eni W');
+INSERT INTO `pasien` VALUES ('1', 'Zakiva Ambila', null, 'Malang', '2010-02-02', '9', 'Danau Sentani No A 18', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '001-013-02-01-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('2', 'Alda Ayana', null, 'Sidoarjo', '2004-01-20', '15', 'Perum Puri Cempaka Putih 1 Blok P No 1 PP Nurul Hayat', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '001 Arjowinangun', null, 'Umum', null, '002-013-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('3', 'Masyanada', null, 'Tuban', '2003-04-09', '15', 'Puri Cempaka Putih PP Nurul Hikmah', 'other', null, 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '003-013-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('4', 'Nayla Imtiaz', null, 'Surabaya', '2005-11-01', '13', 'PP Darul Ulum Agung ', 'Malang', null, 'Perempuan', 'Pelajar DU\'A', 'other', null, '013 Lain-lain', null, 'Umum', null, '004-013-02-01-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('5', 'Sinta', null, 'Mojokerto', '2001-07-15', '17', 'PP Darul \'ulum Agung', 'Malang', null, 'Perempuan', 'Pelajar Darul \'Ulum Agung', 'other', null, '013 Lain-lain', null, 'Umum', null, '005-013-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('6', 'Saiful Anwar', '950415590125', 'Malang', '1995-04-11', '23', null, 'other', 'Batu', 'Laki-laki', 'Mahasiswa', 'other', null, '013 Lain-lain', null, 'Umum', null, '006-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('7', 'Stela Amelia Putri', null, 'Malang', '2005-07-04', '13', null, 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '005 Kedung Kandang', null, 'Umum', null, '007-005-02-01-09-2018', '2018-09-25', 'Mak Sani', null);
+INSERT INTO `pasien` VALUES ('8', 'Aditya Kusuma', null, 'Malang', '2005-11-01', '13', 'Jodipan / PP Darul \'ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', 'Jodipan', '013 Lain-lain', 'Jodipan', 'Umum', null, '008-013-01-01-09-2018', '2018-09-25', 'Fitri', 'Muhammad Yasin');
+INSERT INTO `pasien` VALUES ('9', 'Nurul Isnaini', null, 'Malang', '2002-03-28', '16', 'Muharto', 'Malang', null, 'Perempuan', 'Pelajar', 'Kedungkandang', null, '006 Kota Lama', null, 'Umum', null, '009-006-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('10', 'Siti Kholilah', null, 'Malang', '2001-11-11', '17', 'Kalisari', 'Malang', null, 'Perempuan', 'Pelajar XII IPS', 'Kedungkandang', null, '003 Buring', null, 'Umum', null, '010-003-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('11', 'Wildan Fatih', null, 'Sidoarjo', '2002-03-14', '16', null, null, null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '011-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('12', 'Fatiha Nur Ratih', null, 'Cirebon', '2004-02-11', '15', 'PP Darul Ulum Agung', 'other', 'Jogja', 'Perempuan', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '012-013-02-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('13', 'Mubarok', null, 'Pekalongan', '2006-10-17', '12', null, 'other', 'Pekalongan', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '013-013-01-01-09-2018', '2018-09-25', 'Iskandar', 'Iskandar');
+INSERT INTO `pasien` VALUES ('14', 'Rico Setyawan', null, 'Bojonegoro', '2000-07-22', '18', 'Lesanpuro PP Darul Ulum Agung', 'Malang', null, 'Laki-laki', 'Pelajar (santri Balap)', 'other', null, '013 Lain-lain', null, 'Umum', null, '014-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('15', 'M. Fauzan Farhat', null, 'Mojokerto', '2005-02-28', '14', 'PP Darul Ulum Agung', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '015-013-01-01-09-2018', '2018-09-25', 'Meriliana', 'H. Muchtarin');
+INSERT INTO `pasien` VALUES ('16', 'Muhamad Yusac Ekodi', null, 'Sidoarjo', '1994-03-13', '24', 'PP DU\'A', 'other', 'Mojokerto', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '016-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('17', 'Rizka Alfian', null, 'Malang', '1990-07-22', '28', 'Kolonel Sugiono Gang 8 No 62', 'Malang', null, 'Laki-laki', 'Wiraswasta', 'other', null, '013 Lain-lain', null, 'Umum', null, '017-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('18', 'Rahmat Maulana', null, 'Riau', '2003-07-23', '15', 'PP DU\'A', 'other', 'Riau', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '018-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('19', 'Darmawan Gusti', null, 'Malang', '1997-12-04', '21', 'Ciptomulyo Gg 8 / PP DU\'A', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '019-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('20', 'Thoriq Abdul Aziz', null, 'Jombang', '1997-07-04', '21', 'PP DU\'A', 'other', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '020-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('21', 'Kholikul Anam', null, 'Jombang', '1993-11-10', '25', 'PP DU\'A', 'other', 'Jombang', 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '021-013-01-02-09-2018', '2018-09-25', null, null);
+INSERT INTO `pasien` VALUES ('22', 'Muhammad Sahari Riski ', null, 'Malang', '2005-04-03', '13', 'Kolonel Sugiono (PP DU\'A)', 'Malang', null, 'Laki-laki', 'Pelajar', 'other', null, '013 Lain-lain', null, 'Umum', null, '022-013-01-01-09-2018', '2018-09-25', 'Agus Hariyanto', 'Eni W');
 
 -- ----------------------------
 -- Table structure for proses_antrian
@@ -10886,12 +10886,12 @@ CREATE TABLE `settingan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-03-03 00:00:23');
+INSERT INTO `settingan` VALUES ('1', '2019-03-04 22:34:11');
 
 -- ----------------------------
 -- Table structure for user
