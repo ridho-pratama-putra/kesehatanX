@@ -484,79 +484,79 @@ class Dokter extends CI_Controller {
 			// run query ke rekam medis, update atau create. kemudian get id nya untuk keperluan insert assessment ke tabel yang berelasi (tabel assesssment)
 			// if -> pemeriksaan dari antrian (update)
 			// else -> pemeriksaan dari pemeriksaan langsung (create)
-if ($this->input->post('id_rekam_medis') !== '') {
-	$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
-	$queryToRekamMedis = json_decode($queryToRekamMedis);
-	$id_rekam_medis = $this->input->post('id_rekam_medis');
-}else{
-	$queryToRekamMedis = $this->model->create_id('rekam_medis',$record);
-	$queryToRekamMedis = json_decode($queryToRekamMedis);
-	$id_rekam_medis = $queryToRekamMedis->message;
-}
+		if ($this->input->post('id_rekam_medis') !== '') {
+			$queryToRekamMedis = $this->model->update('rekam_medis',array("id"=>$this->input->post('id_rekam_medis')),$record);
+			$queryToRekamMedis = json_decode($queryToRekamMedis);
+			$id_rekam_medis = $this->input->post('id_rekam_medis');
+		}else{
+			$queryToRekamMedis = $this->model->create_id('rekam_medis',$record);
+			$queryToRekamMedis = json_decode($queryToRekamMedis);
+			$id_rekam_medis = $queryToRekamMedis->message;
+		}
 
-/*insert ke tabel assesmet*/
-if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
+		/*insert ke tabel assesmet*/
+		if ($this->input->post('assessmentPrimary') !== NULL OR $this->input->post('assessmentSecondary') !== NULL OR $this->input->post('assessmentLain') !== NULL OR $this->input->post('assessmentPemeriksaanLab') !== '') {
 
-											// 1. baca created_id (jika itu dari pemeriksaan langsung) atau current_id_rekam_medis (jika dari antrian pasien yang ditulis oleh petugas)
+													// 1. baca created_id (jika itu dari pemeriksaan langsung) atau current_id_rekam_medis (jika dari antrian pasien yang ditulis oleh petugas)
 
-											// 2. masukkan assessment inputan ke tabel assessment disertai id rekam medis yang berkaitan
-	$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
-	if ($this->input->post('assessmentPrimary') != array()) {
-		foreach ($this->input->post('assessmentPrimary') as $key => $value) {
-			$stringDiagnosa		 	.= "(NULL,'$id_rekam_medis','primer','$value'),";
+													// 2. masukkan assessment inputan ke tabel assessment disertai id rekam medis yang berkaitan
+			$stringDiagnosa 			= "INSERT INTO assessment VALUES ";
+			if ($this->input->post('assessmentPrimary') != array()) {
+				foreach ($this->input->post('assessmentPrimary') as $key => $value) {
+					$stringDiagnosa		 	.= "(NULL,'$id_rekam_medis','primer','$value'),";
+				}
+			}
+
+													// manipulasi string untuk masuk ke assessment. tipenya sekunder
+			if ($this->input->post('assessmentSecondary') != array()) {
+				foreach ($this->input->post('assessmentSecondary') as $key => $value) {
+					$stringDiagnosa 		.= "(NULL,'$id_rekam_medis','sekunder','$value'),";
+				}
+			}
+
+													// manipulasi string untuk masuk ke assessment. tipenya lainlain
+			if ($this->input->post('assessmentLain') != array()) {
+				foreach ($this->input->post('assessmentLain') as $key => $value) {
+					$stringDiagnosa 	 	.= "(NULL,'$id_rekam_medis','lainlain','$value'),";
+				}
+			}
+
+													// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
+			if ($this->input->post('assessmentPemeriksaanLab') != '') {
+				$stringDiagnosa				.= "(NULL,'$id_rekam_medis','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
+			}
+			$stringDiagnosa				= rtrim($stringDiagnosa,",");
+
+													// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
+			$this->model->rawQuery($stringDiagnosa);
+		}
+		/*end insert ke tabel assesmet*/
+
+		if ($queryToRekamMedis->status) {
+			$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
+			$this->model->delete(
+				'logistik_troli',
+				array(
+					'id_dokter' => $this->session->userdata('logged_in')['id_user'],
+					'id_pasien' => $this->input->post('id_pasien')
+				)
+			);
+			if ($this->input->post('id_rekam_medis') !== '') {
+				alert('alert','success','Berhasil','Data berhasil diupdate');
+			}else{
+				alert('alert','success','Berhasil','Data berhasil dimasukkan');
+			}
+			redirect("antrian-dokter");
+		}else{
+			alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
+			redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
+		}
+		}else{
+			$data['heading']	= "Halaman tidak ditemukan";
+			$data['message']	= "<p> Tidak ada data yang di post</p>";
+			$this->load->view('errors/html/error_404',$data);
 		}
 	}
-
-											// manipulasi string untuk masuk ke assessment. tipenya sekunder
-	if ($this->input->post('assessmentSecondary') != array()) {
-		foreach ($this->input->post('assessmentSecondary') as $key => $value) {
-			$stringDiagnosa 		.= "(NULL,'$id_rekam_medis','sekunder','$value'),";
-		}
-	}
-
-											// manipulasi string untuk masuk ke assessment. tipenya lainlain
-	if ($this->input->post('assessmentLain') != array()) {
-		foreach ($this->input->post('assessmentLain') as $key => $value) {
-			$stringDiagnosa 	 	.= "(NULL,'$id_rekam_medis','lainlain','$value'),";
-		}
-	}
-
-											// manipulasi string untuk masuk ke assessment. tipenya adalah pemeriksaan lab
-	if ($this->input->post('assessmentPemeriksaanLab') != '') {
-		$stringDiagnosa				.= "(NULL,'$id_rekam_medis','pemeriksaanLab','".$this->input->post('assessmentPemeriksaanLab')."'),";
-	}
-	$stringDiagnosa				= rtrim($stringDiagnosa,",");
-
-											// masukkan kd_assessment beserta data pemeriksaan primer sekunder lainlain pememeriksaan lab ke tabel assessment
-	$this->model->rawQuery($stringDiagnosa);
-}
-/*end insert ke tabel assesmet*/
-
-if ($queryToRekamMedis->status) {
-	$this->model->delete('proses_antrian',array('id_pasien'=>$this->input->post('id_pasien')));
-	$this->model->delete(
-		'logistik_troli',
-		array(
-			'id_dokter' => $this->session->userdata('logged_in')['id_user'],
-			'id_pasien' => $this->input->post('id_pasien')
-		)
-	);
-	if ($this->input->post('id_rekam_medis') !== '') {
-		alert('alert','success','Berhasil','Data berhasil diupdate');
-	}else{
-		alert('alert','success','Berhasil','Data berhasil dimasukkan');
-	}
-	redirect("antrian-dokter");
-}else{
-	alert('alert','danger','Gagal','Kegagalan database : '.$insertIntoRekamMedis->error_message->message);
-	redirect("pemeriksaan/".$this->input->post('nomor_pasien'));
-}
-}else{
-	$data['heading']	= "Halaman tidak ditemukan";
-	$data['message']	= "<p> Tidak ada data yang di post</p>";
-	$this->load->view('errors/html/error_404',$data);
-}
-}
 
 	/*
 	* funtion untuk handle form submit proses antrian dan antrian. hapus atau proses sebuah antrian
@@ -666,5 +666,132 @@ if ($queryToRekamMedis->status) {
 	{
 		echo "<pre>";
 		var_dump($this->input->post());
+
+		if($this->input->post('id_pasien') <= 9){
+			$no_urut = "00".$this->input->post('id_pasien');
+		}elseif ($this->input->post('id_pasien') >=10 && $this->input->post('id_pasien') <=99) {
+			$no_urut = "0".$this->input->post('id_pasien');
+		}else{
+			$no_urut = $this->input->post('id_pasien');
+		}
+		
+		$nik = NULL;
+		if ($this->input->post('nik') !== '' && $this->input->post('nik') !== NULL) {
+			$nik = $this->input->post('nik');
+			$result = $this->model->read('pasien',array('nik'=>$nik));
+			if ($result->num_rows() !== 0) {
+				
+			}
+		}
+
+		// ambil kode kelurahan
+		$kelurahan_lain = NULL;
+		$kelurahan = $this->input->post('kelurahan');
+		$kd_kelurahan = substr($kelurahan, 0,3);
+		if ($kelurahan == "013 Lain-lain" && $this->input->post('kelurahan_lain') !== '') {
+			$kelurahan_lain = $this->input->post('kelurahan_lain');
+		}
+
+		// manipulasi kecamatan
+		$kecamatan_lain = NULL;
+		$kecamatan = $this->input->post('kecamatan');
+		if ($kecamatan == 'other' && $this->input->post('kecamatan_lain') !== '') {
+			$kecamatan_lain = $this->input->post('kecamatan_lain');
+		}
+
+		// manipulasi kota
+		$kota_lain = NULL;
+		$kota = $this->input->post('kota');
+		if ($kota == 'other' && $this->input->post('kota_lain') !== '') {
+			$kota_lain = $this->input->post('kota_lain');
+		}
+
+		// ambil jenis kelamin
+		$jenis_kelamin = $this->input->post('jenis_kelamin');
+		if ($jenis_kelamin == 'Laki-laki') {
+			$kode_jenis_kelamin = '01';
+		}else{
+			$kode_jenis_kelamin = '02';
+		}
+
+		// hitung umur
+		$tgl_lahir  = new DateTime($this->input->post('tanggal_lahir'));
+		$now 		= new DateTime();
+		
+		$usia		= $now->diff($tgl_lahir)->y;
+
+		if ($usia <= "14") {
+			$kode_usia = "01";
+		}elseif($usia >= "15" && $usia <= "49"){
+			$kode_usia = "02";
+		}elseif ($usia >= "50") {
+			$kode_usia = "03";
+		}
+
+
+		// bulan datang
+		preg_match('#^(\d{4})-(\d{2})-(\d{2})$#', $this->input->post('tanggal_datang'), $results);
+		var_dump($results);
+		$bulan_datang = $results[2];
+
+		// tahun datang
+		$tahun_datang = $results[1];
+		
+		$nama_ayah = NULL;
+		if ($this->input->post('nama_ayah') !== NULL && $this->input->post('nama_ayah') !== '') {
+			$nama_ayah = ucwords($this->input->post('nama_ayah'));
+		}
+
+		$nama_ibu = NULL;
+		if ($this->input->post('nama_ibu') !== NULL && $this->input->post('nama_ibu') !== '') {
+			$nama_ibu = ucwords($this->input->post('nama_ibu'));
+		}
+
+		// jika pembayaran == BPJS tambahkan nomornya
+		$pembayaran = $this->input->post('pembayaran');
+		$nomor_bpjs = NULL;
+		if ($this->input->post('nomor_bpjs') !== '' && $this->input->post('nomor_bpjs') !== NULL) {
+			$nomor_bpjs = $this->input->post('nomor_bpjs');
+		}
+
+		$dataForm = array(	
+			'nama'			=>ucwords($this->input->post('nama')),
+			'nik' 			=>$nik,
+			'tempat_lahir'	=>ucwords($this->input->post('tempat_lahir')),
+			'tanggal_lahir' =>$tgl_lahir->format('Y-m-d'),
+			'usia'			=>$usia,
+			'jalan'			=>ucwords($this->input->post('jalan')),
+			'kelurahan'		=>$kelurahan,
+			'kecamatan'		=>$kecamatan,
+			'kota'			=>$kota,
+			'jenis_kelamin'	=>$this->input->post('jenis_kelamin'),
+			'nomor_bpjs'	=>$nomor_bpjs,
+			'pekerjaan'		=>ucwords($this->input->post('pekerjaan')),
+			'pembayaran'	=>$pembayaran,
+			'tanggal_datang'=>$this->input->post('tanggal_datang'),
+			'nama_ayah'		=>$nama_ayah,
+			'nama_ibu'		=>$nama_ibu,
+			'nomor_pasien'	=>$no_urut."-".$kd_kelurahan."-".$kode_jenis_kelamin."-".$kode_usia."-".$bulan_datang."-".$tahun_datang
+		);
+
+		if ($kelurahan_lain !== NULL) {
+			$dataForm['kelurahan_lain'] = ucwords($kelurahan_lain);
+		}
+		if ($kecamatan_lain !== NULL) {
+			$dataForm['kecamatan_lain'] = ucwords($kecamatan_lain);
+		}
+		if ($kota_lain !== NULL) {
+			$dataForm['kota_lain'] = ucwords($kota_lain);
+		}
+
+		$bool = $this->model->update("pasien",array("id"=>$this->input->post("id_pasien")),$dataForm);
+		$bool = json_decode($bool);
+
+		if ($bool->status) {
+			alert('alert','success','Berhasil','Data berhasil diupdate');
+			redirect("edit-identitas-pasien/".$this->input->post("id_pasien"));
+		}else{
+			var_dump($bool);
+		}
 	}
-}                                                                  
+}

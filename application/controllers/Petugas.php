@@ -53,10 +53,9 @@ class Petugas extends CI_Controller
 			$nik = $this->input->post('nik');
 		}
 
-		// cek apakah nik tidak ada isinya? jika tidak ada maka langsung skip pembacaan nik duplikat di database dan langsung insert. jika ada maka cek dulu di db adakah duplikasi
-		if ($nik !== '') {
-			// var_dump($nik);
-			// var_dump($this->input->post());die();
+		$nik = NULL;
+		if ($this->input->post('nik') !== '' && $this->input->post('nik') !== NULL) {
+			$nik = $this->input->post('nik');
 			$result = $this->model->read('pasien',array('nik'=>$nik));
 			if ($result->num_rows() !== 0) {
 				alert('alert','warning','Gagal','Duplikasi NIK');
@@ -123,8 +122,6 @@ class Petugas extends CI_Controller
 			$kode_usia = "03";
 		}
 
-		// ambil pembayaran
-		$pembayaran = $this->input->post('pembayaran');
 
 		// bulan datang
 		$bulan_datang = $now->format('m');
@@ -132,13 +129,6 @@ class Petugas extends CI_Controller
 		// tahun datang
 		$tahun_datang = $now->format('Y');
 		
-		// jika pembayaran == BPJS tambahkan nomornya
-		$pembayaran = $this->input->post('pembayaran');
-		// echo "$pembayaran";die()
-		if ($pembayaran=='BPJS') {
-			$pembayaran .= ' : '.$this->input->post('nomor_bpjs');
-		}
-
 		$nama_ayah = NULL;
 		if ($this->input->post('nama_ayah') !== NULL && $this->input->post('nama_ayah') !== '') {
 			$nama_ayah = ucwords($this->input->post('nama_ayah'));
@@ -149,6 +139,8 @@ class Petugas extends CI_Controller
 			$nama_ibu = ucwords($this->input->post('nama_ibu'));
 		}
 
+		// jika pembayaran == BPJS tambahkan nomornya
+		$pembayaran = $this->input->post('pembayaran');
 		$nomor_bpjs = NULL;
 		if ($this->input->post('nomor_bpjs') !== '' && $this->input->post('nomor_bpjs') !== NULL) {
 			$nomor_bpjs = $this->input->post('nomor_bpjs');

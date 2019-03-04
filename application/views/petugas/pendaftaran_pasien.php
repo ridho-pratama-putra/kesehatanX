@@ -82,12 +82,10 @@
 	}
 
 	function cekUmur(){
-		var dateinputan = new Date($('#tanggal_lahir').val());
-		tahun_lahir = dateinputan.getFullYear();
-		
+		var dateinputan = new Date($('#tanggal-lahir').val());
 		var datenow = new Date();
-		tahun_sekarang = datenow.getFullYear();
-		var umur = tahun_sekarang - tahun_lahir;
+		// var umur = tahun_sekarang - tahun_lahir;
+		var umur = Math.floor((datenow-dateinputan) / (365.25 * 24 * 60 * 60 * 1000));
 		
 		if (umur <= 14) {
 			elemToRender = "<div class='row'>"+

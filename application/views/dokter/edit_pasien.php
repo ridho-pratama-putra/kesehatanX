@@ -13,6 +13,15 @@
 			<input type="text" class="form-control" id="id-pasien" name="id_pasien" value="<?=$pasien[0]->id?>"  readonly="">
 		</div>
 		<div class="form-group">
+			<label for="nomor-pasien">
+				<p class="text-warning">
+					nomor urut id - kode kelurahan - kode jenis kelamin - kode usia - bulan datang - tahun datang
+				</p>
+				Nomor pasien
+			</label>
+			<input type="text" class="form-control" id="nomor-pasien" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>"  readonly="">
+		</div>
+		<div class="form-group">
 			<label>
 				Nama Pasien
 			</label>
@@ -34,12 +43,12 @@
 			<label for="tanggal-lahir">
 				Tanggal lahir
 			</label>
-			<input type="date" min="0" class="form-control" id="tanggal-lahir" placeholder="<?=($pasien[0]->tanggal_lahir !== NULL ? 'data sekarang : '.$pasien[0]->tanggal_lahir : 'data masih belum diisi' )?>"
-			value="<?=($pasien[0]->tanggal_lahir !== NULL ? $pasien[0]->tanggal_lahir : '')?>" name="tanggal_lahir" >
+			<input type="date" min="0" class="form-control" id="tanggal-lahir" placeholder="<?=($pasien[0]->tanggal_lahir !== NULL ? 'data sekarang : '.$pasien[0]->tanggal_lahir : 'data masih belum diisi' )?>" name="tanggal_lahir" onchange="cekUmur()">
 		</div>
+		<div id="nama-orang-tua"></div><!-- jika anak2 maka tambahkan kolom inputan nama orang tua. -->
 		<div class="form-group">
 			<label for="usia">
-				Tanggal lahir
+				Usia
 			</label>
 			<input type="text" min="0" class="form-control" id="usia" placeholder="<?=($pasien[0]->usia !== NULL ? 'data sekarang : '.$pasien[0]->usia : 'data masih belum diisi' )?>"
 			value="<?=($pasien[0]->usia !== NULL ? $pasien[0]->usia : '')?>" name="usia" >
@@ -52,11 +61,11 @@
 			value="<?=($pasien[0]->jalan !== NULL ? $pasien[0]->jalan : '')?>" name="jalan" >
 		</div>
 		<div class="form-group">
-			<label for="tanggal-lahir">
-				Tanggal lahir
+			<label for="tanggal-datang">
+				Tanggal datang
 			</label>
-			<input type="date" min="0" class="form-control" id="tanggal-lahir" placeholder="<?=($pasien[0]->tanggal_lahir !== NULL ? 'data sekarang : '.$pasien[0]->tanggal_lahir : 'data masih belum diisi' )?>"
-			value="<?=($pasien[0]->tanggal_lahir !== NULL ? $pasien[0]->tanggal_lahir : '')?>" name="tanggal_lahir" >
+			<input type="date" min="0" class="form-control" id="tanggal-datang" placeholder="<?=($pasien[0]->tanggal_datang !== NULL ? 'data sekarang : '.$pasien[0]->tanggal_datang : 'data masih belum diisi' )?>"
+			value="<?=($pasien[0]->tanggal_datang !== NULL ? $pasien[0]->tanggal_datang : '')?>" name="tanggal_datang" >
 		</div>
 		
 		<div class="form-group row">
@@ -116,6 +125,36 @@
 
 					</div>
 				</div>	
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-1 col-form-label">Gender</label>
+			<div class="input-group-prepend col-sm-7">
+				<select class="form-control" id="jenis-kelamin" name="jenis_kelamin" required="">
+					<option value="Laki-laki">Laki - Laki</option>
+					<option value="Perempuan">Perempuan</option>
+				</select>	
+			</div>
+		</div>
+
+		<!-- JENIS PEMBAYARAN -->
+		<div class="form-group row">
+			<label class="col-sm-1 col-form-label">Pembayaran</label>
+			<div class="input-group-prepend col-sm-7">
+				<select class="form-control" id="jenis-pembayaran" name="pembayaran" required="" onchange="cekPembayaran()">
+					<option value="Umum">Umum</option>
+					<option value="BPJS">BPJS</option>
+					<option value="RF">Royale Family</option>
+				</select>	
+			</div>
+		</div>
+
+		<!-- JIKA BPJS MAKA TAMPILKAN KOLOM TAMBAHAN UNTUK PENGSIAN NOMOR BPJS -->
+		<div class="form-group row" id="nomor-bpjs" style="display: none;">
+			<label class="col-1 col-form-label">Nomor BPJS</label>
+			<div class="input-group-prepend col-7">
+				<input class="form-control " type="text" placeholder="Masukkan Nomor BPJS" name="nomor_bpjs">
 			</div>
 		</div>
 	</div>
@@ -202,6 +241,47 @@
 			}
 		}
 	}
+
+	function cekPembayaran(){
+		var pembayaran = $('#jenis-pembayaran').val();
+		if (pembayaran != 'BPJS') {
+			$('#nomor-bpjs').css('display','none');
+		}else{
+			$('#nomor-bpjs').css('display','');
+		}
+	}
+
+	function cekUmur(){
+		var dateinputan = new Date($('#tanggal-lahir').val());
+		var datenow = new Date();
+		// var umur = tahun_sekarang - tahun_lahir;
+		var umur = Math.floor((datenow-dateinputan) / (365.25 * 24 * 60 * 60 * 1000));
+		$("#usia").val(umur);
+		
+		if (umur <= 14) {
+			elemToRender = "<div class='row'>"+
+			"<div class='col'>"+
+			"<div class='form-group row'>"+
+			"<label class='col-sm-3 col-form-label'>Nama Ayah</label>"+
+			"<div class='input-group-prepend col-sm-9'>"+
+			"<input type='text' class='form-control' name='nama_ayah' id='nama-ayah' >"+
+			"</div>"+
+			"</div>"+
+			"</div>"+
+			"<div class='col'>"+
+			"<div class='form-group row'>"+
+			"<label class='col-sm-3 col-form-label'>Nama Ibu</label>"+
+			"<div class='input-group-prepend col-sm-9'>"+
+			"<input type='text' class='form-control' name='nama_ibu' id='nama-ibu' >"+
+			"</div>"+
+			"</div>"+
+			"</div>"+
+			"<div>";
+			$('#nama-orang-tua').html(elemToRender);
+		}else{
+			$('#nama-orang-tua').html("");
+		}
+	}
 </script>
 <script type="text/javascript">
 	$( document ).ready(function() {
@@ -216,5 +296,17 @@
 		$("#kelurahan").val("<?=$pasien[0]->kelurahan?>");
 		kelurahanLain()
 		<?=($pasien[0]->kelurahan == '013 Lain-lain' ? ($pasien[0]->kelurahan_lain !== NULL ? '$("#kelurahan-lain").val("'.$pasien[0]->kelurahan_lain.'")' : '$("#kelurahan-lain").attr("placeholder","data masih belum diisi")') : '')?>
+
+		$("#jenis-pembayaran").val("<?=$pasien[0]->pembayaran?>")
+		cekPembayaran()
+		<?=($pasien[0]->pembayaran == 'BPJS' ? ($pasien[0]->nomor_bpjs !== NULL ? '$("#nomor-bpjs").val("'.$pasien[0]->nomor_bpjs.'")' : '$("#pembayaran-lain").attr("placeholder","data masih belum diisi")') : '')?>
+
+		$("#tanggal-lahir").val("<?=$pasien[0]->tanggal_lahir?>")
+		cekUmur()
+		<?=($pasien[0]->nama_ayah !== NULL ? '$("#nama-ayah").val("'.$pasien[0]->nama_ayah.'");' : '$("#nama-ayah").attr("placeholder","data masih belum diisi");')?>
+		<?=($pasien[0]->nama_ibu !== NULL ? '$("#nama-ibu").val("'.$pasien[0]->nama_ibu.'");' : '$("#nama-ibu").attr("placeholder","data masih belum diisi");')?>
+
+		$("#jenis-kelamin").val("<?=$pasien[0]->jenis_kelamin?>")
+
 	});
 </script>
