@@ -14,12 +14,10 @@
 		</div>
 		<div class="form-group">
 			<label for="nomor-pasien">
-				<p class="text-warning">
-					nomor urut id - kode kelurahan - kode jenis kelamin - kode usia - bulan datang - tahun datang
-				</p>
 				Nomor pasien
 			</label>
 			<input type="text" class="form-control" id="nomor-pasien" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>"  readonly="">
+			<small class="text-muted">nomor urut id - kode kelurahan - kode jenis kelamin - kode usia - bulan datang - tahun datang</small>
 		</div>
 		<div class="form-group">
 			<label>

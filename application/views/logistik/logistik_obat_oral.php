@@ -10,6 +10,10 @@
 	<button type="button" class="btn btn-primary mt-3 mb-3" data-toggle="modal" data-target="#tambahObat">
 		Tambah Obat Oral
 	</button>
+
+	<a href="<?=base_url()?>log-logistik/obat_oral" class="btn btn-primary mt-3 mb-3" >
+		Lihat log logistik Obat Oral
+	</a>
 	<table id="tabelObatOral" class="display" style="width:100%">
 		<thead>
 			<tr>
@@ -64,6 +68,7 @@
 					<td>
 						<div class="btn-group" role="group" aria-label="Basic example">
 							<a href="<?=base_url()?>logistik-obat-oral-edit/<?=$value->id?>" class="btn btn-primary">Edit</a>
+							<a href="<?=base_url()?>logistik-obat-oral-restok/<?=$value->id?>" class="btn btn-info">Restok</a>
 							<a href="<?=base_url()?>logistik-obat-oral-hapus/<?=$value->id?>" class="btn btn-secondary">Delete</a>
 						</div>
 					</td>

@@ -1,6 +1,3 @@
-
-
-
 <div class="text-center mt-3"><h5><strong>Daftar Logistik Bahan Sekali Pakai</strong></h5></div>
 <div class="container mt-3">
 	<div class="mt-3 mb-3">
@@ -10,6 +7,10 @@
 	<button type="button" class="btn btn-primary mt-3 mb-3" data-toggle="modal" data-target="#tambahBahan">
 		Tambah Bahan Sekali Pakai
 	</button>
+
+	<a href="<?=base_url()?>log-logistik/alat_bahan_sekali_pakai" class="btn btn-primary mt-3 mb-3" >
+		Lihat log logistik bahan sekali pakai
+	</a>
 	<table id="tabelBahanSekaliPakai" class="display" style="width:100%">
 		<thead>
 			<tr>
@@ -58,6 +59,7 @@
 					<td>
 						<div class="btn-group" role="group" aria-label="Basic example">
 							<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai-edit/<?=$value->id?>" class="btn btn-primary">Edit</a>
+							<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai-restok/<?=$value->id?>" class="btn btn-info">Restok</a>
 							<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai-hapus/<?=$value->id?>" class="btn btn-secondary">Delete</a>
 						</div>
 					</td>

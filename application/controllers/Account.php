@@ -47,7 +47,7 @@ class Account extends CI_Controller {
 				if ($record->hak_akses == 'admin') {
 					redirect('logistik-obat-oral');
 				}elseif ($record->hak_akses == 'dokter') {
-					redirect('logistik-obat-oral');
+					redirect('antrian-dokter');
 				}elseif ($record->hak_akses == 'petugas') {
 					redirect('antrian-petugas');
 				}

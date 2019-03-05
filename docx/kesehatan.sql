@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-03-04 22:41:16
+Date: 2019-03-05 13:30:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -10614,12 +10614,6 @@ CREATE TABLE `logistik_log` (
 -- ----------------------------
 -- Records of logistik_log
 -- ----------------------------
-INSERT INTO `logistik_log` VALUES ('1', 'obat_oral', '1', '56', '2019-03-02 11:16:18');
-INSERT INTO `logistik_log` VALUES ('2', 'obat_oral', '3', '8', '2019-03-02 13:00:35');
-INSERT INTO `logistik_log` VALUES ('3', 'obat_oral', '3', '7', '2019-03-02 16:35:30');
-INSERT INTO `logistik_log` VALUES ('4', 'obat_oral', '1', '55', '2019-03-02 16:36:14');
-INSERT INTO `logistik_log` VALUES ('5', 'obat_injeksi', '1', '9', '2019-03-02 16:36:43');
-INSERT INTO `logistik_log` VALUES ('6', 'obat_injeksi', '1', '8', '2019-03-02 16:37:02');
 
 -- ----------------------------
 -- Table structure for logistik_obat_injeksi
@@ -10704,7 +10698,7 @@ CREATE TABLE `logistik_troli` (
   `id_pasien` varchar(255) DEFAULT NULL,
   `jumlah` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of logistik_troli
@@ -10715,16 +10709,23 @@ CREATE TABLE `logistik_troli` (
 -- ----------------------------
 DROP TABLE IF EXISTS `log_logistik`;
 CREATE TABLE `log_logistik` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `jenis_logistik` varchar(255) DEFAULT NULL,
   `id_obat` varchar(255) DEFAULT NULL,
-  `stok_tersisa` varchar(255) DEFAULT NULL,
+  `stok_sekarang` varchar(255) DEFAULT NULL,
+  `stok_keluar` varchar(255) DEFAULT NULL,
+  `stok_masuk` varchar(255) DEFAULT NULL,
+  `datetime_init` datetime DEFAULT NULL,
+  `datetime_last` datetime DEFAULT NULL,
+  `tipe` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of log_logistik
 -- ----------------------------
+INSERT INTO `log_logistik` VALUES ('1', 'obat_oral', '1', '56', '3', null, '2019-03-05 13:22:48', '2019-03-05 13:22:48', 'keluar');
+INSERT INTO `log_logistik` VALUES ('2', 'obat_oral', '1', '59', null, '3', '2019-03-05 13:23:52', '2019-03-05 13:23:57', 'masuk');
 
 -- ----------------------------
 -- Table structure for pasien
@@ -10857,26 +10858,12 @@ CREATE TABLE `rekam_medis` (
   `dokter_pemeriksa` varchar(255) DEFAULT NULL,
   `planning` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of rekam_medis
 -- ----------------------------
-INSERT INTO `rekam_medis` VALUES ('1', '3', '2019-03-02 11:28:40', null, 'E: 12', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
-INSERT INTO `rekam_medis` VALUES ('2', '3', '2019-03-02 11:36:55', null, null, '123', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
-INSERT INTO `rekam_medis` VALUES ('3', '3', '2019-03-02 12:07:35', null, null, null, null, null, null, null, null, null, null, ' Anemis +/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', null, 'keterangan tambahan kepala', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
-INSERT INTO `rekam_medis` VALUES ('4', '3', '2019-03-02 12:09:07', null, null, null, null, null, null, null, null, null, null, ' Anemis +/- Ikterik +/- Cianosis -/+', 'Isokor', 'keterangan tambahan kepal', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', 'Total biaya: Rp. 10.000,00');
-INSERT INTO `rekam_medis` VALUES ('5', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', null, null, '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', null, null, 'suara tambahan', 'ketarangan jantung tambahan', null, null, '1', '1', null, '1', '1', null, null, '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', null, null, null, null, null, null, '1', null, null, null, null, '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', null, null, null, '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('6', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('7', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('8', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('9', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('10', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('11', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('12', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('13', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('14', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
-INSERT INTO `rekam_medis` VALUES ('15', '3', '2019-03-02 13:00:39', 'subjektif', 'E: 13 M: 45', '124', '54', '', '', '75', '120', '30', 'head to toe', ' Anemis -/+ Ikterik -/+ Cianosis -/+ Deformitas +/- Refleks cahaya -/+', 'Anisokor', 'keterangan tambahan kepala', 'Simetris', 'Wheezing -/+ Vesikuler +/-', '', '', 'suara tambahan', 'ketarangan jantung tambahan', '', '', '1', '1', '', '1', '1', '', '', '1', 'hepatomegali', 'spleenomegali', 'keterangan tambahan abdomen', '', '', '', '', '', '', '1', '', '', '', '', '1', 'Pitting', 'keterangan tambahan ekstermitas', 'lain lain ', '', '', '', '2', '. 1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00. Total biaya: Rp. 17.500,00');
+INSERT INTO `rekam_medis` VALUES ('1', '5', '2019-03-05 13:25:17', 'luka kena paku', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', '3 Capsul Amoxicillin 500mg Rp. 1.800,00.  Biaya dokter: 10000. Total biaya: Rp. 11.800,00');
 
 -- ----------------------------
 -- Table structure for settingan
@@ -10886,12 +10873,12 @@ CREATE TABLE `settingan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-03-04 22:34:11');
+INSERT INTO `settingan` VALUES ('1', '2019-03-05 08:26:39');
 
 -- ----------------------------
 -- Table structure for user

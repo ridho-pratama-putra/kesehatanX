@@ -195,6 +195,123 @@ class Logistik extends CI_Controller {
 		}
 		redirect($this->redirectUrl($jenis_logistik));
 	}
+
+	function restokLogistik($jenis_logistik,$id)
+	{
+		$active = array(
+			"alat_bahan_sekali_pakai" 	=>	"logistik-alat-bahan-sekali-pakai",
+			"obat_injeksi"				=>	"logistik-obat-injeksi",
+			"obat_oral"					=>	"logistik-obat-oral",
+			"obat_sigma_usus_externum"	=>	"logistik-obat-sigma-usus-externum"
+		);
+
+		$data 	= array(
+			"active"					=>	$active[$jenis_logistik],
+			"record"					=>	$this->model->rawQuery("SELECT logistik_".$jenis_logistik.".*, golongan_logistik.nama_golongan FROM logistik_".$jenis_logistik." INNER JOIN golongan_logistik ON golongan_logistik.id = logistik_".$jenis_logistik.".golongan")->result(),
+			"jenis_logistik"			=>	$jenis_logistik
+		);
+
+
+		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
+		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
+		$this->load->view("logistik/logistik_".$jenis_logistik."_restok",$data);
+		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
+	}
+
+	function submitRestokLogistik()
+	{
+		$bool = $this->model->rawQuery("UPDATE logistik_".$this->input->post("jenis_logistik")." SET stok = stok + ".$this->input->post("stok_masuk")." WHERE id = ".$this->input->post("id"));
+		$old_stok = $this->model->read("logistik_".$this->input->post("jenis_logistik"),array("id"=>$this->input->post("id")))->result();
+
+		$cek_tercatat_di_log_logistik = $this->model->read(
+			"log_logistik",
+			array(
+				'jenis_logistik' => $this->input->post("jenis_logistik"),
+				"id_obat" => $this->input->post("id"), 
+				"tipe" => "masuk", 
+				"DAY(datetime_init)" => date('d'), 
+				"MONTH(datetime_init)" => date('m'), 
+				"YEAR(datetime_init)" => date('Y')
+			)
+		)->num_rows();
+
+		// kueri dibawah ini akan mencatat log setiap harian. cek nya pun juga harian. bisa dilihat di $cek_tercatat_di_log_logistik
+		if ($cek_tercatat_di_log_logistik == 0) {
+			$bool = $this->model->create(
+				"log_logistik",
+				array(
+					'jenis_logistik' => $this->input->post("jenis_logistik"), 
+					"id_obat" => $this->input->post("id"), 
+					"stok_sekarang" => $old_stok[0]->stok, 
+					"stok_masuk "=> $this->input->post("stok_masuk"), 
+					"datetime_init" => date("Y-m-d H:i:s"), 
+					"datetime_last" => date("Y-m-d H:i:s"), 
+					"tipe" => "masuk"
+				)
+			);
+		}elseif ($cek_tercatat_di_log_logistik == 1) {
+			$bool = $this->model->rawQuery(
+				"UPDATE 
+				log_logistik 
+				SET 
+				stok_masuk = stok_masuk + ".$this->input->post("stok_masuk")." ,
+				stok_sekarang = ".$old_stok[0]->stok." , 
+				datetime_last = '".date("Y-m-d H:i:s")."' 
+				WHERE 
+				id_obat = ".$this->input->post("id")." 
+				AND 
+				jenis_logistik = '".$this->input->post("jenis_logistik")."' 
+				AND 
+				DAY(datetime_init) = '".date('d')."' 
+				AND 
+				MONTH(datetime_init) = '".date('m')."' 
+				AND 
+				YEAR(datetime_init) = '".date('Y')."' 
+				AND 
+				tipe = 'masuk'"
+			);
+		}
+
+		if ($bool) {
+			alert('alert','success','Berhasil','Logistik berhasil di restok dan telah masuk ke log pencatatan stok logistik');
+		}else{		
+			alert('alert','warning','Gagal','Logistik gagal direstok ');
+		}
+		redirect($this->redirectUrl($this->input->post("jenis_logistik")).'-restok/'.$this->input->post("id"));
+	}
+
+	/*
+	* menampilkan halaman log logistik setiap jenis logistik
+	*/
+	function logLogistik($jenis_logistik)
+	{
+
+		$data 	= array(
+			"active"					=>	"log-logistik",
+			"record"					=>	$this->model->rawQuery("
+				SELECT
+				log_logistik.stok_sekarang,
+				log_logistik.stok_masuk,
+				log_logistik.stok_keluar,
+				log_logistik.datetime_init,
+				log_logistik.datetime_last,
+				logistik_$jenis_logistik.nama,
+				logistik_$jenis_logistik.bentuk,
+				logistik_$jenis_logistik.sediaan
+				FROM log_logistik
+				INNER JOIN logistik_$jenis_logistik ON log_logistik.id_obat = logistik_$jenis_logistik.id
+				WHERE jenis_logistik = '".$jenis_logistik."'
+				AND MONTH(datetime_init) = '".date('m')."'
+				AND YEAR(datetime_init)
+				ORDER BY DAY(datetime_init)
+				")->result()
+		);
+
+		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
+		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
+		$this->load->view("logistik/logistik_log",$data);
+		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
+	}
 }
 // UNSET THINGS
 // $this->session->unset_userdata('sesi');

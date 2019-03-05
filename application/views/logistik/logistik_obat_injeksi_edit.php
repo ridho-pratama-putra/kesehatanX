@@ -60,12 +60,12 @@
 			</label>
 			<input type="number" min="0" class="form-control" id="hargaJualSatuan" placeholder="Contoh : 11000 atau 0 (Negative)" name="harga_jual_satuan" value="<?=$record[0]->harga_jual_satuan?>" required="">
 		</div>
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label for="stok">
 				Stok
 			</label>
 			<input type="number" min="0" class="form-control" id="stok" placeholder="Contoh : 75 atau 0 (Negative)" name="stok" value="<?=$record[0]->stok?>" required="">
-		</div>
+		</div> -->
 	</div>
 	<div class="container">
 		<a href="<?=base_url()?>logistik-alat-bahan-sekali-pakai" class="btn btn-secondary">Kembali</a>
