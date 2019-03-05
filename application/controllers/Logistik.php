@@ -285,9 +285,23 @@ class Logistik extends CI_Controller {
 	*/
 	function logLogistik($jenis_logistik)
 	{
-
 		$data 	= array(
-			"active"					=>	"log-logistik",
+			"active"					=>	"log-logistik"			
+		);
+
+		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
+		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
+		$this->load->view("logistik/logistik_".$jenis_logistik."_log",$data);
+		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
+	}
+
+	/*
+	* handle ajax request get log logistik suatu obat. dibuat ajax request karena ada pemilihan tampilan berdasar bulan juga
+	*/
+	function getLogLogistik($jenis_logistik)
+	{
+		$jangka_waktu = explode("-", $this->input->get("bulan_tahun"));
+		$data = array(
 			"record"					=>	$this->model->rawQuery("
 				SELECT
 				log_logistik.stok_sekarang,
@@ -301,16 +315,11 @@ class Logistik extends CI_Controller {
 				FROM log_logistik
 				INNER JOIN logistik_$jenis_logistik ON log_logistik.id_obat = logistik_$jenis_logistik.id
 				WHERE jenis_logistik = '".$jenis_logistik."'
-				AND MONTH(datetime_init) = '".date('m')."'
-				AND YEAR(datetime_init)
+				AND MONTH(datetime_init) = '".$jangka_waktu[1]."'
+				AND YEAR(datetime_init) = '".$jangka_waktu[0]."'
 				ORDER BY DAY(datetime_init)
-				")->result()
-		);
-
-		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
-		$this->load->view($this->session->userdata('logged_in')['akses']."/navbar",$data);
-		$this->load->view("logistik/logistik_log",$data);
-		$this->load->view($this->session->userdata('logged_in')['akses']."/footer");
+				")->result());
+		echo json_encode($data);
 	}
 }
 // UNSET THINGS

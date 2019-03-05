@@ -186,7 +186,7 @@
 				data.push(respon.data[i].nama_golongan)
 			}
 
-			console.log(data)
+			// console.log(data)
 
 			$('#tambahBahan').autocomplete({
 				lookup: data,

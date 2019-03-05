@@ -1,10 +1,4 @@
 <div class="mt-3" style="width: 90%; margin-left: 5% ">
-	<?php 
-	echo "<pre>";
-	// var_dump($pasien);
-	// var_dump($rekam_medis);
-	echo "</pre>";
-	?>
 	<table id="tabel-rekam-medis" class="display" style="width:100%">
 		<thead>
 			<tr> 
@@ -120,7 +114,7 @@
 					columns: [0,1,2,3,4]
 				},
 				messageTop: 
-				"Nama \t\t\t\t\t\t\t\t: <?=$pasien[0]->nama?> \n Nomor pasien \t\t\t\t  : <?=$pasien[0]->nomor_pasien?> \n Alamat \t\t\t\t\t\t\t  : <?=$pasien[0]->jalan?> \nNIK \t\t\t\t\t\t\t\t\t : <?=$pasien[0]->nik?> \n Jenis kelamin \t\t\t\t  : <?=$pasien[0]->jenis_kelamin?> \nTempat tanggal lahir \t  : <?=$pasien[0]->tempat_lahir?>, <?=tgl_indo($pasien[0]->tanggal_lahir)?> \n Nama Ibu/Ayah \t\t\t   : <?=($pasien[0]->nama_ibu !== NULL ? $pasien[0]->nama_ibu : '...')?> / <?=($pasien[0]->nama_ayah !== NULL ? $pasien[0]->nama_ayah : '...')?>"
+				"Rekam medis bulan \t\t: <?=date('F')?>\nNama \t\t\t\t\t\t\t\t: <?=$pasien[0]->nama?> \n Nomor pasien \t\t\t\t  : <?=$pasien[0]->nomor_pasien?> \n Alamat \t\t\t\t\t\t\t  : <?=$pasien[0]->jalan?> \nNIK \t\t\t\t\t\t\t\t\t : <?=$pasien[0]->nik?> \n Jenis kelamin \t\t\t\t  : <?=$pasien[0]->jenis_kelamin?> \nTempat tanggal lahir \t  : <?=$pasien[0]->tempat_lahir?>, <?=tgl_indo($pasien[0]->tanggal_lahir)?> \n Nama Ibu/Ayah \t\t\t   : <?=($pasien[0]->nama_ibu !== NULL ? $pasien[0]->nama_ibu : '...')?> / <?=($pasien[0]->nama_ayah !== NULL ? $pasien[0]->nama_ayah : '...')?>",
 			}
 			],
 			columnDefs: [ 

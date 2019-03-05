@@ -74,6 +74,7 @@ $route['logistik-alat-bahan-sekali-pakai-edit/(:num)'] 	= 'Logistik/editLogistik
 $route['logistik-alat-bahan-sekali-pakai-restok/(:num)']= 'Logistik/restokLogistik/alat_bahan_sekali_pakai/$1';
 $route['logistik-alat-bahan-sekali-pakai-submit-edit'] 	= 'Logistik/submitEditLogistik/alat_bahan_sekali_pakai';
 $route['logistik-alat-bahan-sekali-pakai-hapus/(:num)'] = 'Logistik/deleteLogistik/alat_bahan_sekali_pakai/$1';
+$route['get-log-logistik-alat-bahan-sekali-pakai'] = 'Logistik/getLogLogistik/alat_bahan_sekali_pakai';
 
 $route['logistik-obat-injeksi'] 						= 'Logistik/readLogistik/obat_injeksi';
 $route['logistik-obat-injeksi-tambah'] 					= 'Logistik/createLogistik/obat_injeksi/';
@@ -81,13 +82,15 @@ $route['logistik-obat-injeksi-edit/(:num)'] 			= 'Logistik/editLogistik/obat_inj
 $route['logistik-obat-injeksi-submit-edit'] 			= 'Logistik/submitEditLogistik/obat_injeksi';
 $route['logistik-obat-injeksi-restok/(:num)']			= 'Logistik/restokLogistik/obat_injeksi/$1';
 $route['logistik-obat-injeksi-hapus/(:num)'] 			= 'Logistik/deleteLogistik/obat_injeksi/$1';
+$route['get-log-logistik-obat-injeksi'] 				= 'Logistik/getLogLogistik/obat_injeksi';
 
 $route['logistik-obat-oral'] 							= 'Logistik/readLogistik/obat_oral';
 $route['logistik-obat-oral-tambah'] 					= 'Logistik/createLogistik/obat_oral/';
 $route['logistik-obat-oral-edit/(:num)'] 				= 'Logistik/editLogistik/obat_oral/$1';
 $route['logistik-obat-oral-submit-edit'] 				= 'Logistik/submitEditLogistik/obat_oral';
-$route['logistik-obat-oral-restok/(:num)']			= 'Logistik/restokLogistik/obat_oral/$1';
+$route['logistik-obat-oral-restok/(:num)']				= 'Logistik/restokLogistik/obat_oral/$1';
 $route['logistik-obat-oral-hapus/(:num)'] 				= 'Logistik/deleteLogistik/obat_oral/$1';
+$route['get-log-logistik-obat-oral'] 					= 'Logistik/getLogLogistik/obat_oral';
 
 $route['logistik-obat-sigma-usus-externum'] 			= 'Logistik/readLogistik/obat_sigma_usus_externum';
 $route['logistik-obat-sigma-usus-externum-tambah'] 		= 'Logistik/createLogistik/obat_sigma_usus_externum/';
@@ -95,6 +98,7 @@ $route['logistik-obat-sigma-usus-externum-edit/(:num)']	= 'Logistik/editLogistik
 $route['logistik-obat-sigma-usus-externum-submit-edit']	= 'Logistik/submitEditLogistik/obat_sigma_usus_externum';
 $route['logistik-obat-sigma-usus-externum-restok/(:num)']= 'Logistik/restokLogistik/obat_sigma_usus_externum/$1';
 $route['logistik-obat-sigma-usus-externum-hapus/(:num)']= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
+$route['get-log-logistik-obat-sigma-usus-externum']= 'Logistik/getLogLogistik/obat_sigma_usus_externum';
 
 $route['dashboard-admin'] 								= 'Admin/dashboard';
 $route['verifikasi-user'] 								= 'Admin/verifikasi';

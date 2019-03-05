@@ -195,7 +195,7 @@
 				data.push(respon.data[i].nama_golongan)
 			}
 
-			console.log(data)
+			// console.log(data)
 
 			$('#tambahNamaObat').autocomplete({
 				lookup: data,
