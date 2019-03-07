@@ -58,7 +58,7 @@ class Dokter extends CI_Controller {
 	}
 
 	/*
-	* function untuk lihat antrian secara live di halaman antrian
+	* function untuk melayanai ajax request lihat antrian secara live di halaman antrian
 	*/
 	function liveAntrian()
 	{
@@ -113,7 +113,7 @@ class Dokter extends CI_Controller {
 	function pemeriksaanLangsung()
 	{
 		$data 	= array(
-			"active"					=>	"pemeriksaan-langsung",
+			"active"					=>	"pemeriksaan",
 		);
 		$this->load->view('dokter/header');
 		$this->load->view('dokter/navbar',$data);
@@ -158,7 +158,7 @@ class Dokter extends CI_Controller {
 	function pemeriksaan($id_pasien,$id_rekam_medis = null)
 	{
 		$data 	= array(
-			"active"					=>	"pemeriksaan-langsung",
+			"active"					=>	"pemeriksaan",
 			"pasien"					=>	$this->model->read('pasien',array('id'=>$id_pasien))->result(),
 			"rekam_medis"			=>  $this->model->read('rekam_medis',array('id_pasien'=>$id_pasien))->result()
 		);
@@ -732,7 +732,7 @@ class Dokter extends CI_Controller {
 			LEFT JOIN user ON rekam_medis.dokter_pemeriksa = user.id 
 			WHERE rekam_medis.id_pasien = $id
 			AND MONTH(tanggal_jam) = '".$bulan_tahun[1]."'
-			AND YEAR(tanggal_jam) = '".$bulan_tahun[0]."'")->result();
+			AND YEAR(tanggal_jam) = '".$bulan_tahun[0]."' ")->result();
 
 		foreach ($data as $key => $value) {
 			$processing_rekam_medis = array();
@@ -780,8 +780,8 @@ class Dokter extends CI_Controller {
 	*/
 	function submitEditIdentitasPasien()
 	{
-		echo "<pre>";
-		var_dump($this->input->post());
+		// echo "<pre>";
+		// var_dump($this->input->post());
 
 		if($this->input->post('id_pasien') <= 9){
 			$no_urut = "00".$this->input->post('id_pasien');
@@ -909,5 +909,135 @@ class Dokter extends CI_Controller {
 		}else{
 			var_dump($bool);
 		}
+	}
+
+	/*
+	* handle form pencetakan :
+	* - surat rujukan $surat<-surat-rujukan
+	* - surat sehat $surat<-surat-sehat
+	* - surat sakit $surat<-surat-sakit
+	*/
+	function submitCetakSurat($jenis_surat){
+		if ($jenis_surat == "suratrujukan") {
+			$createSurat = $this->model->create_id("suratrujukan",array("id_pasien"=>$this->input->post('id_pasien'),"tanggal_jam"=>date("Y-m-d H:i:s")));
+			$createSurat = json_decode($createSurat);
+			if ($createSurat->message < 10) {
+				$data['nomor_surat'] = "00".$createSurat->message;
+			}elseif($createSurat->message < 100){
+				$data['nomor_surat'] = "0".$createSurat->message;
+			}else{
+				$data['nomor_surat'] = $createSurat->message;
+			}
+
+			$data['active'] 				= 'pemeriksaan';
+			$data['nama_user']				= $this->session->userdata('logged_in')['nama_user'];
+			$data['sip']					= $this->session->userdata('logged_in')['sip'];
+			$data['pasien']					= $this->model->read('pasien',array('id'=>$this->input->post('id_pasien')))->result();
+			$data['data']					= array(
+				"subjektif"					=> $this->input->post("subjektif"),
+				"gcs_e" 					=> $this->input->post("gcs_e"),
+				"gcs_v" 					=> $this->input->post("gcs_v"),
+				"gcs_m" 					=> $this->input->post("gcs_m"),
+				"gcs_opsi" 					=> $this->input->post("gcs_opsi[]"),
+				"diagnosa_primary" 			=> $this->input->post("diagnosaPrimary[]"),
+				"diagnosa_secondary" 		=> $this->input->post("diagnosaSecondary[]"),
+				"diagnosa_lain" 			=> $this->input->post("diagnosaLain[]"),
+				"diagnosa_pemeriksaan_lab" 	=> $this->input->post("diagnosaPemeriksaanLab"),
+				"tinggi_badan" 				=> $this->input->post("tinggi_badan"),
+				"berat_badan" 				=> $this->input->post("berat_badan"),
+				"sistol" 					=> $this->input->post("sistol"),
+				"diastol" 					=> $this->input->post("diastol"),
+				"respiratory_rate" 			=> $this->input->post("respiratory_rate"),
+				"nadi" 						=> $this->input->post("nadi"),
+				"temperature_ax" 			=> $this->input->post("temperature_ax"),
+				"headtotoe" 				=> $this->input->post("headtotoe"),
+				"anemis_kiri" 				=> $this->input->post("anemis_kiri"),
+				"anemis_kanan" 				=> $this->input->post("anemis_kanan"),
+				"ikterik_kiri" 				=> $this->input->post("ikterik_kiri"),
+				"ikterik_kanan" 			=> $this->input->post("ikterik_kanan"),
+				"cianosis_kiri" 			=> $this->input->post("cianosis_kiri"),
+				"cianosis_kanan" 			=> $this->input->post("cianosis_kanan"),
+				"deformitas_kiri" 			=> $this->input->post("deformitas_kiri"),
+				"deformitas_kanan"			=> $this->input->post("deformitas_kanan"),
+				"refchy_opsi" 				=> $this->input->post("refchy_opsi_rujukan"),
+				"refchy_kanan" 				=> $this->input->post("refchy_kanan"),
+				"refchy_kiri" 				=> $this->input->post("refchy_kiri"),
+				"kepala_ket_tambahan" 		=> $this->input->post("kepala_ket_tambahan"),
+				"paru_simetris_asimetris" 	=> $this->input->post("paru_simetris_asimetris_rujukan"),
+				"wheezing_kiri" 			=> $this->input->post("wheezing_kiri"),
+				"wheezing_kanan" 			=> $this->input->post("wheezing_kanan"),
+				"ronkhi_kiri" 				=> $this->input->post("ronkhi_kiri"),
+				"ronkhi_kanan" 				=> $this->input->post("ronkhi_kanan"),
+				"vesikuler_kiri" 			=> $this->input->post("vesikuler_kiri"),
+				"vesikuler_kanan" 			=> $this->input->post("vesikuler_kanan"),
+				"jantung_ictuscordis" 		=> $this->input->post("jantung_ictuscordis_rujukan"),
+				"jantung_s1_s2" 			=> $this->input->post("jantung_s1_s2_rujukan"),
+				"jantung_suaratambahan" 	=> $this->input->post("jantung_suaratambahan"),
+				"jantung_ket_tambahan" 		=> $this->input->post("jantung_ket_tambahan"),
+				"BU" 						=> $this->input->post("BU_rujukan"),
+				"nyeri_tekan1" 				=> $this->input->post("nyeri_tekan1"),
+				"nyeri_tekan2" 				=> $this->input->post("nyeri_tekan2"),
+				"nyeri_tekan3" 				=> $this->input->post("nyeri_tekan3"),
+				"nyeri_tekan4" 				=> $this->input->post("nyeri_tekan4"),
+				"nyeri_tekan5" 				=> $this->input->post("nyeri_tekan5"),
+				"nyeri_tekan6" 				=> $this->input->post("nyeri_tekan6"),
+				"nyeri_tekan7" 				=> $this->input->post("nyeri_tekan7"),
+				"nyeri_tekan8" 				=> $this->input->post("nyeri_tekan8"),
+				"nyeri_tekan9" 				=> $this->input->post("nyeri_tekan9"),
+				"hepatomegali" 				=> $this->input->post("hepatomegali"),
+				"spleenomegali" 			=> $this->input->post("spleenomegali"),
+				"abdomen_ket_tambahan" 		=> $this->input->post("abdomen_ket_tambahan"),
+				"akral_hangat1" 			=> $this->input->post("akral_hangat1"),
+				"akral_hangat2" 			=> $this->input->post("akral_hangat2"),
+				"akral_hangat3" 			=> $this->input->post("akral_hangat3"),
+				"akral_hangat4" 			=> $this->input->post("akral_hangat4"),
+				"crt1" 						=> $this->input->post("crt1"),
+				"crt2" 						=> $this->input->post("crt2"),
+				"crt3" 						=> $this->input->post("crt3"),
+				"crt4" 						=> $this->input->post("crt4"),
+				"edema1" 					=> $this->input->post("edema1"),
+				"edema2" 					=> $this->input->post("edema2"),
+				"edema3" 					=> $this->input->post("edema3"),
+				"edema4" 					=> $this->input->post("edema4"),
+				"pitting" 					=> $this->input->post("pitting"),
+				"ekstermitas_ket_tambahan" 	=> $this->input->post("ekstermitas_ket_tambahan"),
+				"lain_lain" 				=> $this->input->post("lain_lain"),
+				"planning" 					=> $this->input->post("planning"),
+				"terapi1" 					=> $this->input->post("terapi1"),
+				"terapi2" 					=> $this->input->post("terapi2"),
+				"terapi3" 					=> $this->input->post("terapi3")
+			);
+			$kode_surat = "003";
+		}
+		// echo "<pre>";
+		// var_dump($data);
+		// die();
+
+		$this->load->view('dokter/header');
+		$this->load->view('dokter/navbar',$data);
+		$this->load->view('dokter/'.$jenis_surat);
+		$this->load->view('dokter/footer');
+		$content = '';
+		$content .= $this->load->view('dokter/header','',TRUE);
+		$content .= $this->load->view('dokter/navbar',$data,TRUE);
+		$content .= $this->load->view('dokter/'.$jenis_surat,'',TRUE);
+		$content .= $this->load->view('dokter/footer','',TRUE);
+
+		$folder 	= FCPATH."/surat pasien/".$this->input->post('nomor_pasien')."/".$jenis_surat."/";
+		if (!file_exists($folder)) {
+			mkdir($folder, 0777, true);
+		}
+		$myfolder = fopen($folder.$data['nomor_surat']."-".$kode_surat."-0".date('m')."-".date("Y").".html", "w");
+		fwrite($myfolder, $content);
+		fclose($myfolder);
+	}
+
+	/*
+	* read satu record surat rujukan yang telah dibuat untuk generate nomor surat rujukan dan disalurkan ke halaman pemeriksaan 
+	*/
+	function getSurat($jenis_surat,$id)
+	{
+		$record = $this->model->rawQuery("SELECT MAX(id) AS nomor_surat, tanggal_jam AS tanggal FROM $jenis_surat WHERE id_pasien = $id")->result();
+		echo json_encode($record);
 	}
 }

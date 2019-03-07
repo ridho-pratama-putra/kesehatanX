@@ -36,7 +36,7 @@
 				res = JSON.parse(res);
 				$('#tabel-rekam-medis').DataTable().destroy();
 				$("#tabel-rekam-medis").DataTable({
-					stateSave: true,
+					// stateSave: true,
 					dom: 'Bfrtip',
 					data :(res.record),
 					columns : 
@@ -66,10 +66,10 @@
 					columnDefs: [ 
 					{ 
 						orderable: false, 
-						targets: [1,2,3,4] 
+						targets: [1,2,3,4]
 					} 
 					],
-					select: true
+					order : [[0, 'desc']]
 				});
 			} );
 	}

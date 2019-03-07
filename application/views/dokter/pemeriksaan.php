@@ -12,56 +12,6 @@
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
-		// inisialisasi tabel rekam medis pada tab rekam medis
-		$("#tabel-rekam-medis").DataTable({
-			dom: 'Bfrtip',
-			buttons: [
-			{
-				extend: 'print',
-				text: 'Print all',
-				exportOptions: {
-					modifier: {
-						selected: null
-					},
-					columns: [1,2,3,4,5]
-				},
-				customize: function(win)
-				{
-
-					var last = null;
-					var current = null;
-					var bod = [];
-
-					var css = "@page { size: landscape; font-Size : 2px} ",
-					head = win.document.head || win.document.getElementsByTagName('head')[0],
-					style = win.document.createElement('style');
-
-					style.type = 'text/css';
-					style.media = 'print';
-
-					if (style.styleSheet)
-					{
-						style.styleSheet.cssText = css;
-					}
-					else
-					{
-						style.appendChild(win.document.createTextNode(css));
-					}
-					$(win.document.body)
-					.css( 'font-size', '10px' );
-					head.appendChild(style);
-				}
-			}
-			],
-			columnDefs: [ 
-			{ 
-				orderable: false, 
-				targets: [2,3,4,5,6] 
-			} 
-			],
-			select: true
-		});
-
 		// inisialisasi dengan select2
 		$('#diagnosaPrimaryId').select2();
 		$('#diagnosaSecondaryId').select2();
@@ -726,7 +676,7 @@
 			}else{
 				data[0].nomor_surat = "0"+data[0].nomor_surat;
 			}
-			if(document.getElementById('planning').value == ''){
+			if(document.getElementById('textarea-planning-pemeriksaan').value == ''){
 				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Sakit : "+ data[0].nomor_surat +" / 002 / 0"+ data[0].tanggal_awal.substring(5, 7) +" / "+ data[0].tanggal_awal.substring(0, 4) +" ";
 			}else{
 				document.getElementById('textarea-planning-pemeriksaan').value += ", Surat Sakit : "+ data[0].nomor_surat +" / 002 / 0"+ data[0].tanggal_awal.substring(5, 7) +" / "+ data[0].tanggal_awal.substring(0, 4) +" ";
@@ -739,14 +689,14 @@
 
 	// function untuk menyalurkan tinggi badan via submit form surat sehat. executenya nyalip open blank page.
 	function formSuratSehat() {
-		document.getElementById('sistol_sehat').value 			= document.getElementById('sistol_pemeriksaan').value;
-		document.getElementById('diastol_sehat').value 			= document.getElementById('diastol_pemeriksaan').value;
-		if (document.getElementById('tinggi_badan_pemeriksaan').value !== 'undefined' && document.getElementById('berat_badan_pemeriksaan').value !== 'undefined' && document.getElementById('nadi_pemeriksaan').value !== 'undefined' && document.getElementById('respiratory_rate_pemeriksaan').value !== 'undefined' && document.getElementById('temperature_ax_pemeriksaan').value !== 'undefined') {
-			document.getElementById('tinggi_badan_sehat').value 		= document.getElementById('tinggi_badan_pemeriksaan').value;
-			document.getElementById('berat_badan_sehat').value 		= document.getElementById('berat_badan_pemeriksaan').value;
-			document.getElementById('nadi_sehat').value 				= document.getElementById('nadi_pemeriksaan').value;
-			document.getElementById('respiratory_rate_sehat').value 	= document.getElementById('respiratory_rate_pemeriksaan').value;
-			document.getElementById('temperature_ax_sehat').value 	= document.getElementById('temperature_ax_pemeriksaan').value;
+		document.getElementById('sistol_sehat').value 			= document.getElementById('sistol-pemeriksaan').value;
+		document.getElementById('diastol_sehat').value 			= document.getElementById('diastol-pemeriksaan').value;
+		if (document.getElementById('tinggi-badan-pemeriksaan').value !== 'undefined' && document.getElementById('berat-badan-pemeriksaan').value !== 'undefined' && document.getElementById('nadi-pemeriksaan').value !== 'undefined' && document.getElementById('respiratory-rate-pemeriksaan').value !== 'undefined' && document.getElementById('temperature-ax-pemeriksaan').value !== 'undefined') {
+			document.getElementById('tinggi_badan_sehat').value 		= document.getElementById('tinggi-badan-pemeriksaan').value;
+			document.getElementById('berat_badan_sehat').value 		= document.getElementById('berat-badan-pemeriksaan').value;
+			document.getElementById('nadi_sehat').value 				= document.getElementById('nadi-pemeriksaan').value;
+			document.getElementById('respiratory_rate_sehat').value 	= document.getElementById('respiratory-rate-pemeriksaan').value;
+			document.getElementById('temperature_ax_sehat').value 	= document.getElementById('temperature-ax-pemeriksaan').value;
 			return true;
 		}else{
 			alert('Mohon lengkapi data pemeriksaan objektif kecuali Head To Toe');
@@ -764,7 +714,7 @@
 			}else{
 				data[0].nomor_surat = "0"+data[0].nomor_surat;
 			}
-			if(document.getElementById('planning').value == ''){
+			if(document.getElementById('textarea-planning-pemeriksaan').value == ''){
 				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Sehat : "+ data[0].nomor_surat +" / 001 / 0"+ data[0].tanggal_terbit.substring(5, 7) +" / "+ data[0].tanggal_terbit.substring(0, 4) +" ";
 			}else{
 				document.getElementById('textarea-planning-pemeriksaan').value += ", Surat Sehat : "+ data[0].nomor_surat +" / 001 / 0"+ data[0].tanggal_terbit.substring(5, 7) +" / "+ data[0].tanggal_terbit.substring(0, 4) +" ";
@@ -779,6 +729,7 @@
 	function formSuratRujukan() {
 		// set input type hidden
 		$('#nomor-pasien-rujukan').val($('#nomor-pasien').val());
+		$('#id-pasien-rujukan').val($('#id-pasien').val());
 		
 		$('#subjektif-rujukan').val($('#subjektif-pemeriksaan').val());
 		$('#gcs-e-rujukan').val($('#gcs-e-pemeriksaan').val());
@@ -786,34 +737,34 @@
 		$('#gcs-m-rujukan').val($('#gcs-m-pemeriksaan').val());
 		
 		// set select2 untuk clear all option yang ada di hidden form. (restart). defaultya kosong
-		$('#primary_rujukan').val(null).trigger('change');
-		$('#secondary_rujukan').val(null).trigger('change');
-		$('#lain_rujukan').val(null).trigger('change');
+		$('#primary-rujukan').val(null).trigger('change');
+		$('#secondary-rujukan').val(null).trigger('change');
+		$('#lain-rujukan').val(null).trigger('change');
 		
 		// CREATE DUPLICATE VALUE DARI PRIMARY SELECT ELEMENT PADA FORM PEMERIKSAAN KE FORM RUJUKAN
 		var primarySelected = $("#primary_pemeriksaan").select2('data');
 		for (i in primarySelected){
 			var primaryDescOnly = primarySelected[i].text.split(" / ");
 			var newOption = new Option(primaryDescOnly[1], primaryDescOnly[1], true, true);
-			$('#primary_rujukan').append(newOption).trigger('change');
+			$('#primary-rujukan').append(newOption).trigger('change');
 		}
 		// CREATE DUPLICATE VALUE DARI SECONDARY SELECT ELEMENT PADA FORM PEMERIKSAAN KE FORM RUJUKAN
 		var secondarySelected = $("#secondary_pemeriksaan").select2('data');
 		for (i in secondarySelected){
 			var secondaryDescOnly = secondarySelected[i].text.split(" / ");
 			var newOption = new Option(secondaryDescOnly[1], secondaryDescOnly[1], true, true);
-			$('#secondary_rujukan').append(newOption).trigger('change');
+			$('#secondary-rujukan').append(newOption).trigger('change');
 		}
 		// CREATE DUPLICATE VALUE DARI LAINLAIN SELECT ELEMENT PADA FORM PEMERIKSAAN KE FORM RUJUKAN
 		var lainlainSelected = $("#lain_pemeriksaan").select2('data');
 		for (i in lainlainSelected){
 			lainlainDescOnly = lainlainSelected[i].text.split(" / ");
 			var newOption = new Option(lainlainDescOnly[1], lainlainDescOnly[1], true, true);
-			$('#lain_rujukan').append(newOption).trigger('change');
+			$('#lain-rujukan').append(newOption).trigger('change');
 		}
 		// get and set element text area
 		var pemeriksaanLab = $("#pemeriksaan_lab_pemeriksaan").val();
-		$("#pemeriksaan_lab_rujukan").val(pemeriksaanLab);
+		$("#pemeriksaan-lab-rujukan").val(pemeriksaanLab);
 
 		$('#gcs-opsi-cm-rujukan').prop("checked" , $('#gcs-opsi-cm-pemeriksaan').prop("checked"));
 		$('#gcs-opsi-apatis-rujukan').prop("checked" , $('#gcs-opsi-apatis-pemeriksaan').prop("checked"))
@@ -822,18 +773,18 @@
 		$('#gcs-opsi-stupor-rujukan').prop("checked" , $('#gcs-opsi-stupor-pemeriksaan').prop("checked"))
 		$('#gcs-opsi-coma-rujukan').prop("checked" , $('#gcs-opsi-coma-pemeriksaan').prop("checked"))
 
-		$('#tinggi_badan_rujukan').val($('#tinggi_badan_pemeriksaan').val());
-		$('#berat_badan_rujukan').val($('#berat_badan_pemeriksaan').val());
-		$('#sistol_rujukan').val($('#sistol_pemeriksaan').val());
-		$('#diastol_rujukan').val($('#diastol_pemeriksaan').val());
-		$('#respiratory_rate_rujukan').val($('#respiratory_rate_pemeriksaan').val());
-		$('#nadi_rujukan').val($('#nadi_pemeriksaan').val());
-		$('#temperature_ax_rujukan').val($('#temperature_ax_pemeriksaan').val());
+		$('#tinggi-badan-rujukan').val($('#tinggi-badan-pemeriksaan').val());
+		$('#berat-badan-rujukan').val($('#berat-badan-pemeriksaan').val());
+		$('#sistol-rujukan').val($('#sistol-pemeriksaan').val());
+		$('#diastol-rujukan').val($('#diastol-pemeriksaan').val());
+		$('#respiratory-rate-rujukan').val($('#respiratory-rate-pemeriksaan').val());
+		$('#nadi-rujukan').val($('#nadi-pemeriksaan').val());
+		$('#temperature-ax-rujukan').val($('#temperature-ax-pemeriksaan').val());
 
 		$('#anemis-kiri-rujukan').prop("checked" , $('#anemis-kiri-pemeriksaan').prop("checked"))
 		$('#anemis-kanan-rujukan').prop("checked" , $('#anemis-kanan-pemeriksaan').prop("checked"))
 		$('#ikterik-kiri-rujukan').prop("checked" , $('#ikterik-kiri-pemeriksaan').prop("checked"))
-		$('#ikterik-kanan-rujukan').prop("checked" , $('#ikterik-kanan_pemeriksaan').prop("checked"))
+		$('#ikterik-kanan-rujukan').prop("checked" , $('#ikterik-kanan-pemeriksaan').prop("checked"))
 		$('#cianosis-kiri-rujukan').prop("checked" , $('#cianosis-kiri-pemeriksaan').prop("checked"))
 		$('#cianosis-kanan-rujukan').prop("checked" , $('#cianosis-kanan-pemeriksaan').prop("checked"))
 		$('#deformitas-kiri-rujukan').prop("checked" , $('#deformitas-kiri-pemeriksaan').prop("checked"))
@@ -882,6 +833,7 @@
 		$('#terapi2-rujukan').val($('#terapi2-pemeriksaan').val());
 		$('#terapi3-rujukan').val($('#terapi3-pemeriksaan').val());
 
+		// untuk bagian opsi checkboxx dll pakai name, nggak mungkin pakai id, karena id itu hatrus unik
 		$("input[name='refchy_opsi_rujukan'][value='"+$("input[name=refchy_opsi_pemeriksaan]:checked").val()+"']").prop('checked', true);
 		$("input[name='paru_simetris_asimetris_rujukan'][value='"+$("input[name=paru_simetris_asimetris_pemeriksaan]:checked").val()+"']").prop('checked', true);
 		$("input[name='jantung_ictuscordis_rujukan'][value='"+$("input[name=jantung_ictuscordis_pemeriksaan]:checked").val()+"']").prop('checked', true);
@@ -891,15 +843,12 @@
 
 		$("input[name='pitting_rujukan'][value='"+$("input[name=pitting_pemeriksaan]:checked").val()+"']").prop('checked', true);
 		
-		$('#headtotoe_rujukan').val($('#headtotoe_pemeriksaan').val());
+		$('#headtotoe-rujukan').val($('#headtotoe-pemeriksaan').val());
 
 		$('#suratrujukan')[0].submit();
-
-	}
-
-	// saat submit cetak surat rujukan, tambahkan nomor surat sakit yang telah tercetak ke kolom planning untuk dokumnetasi lebih jelas
-	function SuratRujukan() {
-		var jqxhr = $.get( "<?=base_url()?>Dokter/getTabelSurat/rujukan/<?=$pasien[0]->nomor_pasien?>", function(data) {
+		
+		// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
+		var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-rujukan/<?=$pasien[0]->id?>", function(data) {
 			data = JSON.parse(data);
 			if (data[0].nomor_surat < 10 ) {
 				data[0].nomor_surat = "00"+data[0].nomor_surat;
@@ -907,12 +856,12 @@
 				data[0].nomor_surat = "0"+data[0].nomor_surat;
 			}
 			// console.log(document.getElementById('planning').value);
-			if(document.getElementById('planning').value == ''){
-				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
-			}else{
-				document.getElementById('textarea-planning-pemeriksaan').value += ", Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+			if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
+				document.getElementById('textarea-planning-pemeriksaan').value += ", ";
 			}
-			document.getElementById('textarea-planning-pemeriksaan').value += ", Terapi : " + document.getElementById('terapi1').value + ", Perencanaan Lab : " + document.getElementById('terapi2').value + ", Perencanaan Rujuk : " + document.getElementById('terapi3').value;
+
+			document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+			
 		})
 		.fail(function() {
 			alert( "error" );
@@ -998,7 +947,7 @@
 		<div class="col-9 border rounded">
 			<ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link" id="home-tab" data-toggle="tab" href="#rekam_medis" role="tab" aria-controls="rekam_medis" aria-selected="true">Rekam Medis</a>
+					<a class="nav-link" id="home-tab" href="<?=base_url()?>detail-rekam-medis-pasien/<?=$pasien[0]->id?>" role="tab" target="_blank">Rekam Medis</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#pemeriksaan" role="tab" aria-controls="pemeriksaan" aria-selected="false">Pemeriksaan</a>
@@ -1011,66 +960,7 @@
 				</li>
 			</ul>
 			<div class="tab-content" id="myTabContent" >
-				<!-- REKAM MEDIS -->
-				<div class="tab-pane fade" id="rekam_medis" role="tabpanel" aria-labelledby="home-tab">
-					<h5 class="text-center mt-3">Rekam Medis</h5>
-					<div class="container">
-						<div class=" row mt-5">	
-							<div class="col-12">	
-								<table class="table" id="tabel-rekam-medis">
-									<thead>
-										<tr>
-											<th>No</th>
-											<th>Tanggal / Jam Periksa </th>
-											<th>Subjektif</th>
-											<th>Objektif</th>
-											<th>Assessment</th>
-											<th>Planing</th>
-											<th>Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php
-										$i = 1;
-										if ($rekam_medis !== array()) {
-											
-											foreach($rekam_medis as $key => $value) { ?>
-												<tr>
-													<td>
-														<?=$i?>
-													</td>
-													<td>
-														<?=tgl_indo(substr($value->tanggal_jam,0,10))." ".substr($value->tanggal_jam,11,8)?>
-													</td>
-													<td>
-														<?=$value->subjektif?>
-													</td>
-													<td>
-														<ul>
-															<li class="no-bullets">TB/BB : <?=$value->tinggi_badan?> cm/ <?=$value->berat_badan?> Kg</li>
-															<li class="no-bullets">TD : <?=$value->sistol?>/<?=$value->diastol?> mmHg</li>
-															<li class="no-bullets">RR : <?=$value->respiratory_rate?></li>
-															<li class="no-bullets">N  : <?=$value->nadi?> rpm</li>
-															<li class="no-bullets">TAx: <?=$value->temperature_ax?> &deg;C</li>
-															<li class="no-bullets">Head to Toe : <?=$value->headtotoe?></li>
-														</ul>
-													</td>
-													<td></td>
-													<td><?=$value->planning?></td>
-													<td><button type="button" class="btn btn-primary" >CETAK</button> </td>
-												</tr>
-												<?php $i++; 
-											}
-										}
-
-										?>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- REKAM MEDIS -->
+				
 				<!-- TAB PEMERIKSAAN -->
 				<div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="profile-tab">
 					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
@@ -1091,7 +981,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="tinggi_badan_pemeriksaan" name="tinggi_badan" value="<?=(isset($current_pemeriksaan[0]->tinggi_badan) ? $current_pemeriksaan[0]->tinggi_badan : '')?>">
+												<input type="number" class="form-control" id="tinggi-badan-pemeriksaan" name="tinggi_badan" value="<?=(isset($current_pemeriksaan[0]->tinggi_badan) ? $current_pemeriksaan[0]->tinggi_badan : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">cm</div>
 												</div>
@@ -1105,7 +995,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="berat_badan_pemeriksaan" name="berat_badan" value="<?=(isset($current_pemeriksaan[0]->berat_badan) ? $current_pemeriksaan[0]->berat_badan : '')?>">
+												<input type="number" class="form-control" id="berat-badan-pemeriksaan" name="berat_badan" value="<?=(isset($current_pemeriksaan[0]->berat_badan) ? $current_pemeriksaan[0]->berat_badan : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">kg</div>
 												</div>
@@ -1122,9 +1012,9 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control mr-1" id="sistol_pemeriksaan" name="sistol" value="<?=(isset($current_pemeriksaan[0]->sistol) ? $current_pemeriksaan[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>>
+												<input type="number" class="form-control mr-1" id="sistol-pemeriksaan" name="sistol" value="<?=(isset($current_pemeriksaan[0]->sistol) ? $current_pemeriksaan[0]->sistol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>>
 												/
-												<input type="number" class="form-control ml-1" id="diastol_pemeriksaan" name="diastol" value="<?=(isset($current_pemeriksaan[0]->diastol) ? $current_pemeriksaan[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>><div class="input-group-append">
+												<input type="number" class="form-control ml-1" id="diastol-pemeriksaan" name="diastol" value="<?=(isset($current_pemeriksaan[0]->diastol) ? $current_pemeriksaan[0]->diastol : '')?>" <?=($pasien[0]->pembayaran == 'RF' ? '' : '' )?>><div class="input-group-append">
 													<div class="input-group-text">mmHg</div>
 												</div>
 											</div>
@@ -1137,7 +1027,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="nadi_pemeriksaan" name="nadi" value="<?=(isset($current_pemeriksaan[0]->nadi) ? $current_pemeriksaan[0]->nadi : '')?>">
+												<input type="number" class="form-control" id="nadi-pemeriksaan" name="nadi" value="<?=(isset($current_pemeriksaan[0]->nadi) ? $current_pemeriksaan[0]->nadi : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">rpm</div>
 												</div>
@@ -1154,7 +1044,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="respiratory_rate_pemeriksaan" name="respiratory_rate" value="<?=(isset($current_pemeriksaan[0]->respiratory_rate) ? $current_pemeriksaan[0]->respiratory_rate : '')?>">
+												<input type="number" class="form-control" id="respiratory-rate-pemeriksaan" name="respiratory_rate" value="<?=(isset($current_pemeriksaan[0]->respiratory_rate) ? $current_pemeriksaan[0]->respiratory_rate : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">rpm</div>
 												</div>
@@ -1168,7 +1058,7 @@
 										<div class="col-1">:</div>
 										<div class="col">
 											<div class="input-group">
-												<input type="number" class="form-control" id="temperature_ax_pemeriksaan" name="temperature_ax" value="<?=(isset($current_pemeriksaan[0]->temperature_ax) ? $current_pemeriksaan[0]->temperature_ax : '')?>">
+												<input type="number" class="form-control" id="temperature-ax-pemeriksaan" name="temperature_ax" value="<?=(isset($current_pemeriksaan[0]->temperature_ax) ? $current_pemeriksaan[0]->temperature_ax : '')?>">
 												<div class="input-group-append">
 													<div class="input-group-text">&deg;C</div>
 												</div>
@@ -1182,7 +1072,7 @@
 								<div class="col-2">Head To Toe</div>
 								<div class="col-1">:</div>
 								<div class="col">
-									<input type="text" class="form-control" id="headtotoe_pemeriksaan" name="headtotoe">
+									<input type="text" class="form-control" id="headtotoe-pemeriksaan" name="headtotoe">
 								</div>
 							</div>
 							<!-- END FORM OBJEKTIF -->							
@@ -1531,7 +1421,7 @@
 								<div class="col-2">Spleenomegali</div>
 								<div class="col-1">:</div>
 								<div class="col-9">
-									<input type="text" class="form-control" id="spleenomegali_pemeriksaan" name="spleenomegali" placeholder="">
+									<input type="text" class="form-control" id="spleenomegali-pemeriksaan" name="spleenomegali" placeholder="">
 								</div>
 							</div>
 							<div class="row mt-3">
@@ -1845,9 +1735,11 @@
 					</form>
 				</div>
 				<!-- TAB PEMERIKSAAN -->
+				
 				<!-- HIDDEN FORM SURAT RUJUKAN -->
-				<form method="POST" action="<?=base_url()?>Dokter/submitCetak/suratrujukan" target="_blank" onsubmit="SuratRujukan()" id="suratrujukan">
+				<form method="POST" action="<?=base_url()?>submit-cetak-surat-rujukan" target="_blank" id="suratrujukan">
 					<input type="text" name="nomor_pasien" id="nomor-pasien-rujukan" class="sembunyikan">
+					<input type="text" name="id_pasien" id="id-pasien-rujukan" class="sembunyikan">
 					<textarea id="subjektif-rujukan" name="subjektif" class="sembunyikan"></textarea>
 					<input type="text" name="gcs_e" id="gcs-e-rujukan" class="sembunyikan">
 					<input type="text" name="gcs_v" id="gcs-v-rujukan" class="sembunyikan">
@@ -1859,19 +1751,19 @@
 					<input type="checkbox" id="gcs-opsi-somnolen-rujukan" name="gcs_opsi[]" value="Somnolen"  class="sembunyikan">
 					<input type="checkbox" id="gcs-opsi-stupor-rujukan" name="gcs_opsi[]" value="Stupor"  class="sembunyikan">
 					<input type="checkbox" id="gcs-opsi-coma-rujukan" name="gcs_opsi[]" value="Coma"  class="sembunyikan">
-					<select id="primary_rujukan" name="diagnosaPrimary[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
-					<select id="secondary_rujukan" name="diagnosaSecondary[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
-					<select id="lain_rujukan" name="diagnosaLain[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
-					<textarea id="pemeriksaan_lab_rujukan" name="diagnosaPemeriksaanLab" class="sembunyikan"></textarea>
+					<select id="primary-rujukan" name="diagnosaPrimary[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
+					<select id="secondary-rujukan" name="diagnosaSecondary[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
+					<select id="lain-rujukan" name="diagnosaLain[]" multiple="multiple" style="width: 100%"  class="sembunyikan"></select>
+					<textarea id="pemeriksaan-lab-rujukan" name="diagnosaPemeriksaanLab" class="sembunyikan"></textarea>
 
-					<input type="text" name="tinggi_badan" id="tinggi_badan_rujukan" class="sembunyikan">
-					<input type="text" name="berat_badan" id="berat_badan_rujukan" class="sembunyikan">
-					<input type="text" name="sistol" id="sistol_rujukan" class="sembunyikan">
-					<input type="text" name="diastol" id="diastol_rujukan" class="sembunyikan">
-					<input type="text" name="respiratory_rate" id="respiratory_rate_rujukan" class="sembunyikan">
-					<input type="text" name="nadi" id="nadi_rujukan" class="sembunyikan">
-					<input type="text" name="temperature_ax" id="temperature_ax_rujukan" class="sembunyikan">
-					<input type="text" name="headtotoe" id="headtotoe_rujukan" class="sembunyikan">
+					<input type="text" name="tinggi_badan" id="tinggi-badan-rujukan" class="sembunyikan">
+					<input type="text" name="berat_badan" id="berat-badan-rujukan" class="sembunyikan">
+					<input type="text" name="sistol" id="sistol-rujukan" class="sembunyikan">
+					<input type="text" name="diastol" id="diastol-rujukan" class="sembunyikan">
+					<input type="text" name="respiratory_rate" id="respiratory-rate-rujukan" class="sembunyikan">
+					<input type="text" name="nadi" id="nadi-rujukan" class="sembunyikan">
+					<input type="text" name="temperature_ax" id="temperature-ax-rujukan" class="sembunyikan">
+					<input type="text" name="headtotoe" id="headtotoe-rujukan" class="sembunyikan">
 
 					<input type="checkbox" id="anemis-kiri-rujukan" name="anemis_kiri" value="1" class="sembunyikan">
 					<input type="checkbox" id="anemis-kanan-rujukan" name="anemis_kanan" value="1" class="sembunyikan">
@@ -1888,8 +1780,8 @@
 					<input type="radio" id="refchy-opsi-rujukan" name="refchy_opsi_rujukan" value="Anisokor" class="sembunyikan">
 					<input type="text" id="kepala-ket-tambahan-rujukan" name="kepala_ket_tambahan" class="sembunyikan">
 
-					<input type="radio" id="paru-simetris-asimetris-rujukan" name="paru_simetris_asimetris" value="Simetris" class="sembunyikan">
-					<input type="radio" id="paru-simetris-asimetris-rujukan" name="paru_simetris_asimetris" value="Asimetris" class="sembunyikan">
+					<input type="radio" id="paru-simetris-asimetris-rujukan" name="paru_simetris_asimetris_rujukan" value="Simetris" class="sembunyikan">
+					<input type="radio" id="paru-simetris-asimetris-rujukan" name="paru_simetris_asimetris_rujukan" value="Asimetris" class="sembunyikan">
 					<input type="checkbox" id="wheezing-kiri-rujukan" name="wheezing_kiri" value="1" class="sembunyikan">
 					<input type="checkbox" id="wheezing-kanan-rujukan" name="wheezing_kanan" value="1" class="sembunyikan">
 					<input type="checkbox" id="ronkhi-kiri-rujukan" name="ronkhi_kiri" value="1" class="sembunyikan">
@@ -1897,17 +1789,17 @@
 					<input type="checkbox" id="vesikuler-kiri-rujukan" name="vesikuler_kiri" value="1" class="sembunyikan">
 					<input type="checkbox" id="vesikuler-kanan-rujukan" name="vesikuler_kanan" value="1" class="sembunyikan">
 
-					<input type="radio" id="jantung_ictuscordis_rujukan" name="jantung_ictuscordis" value="Tampak" class="sembunyikan">
-					<input type="radio" id="jantung_ictuscordis_rujukan" name="jantung_ictuscordis" value="Tak Tampak" class="sembunyikan">
-					<input type="radio" id="jantung_s1_s2_rujukan" name="jantung_s1_s2" value="Reguler" class="sembunyikan">
-					<input type="radio" id="jantung_s1_s2_rujukan" name="jantung_s1_s2" value="Irreguler" class="sembunyikan">
+					<input type="radio" id="jantung-ictuscordis-rujukan" name="jantung_ictuscordis_rujukan" value="Tampak" class="sembunyikan">
+					<input type="radio" id="jantung-ictuscordis-rujukan" name="jantung_ictuscordis_rujukan" value="Tak Tampak" class="sembunyikan">
+					<input type="radio" id="jantung-s1-s2-rujukan" name="jantung_s1_s2_rujukan" value="Reguler" class="sembunyikan">
+					<input type="radio" id="jantung-s1-s2-rujukan" name="jantung_s1_s2_rujukan" value="Irreguler" class="sembunyikan">
 					<input type="text" name="jantung_suaratambahan" id="jantung-suaratambahan-rujukan" class="sembunyikan">
 					<input type="text" name="jantung_ket_tambahan" id="jantung-ket-tambahan-rujukan" class="sembunyikan">
 
-					<input type="radio" id="BU_rujukan" name="BU" value="Normal" class="sembunyikan">
-					<input type="radio" id="BU_rujukan" name="BU" value="Menurun" class="sembunyikan">
-					<input type="radio" id="BU_rujukan" name="BU" value="Meningkat" class="sembunyikan">
-					<input type="radio" id="BU_rujukan" name="BU" value="Negatif" class="sembunyikan">
+					<input type="radio" id="BU-rujukan" name="BU_rujukan" value="Normal" class="sembunyikan">
+					<input type="radio" id="BU-rujukan" name="BU_rujukan" value="Menurun" class="sembunyikan">
+					<input type="radio" id="BU-rujukan" name="BU_rujukan" value="Meningkat" class="sembunyikan">
+					<input type="radio" id="BU-rujukan" name="BU_rujukan" value="Negatif" class="sembunyikan">
 					<input type="checkbox" id="nyeri-tekan1-rujukan" name="nyeri_tekan1" value="1" class="sembunyikan">
 					<input type="checkbox" id="nyeri-tekan2-rujukan" name="nyeri_tekan2" value="1" class="sembunyikan">
 					<input type="checkbox" id="nyeri-tekan3-rujukan" name="nyeri_tekan3" value="1" class="sembunyikan">

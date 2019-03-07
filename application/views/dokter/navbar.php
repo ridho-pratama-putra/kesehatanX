@@ -22,7 +22,7 @@
       <li class="nav-item" id="antrian">
         <a class="nav-link" href="<?php echo base_url()?>antrian-dokter">Antrian</a>
       </li>
-      <li class="nav-item" id="pemeriksaan-langsung">
+      <li class="nav-item" id="pemeriksaan">
         <a class="nav-link" href="<?php echo base_url()?>pemeriksaan-langsung">Pemeriksaan Langsung</a>
       </li>
       <!-- <li class="nav-item" id="rekam-medis">
