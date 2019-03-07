@@ -523,7 +523,7 @@ class Dokter extends CI_Controller {
 				'jantung_ictuscordis'		=>	$this->input->post('jantung_ictuscordis'),
 				'jantung_s1_s2'				=>	$this->input->post('jantung_s1_s2'),
 				'jantung_suaratambahan'		=>	($this->input->post('jantung_suaratambahan') !== '' ? $this->input->post('jantung_suaratambahan') : NULL),
-				'thorak_ket_tambahan'		=>	$this->input->post('thorak_ket_tambahan'),
+				'thorak_ket_tambahan'		=>	($this->input->post('thorak_ket_tambahan') !== '' ? $this->input->post('thorak_ket_tambahan') : NULL),
 				'abdomen_BU'				=>	$this->input->post('BU'),
 				'nyeri_tekan1'				=>	$this->input->post('nyeri_tekan1'),
 				'nyeri_tekan2'				=>	$this->input->post('nyeri_tekan2'),
@@ -706,24 +706,59 @@ class Dokter extends CI_Controller {
 	{
 		$data 	= array(
 			"active"					=>	"list-pasien",
-			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result(),
-			"rekam_medis"				=>	$this->model->rawQuery("
-				SELECT 
-				rekam_medis.*,
-				user.nama,
-				(SELECT GROUP_CONCAT(assessment.tipe,' ',assessment.detil SEPARATOR ' ; ') FROM assessment WHERE assessment.id_assessment_for_rekam_medis = rekam_medis.id) AS kelompok 
-				FROM 
-				rekam_medis 
-				LEFT JOIN user ON rekam_medis.dokter_pemeriksa = user.id 
-				WHERE rekam_medis.id_pasien = $id
-				AND MONTH(tanggal_jam) = '".date('m')."'
-				AND YEAR(tanggal_jam) = '".date('Y')."'
-				")->result()
+			"pasien"					=>	$this->model->read("pasien",array("id"=>$id))->result()
 		);
 		$this->load->view('dokter/header');
 		$this->load->view('dokter/navbar',$data);
-		$this->load->view('dokter/detail_pasien',$data);
+		$this->load->view('dokter/rekam_medis_detail_pasien',$data);
 		$this->load->view('dokter/footer');
+	}
+
+	/*
+	* get data detail rekam medsi
+	*/
+	function getDetailRekamMedisPasienByMonthYear()
+	{
+		$id = $this->input->get("id_pasien");
+		$bulan_tahun = explode("-", $this->input->get("bulan_tahun"));
+
+		$processed_rekam_medis['record'] = array();
+		$data = $this->model->rawQuery("SELECT 
+			rekam_medis.*,
+			user.nama,
+			(SELECT GROUP_CONCAT(assessment.tipe,' ',assessment.detil SEPARATOR ' ; ') FROM assessment WHERE assessment.id_assessment_for_rekam_medis = rekam_medis.id) AS kelompok 
+			FROM 
+			rekam_medis 
+			LEFT JOIN user ON rekam_medis.dokter_pemeriksa = user.id 
+			WHERE rekam_medis.id_pasien = $id
+			AND MONTH(tanggal_jam) = '".$bulan_tahun[1]."'
+			AND YEAR(tanggal_jam) = '".$bulan_tahun[0]."'")->result();
+
+		foreach ($data as $key => $value) {
+			$processing_rekam_medis = array();
+			$processing_rekam_medis['id'] = $value->id;
+			$processing_rekam_medis['id_pasien'] = $value->id_pasien;
+			$processing_rekam_medis['tanggal'] = tgl_indo(substr($value->tanggal_jam, 0, 10));
+			$processing_rekam_medis['jam'] = substr($value->tanggal_jam, 11);
+			$processing_rekam_medis['subjektif'] = $value->subjektif;
+
+			$processing_rekam_medis['objektif'] = "";
+			$processing_rekam_medis['objektif'] .= "TB/BB : ".($value->tinggi_badan !== NULL ? $value->tinggi_badan : '..')."cm / ".($value->berat_badan !== NULL ? $value->berat_badan : '..')."kg  Nadi : ".($value->nadi !== NULL ? $value->nadi : '..')."rpm  "."RR : ".($value->respiratory_rate !== NULL ? $value->respiratory_rate : '..')."rpm  "."T Ax : ".($value->temperature_ax !== NULL ? $value->temperature_ax : '..')."C  "."Head to toe : ".($value->headtotoe !== NULL ? $value->headtotoe : '')
+			.($value->gcs_evm_opsi !== NULL || $value->kepala !== NULL || $value->kepala_isokor_anisokor !== NULL || $value->kepala_ket_tambahan !== NULL ? "<br>Kepala " : '').($value->gcs_evm_opsi !== NULL ? "GCS ".$value->gcs_evm_opsi."  " : '').($value->kepala !== NULL ? $value->kepala."  " : '').($value->kepala_isokor_anisokor !== NULL ? $value->kepala_isokor_anisokor."  " : '').($value->kepala_ket_tambahan !== NULL ? "Keterangan tambahan kepala: ".$value->kepala_ket_tambahan."  " : '')
+			.($value->paru_simetris_asimetris !== NULL || $value->paru !== NULL ? "<br>Paru " : '').($value->paru_simetris_asimetris !== NULL ? $value->paru_simetris_asimetris."  " : '').($value->paru !== NULL ? $value->paru."  " : '')
+			.($value->jantung_ictuscordis !== NULL || $value->jantung_s1_s2 !== NULL || $value->jantung_suaratambahan !== NULL? "<br>Thorak " : '').($value->jantung_ictuscordis !== NULL ? $value->jantung_ictuscordis."  " : '').($value->jantung_s1_s2 !== NULL ? $value->jantung_s1_s2."  " : '').($value->jantung_suaratambahan !== NULL ? "Keterangan suara tambahan : ".$value->jantung_suaratambahan."  " : '').($value->thorak_ket_tambahan !== NULL ? "Keterangan tambahan thorak : ".$value->thorak_ket_tambahan."  " : '')
+			.($value->abdomen_BU !== NULL || $value->nyeri_tekan1 !== NULL || $value->nyeri_tekan2 !== NULL || $value->nyeri_tekan3 !== NULL || $value->nyeri_tekan4 !== NULL || $value->nyeri_tekan5 !== NULL || $value->nyeri_tekan6 !== NULL || $value->nyeri_tekan7 !== NULL || $value->nyeri_tekan8 !== NULL || $value->nyeri_tekan9 !== NULL || $value->hepatomegali !== NULL || $value->spleenomegali !== NULL || $value->abdomen_ket_tambahan !== NULL? "<br>Abdomen " : '').($value->abdomen_BU !== NULL ? "BU: ".$value->abdomen_BU."  " : '').($value->nyeri_tekan1 !== NULL || $value->nyeri_tekan2 !== NULL || $value->nyeri_tekan3 !== NULL || $value->nyeri_tekan4 !== NULL || $value->nyeri_tekan5 !== NULL || $value->nyeri_tekan6 !== NULL || $value->nyeri_tekan7 !== NULL || $value->nyeri_tekan8 !== NULL || $value->nyeri_tekan9 !== NULL ? "Nyeri tekan :" : '').($value->nyeri_tekan1 !== NULL ? " 1 " : '').($value->nyeri_tekan2 !== NULL ? " 2 " : '').($value->nyeri_tekan3 !== NULL ? " 3 " : '').($value->nyeri_tekan4 !== NULL ? " 4 " : '').($value->nyeri_tekan5 !== NULL ? " 5 " : '').($value->nyeri_tekan6 !== NULL ? " 6 " : '').($value->nyeri_tekan7 !== NULL ? " 7 " : '').($value->nyeri_tekan8 !== NULL ? " 8 " : '').($value->nyeri_tekan9 !== NULL ? " 9 " : '').($value->hepatomegali !== NULL ? " Hepatomegali : ".$value->hepatomegali : '').($value->spleenomegali !== NULL ? " Spleenomegali : ".$value->spleenomegali : '').($value->abdomen_ket_tambahan !== NULL ? " Keterangan tambahan abdomen : ".$value->abdomen_ket_tambahan : '')
+			.($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL || $value->crt_1 !== NULL || $value->crt_2 !== NULL || $value->crt_2 !== NULL || $value->crt_3 !== NULL || $value->crt_4 !== NULL || $value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL? "<br>Ekstermitas " : '').($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL ? "Akral hangat: " : '').($value->akral_hangat1 !== NULL ? " 1 " : '').($value->akral_hangat2 !== NULL ? " 2 " : '').($value->akral_hangat3 !== NULL ? " 3 " : '').($value->akral_hangat4 !== NULL ? " 4 " : '')
+			.($value->crt_1 !== NULL || $value->crt_2 !== NULL || $value->crt_2 !== NULL || $value->crt_3 !== NULL || $value->crt_4 !== NULL ? "CRT : " : '').($value->crt_1 !== NULL ? " 1 " : '').($value->crt_2 !== NULL ? " 2 " : '').($value->crt_3 !== NULL ? " 3 " : '').($value->crt_4 !== NULL ? " 4 " : '')
+			.($value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL ? "Edema : " : '').($value->edema_1 !== NULL ? " 1 " : '').($value->edema_2 !== NULL ? " 2 " : '').($value->edema_3 !== NULL ? " 3 " : '').($value->edema_4 !== NULL ? " 4 " : '').$value->pitting_nonpitting.($value->ekstermitas_ket_tambahan !== NULL ? " Keterangan tambahan ekstermitas : ".$value->ekstermitas_ket_tambahan : '').($value->lain_lain !== NULL ? " <br>Lain-lain : ".$value->lain_lain : '')
+			.($value->terapi_1 !== NULL ? "<br>Terapi 1 : ".$value->terapi_1 : '').($value->terapi_2 !== NULL ? "<br>Terapi 2 : ".$value->terapi_2 : '').($value->terapi_3 !== NULL ? "<br>Terapi 3 : ".$value->terapi_3 : '');
+
+			$processing_rekam_medis['planning'] = $value->planning;
+			$processing_rekam_medis['assessment'] = $value->kelompok;
+			$processing_rekam_medis['oleh_dokter'] = $value->nama;	
+			array_push($processed_rekam_medis['record'], $processing_rekam_medis);
+		}
+		echo json_encode($processed_rekam_medis, JSON_PRETTY_PRINT);
 	}
 
 	/*

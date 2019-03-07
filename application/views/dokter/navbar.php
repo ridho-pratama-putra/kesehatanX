@@ -6,7 +6,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item nav-link dropdown">
+      <li class="nav-item nav-link dropdown" id="logistik">
         <div class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Logistik
         </div>
@@ -51,6 +51,7 @@
 <script type="text/javascript">
   $( document ).ready(function() {
     $("#<?=$active?>").attr("class","active");
+    <?=($active == 'logistik' ? "$('#$active').attr('style','margin-top: 8px');" : '')?>
     $(".link-disabled").click(function(e) {
       e.preventDefault();
     });

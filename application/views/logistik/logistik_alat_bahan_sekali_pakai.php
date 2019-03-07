@@ -32,7 +32,6 @@
 			foreach($record as $key => $value) {
 				?>
 				<tr>
-					<!-- <td class="text-center"><?=$i?></td> -->
 					<td><?=$value->nama_golongan?></td>
 					<td><?=$value->nama?></td>
 					<td><?=$value->sediaan?></td>
@@ -72,10 +71,19 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tabelBahanSekaliPakai').DataTable( {
+				dom: 'Bfrtip',
 				columnDefs: [
 				{
 					orderable: false,
-					targets: [4]
+					targets: []
+				}
+				],
+				buttons: [
+				{
+					extend : 'print',
+					exportOptions: {
+						columns: [ 0,1,2,3,4,5,6,7 ]
+					}
 				}
 				]
 			});

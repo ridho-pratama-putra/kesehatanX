@@ -75,7 +75,22 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tabel-list-pasien').DataTable({
-                stateSave: true
+                stateSave: true,
+                dom: 'Bfrtip',
+                columnDefs: [
+                {
+                    orderable: false,
+                    targets: []
+                }
+                ],
+                buttons: [
+                {
+                    extend : 'print',
+                    exportOptions: {
+                        columns: [ 0,1,2,3,4,5,6]
+                    }
+                }
+                ]
             });
         } );
     </script>

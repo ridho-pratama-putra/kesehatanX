@@ -25,7 +25,6 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#example').DataTable();
 		getLogData();
 	});
 	function getLogData() {
@@ -64,6 +63,6 @@
 						messageTop: bulan_tahun
 					}]
 				});
-		});
+			});
 	}
 </script>

@@ -81,10 +81,19 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tabelObatOral').DataTable( {
+				dom: 'Bfrtip',
 				columnDefs: [
 				{
 					orderable: false,
-					targets: [4]
+					targets: []
+				}
+				],
+				buttons: [
+				{
+					extend : 'print',
+					exportOptions: {
+						columns: [ 0,1,2,3,4,5,6,7,8,9 ]
+					}
 				}
 				]
 			});

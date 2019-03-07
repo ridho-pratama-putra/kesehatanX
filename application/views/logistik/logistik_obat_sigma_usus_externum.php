@@ -65,12 +65,21 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#tabel').DataTable( {
+				dom: 'Bfrtip',
 				columnDefs: [
 				{
 					orderable: false,
-					targets: [4]
+					targets: []
 				}
-				]
+				],
+				buttons: [
+				{
+					extend : 'print',
+					exportOptions: {
+						columns: [ 0,1,2,3,4,5,6,7 ]
+					}
+				}
+				],
 			});
 			$('#tambahObat').on('shown.bs.modal', function () {
 				$('#tambahNamaObat').trigger('focus')

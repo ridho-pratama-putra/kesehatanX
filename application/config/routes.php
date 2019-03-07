@@ -68,13 +68,13 @@ $route['golongan-logistik-tambah'] 						= 'Logistik/createGolongan';
 $route['golongan-logistik-edit/(:num)'] 				= 'Logistik/updateGolongan/$1';
 $route['golongan-logistik-hapus/(:num)'] 				= 'Logistik/deleteGolongan/$1';
 
-$route['logistik-alat-bahan-sekali-pakai'] 				= 'Logistik/readLogistik/alat_bahan_sekali_pakai';
-$route['logistik-alat-bahan-sekali-pakai-tambah'] 		= 'Logistik/createLogistik/alat_bahan_sekali_pakai/';
-$route['logistik-alat-bahan-sekali-pakai-edit/(:num)'] 	= 'Logistik/editLogistik/alat_bahan_sekali_pakai/$1';
-$route['logistik-alat-bahan-sekali-pakai-restok/(:num)']= 'Logistik/restokLogistik/alat_bahan_sekali_pakai/$1';
-$route['logistik-alat-bahan-sekali-pakai-submit-edit'] 	= 'Logistik/submitEditLogistik/alat_bahan_sekali_pakai';
-$route['logistik-alat-bahan-sekali-pakai-hapus/(:num)'] = 'Logistik/deleteLogistik/alat_bahan_sekali_pakai/$1';
-$route['get-log-logistik-alat-bahan-sekali-pakai'] = 'Logistik/getLogLogistik/alat_bahan_sekali_pakai';
+$route['logistik-alat-bahan-sekali-pakai'] 					= 'Logistik/readLogistik/alat_bahan_sekali_pakai';
+$route['logistik-alat-bahan-sekali-pakai-tambah'] 			= 'Logistik/createLogistik/alat_bahan_sekali_pakai/';
+$route['logistik-alat-bahan-sekali-pakai-edit/(:num)'] 		= 'Logistik/editLogistik/alat_bahan_sekali_pakai/$1';
+$route['logistik-alat-bahan-sekali-pakai-restok/(:num)']	= 'Logistik/restokLogistik/alat_bahan_sekali_pakai/$1';
+$route['logistik-alat-bahan-sekali-pakai-submit-edit'] 		= 'Logistik/submitEditLogistik/alat_bahan_sekali_pakai';
+$route['logistik-alat-bahan-sekali-pakai-hapus/(:num)'] 	= 'Logistik/deleteLogistik/alat_bahan_sekali_pakai/$1';
+$route['get-log-logistik-alat-bahan-sekali-pakai'] 			= 'Logistik/getLogLogistik/alat_bahan_sekali_pakai';
 
 $route['logistik-obat-injeksi'] 						= 'Logistik/readLogistik/obat_injeksi';
 $route['logistik-obat-injeksi-tambah'] 					= 'Logistik/createLogistik/obat_injeksi/';
@@ -92,13 +92,13 @@ $route['logistik-obat-oral-restok/(:num)']				= 'Logistik/restokLogistik/obat_or
 $route['logistik-obat-oral-hapus/(:num)'] 				= 'Logistik/deleteLogistik/obat_oral/$1';
 $route['get-log-logistik-obat-oral'] 					= 'Logistik/getLogLogistik/obat_oral';
 
-$route['logistik-obat-sigma-usus-externum'] 			= 'Logistik/readLogistik/obat_sigma_usus_externum';
-$route['logistik-obat-sigma-usus-externum-tambah'] 		= 'Logistik/createLogistik/obat_sigma_usus_externum/';
-$route['logistik-obat-sigma-usus-externum-edit/(:num)']	= 'Logistik/editLogistik/obat_sigma_usus_externum/$1';
-$route['logistik-obat-sigma-usus-externum-submit-edit']	= 'Logistik/submitEditLogistik/obat_sigma_usus_externum';
-$route['logistik-obat-sigma-usus-externum-restok/(:num)']= 'Logistik/restokLogistik/obat_sigma_usus_externum/$1';
-$route['logistik-obat-sigma-usus-externum-hapus/(:num)']= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
-$route['get-log-logistik-obat-sigma-usus-externum']= 'Logistik/getLogLogistik/obat_sigma_usus_externum';
+$route['logistik-obat-sigma-usus-externum'] 				= 'Logistik/readLogistik/obat_sigma_usus_externum';
+$route['logistik-obat-sigma-usus-externum-tambah'] 			= 'Logistik/createLogistik/obat_sigma_usus_externum/';
+$route['logistik-obat-sigma-usus-externum-edit/(:num)']		= 'Logistik/editLogistik/obat_sigma_usus_externum/$1';
+$route['logistik-obat-sigma-usus-externum-submit-edit']		= 'Logistik/submitEditLogistik/obat_sigma_usus_externum';
+$route['logistik-obat-sigma-usus-externum-restok/(:num)']	= 'Logistik/restokLogistik/obat_sigma_usus_externum/$1';
+$route['logistik-obat-sigma-usus-externum-hapus/(:num)']	= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
+$route['get-log-logistik-obat-sigma-usus-externum']			= 'Logistik/getLogLogistik/obat_sigma_usus_externum';
 
 $route['dashboard-admin'] 								= 'Admin/dashboard';
 $route['verifikasi-user'] 								= 'Admin/verifikasi';
@@ -130,3 +130,4 @@ $route['edit-identitas-pasien/(:num)']					= 'Dokter/editIdentitasPasien/$1';
 $route['submit-edit-identitas-pasien']					= 'Dokter/submitEditIdentitasPasien';
 $route['detail-rm-pasien/(:num)']						= 'Dokter/detailRekamMedisPasien/$1';
 $route['hapus-pasien/(:num)']							= 'Dokter/deletePasien/$1';
+$route['get-detail-rekam-medis-pasien-by-month-year']	= 'Dokter/getDetailRekamMedisPasienByMonthYear';

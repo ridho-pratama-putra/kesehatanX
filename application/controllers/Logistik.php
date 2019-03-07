@@ -286,7 +286,7 @@ class Logistik extends CI_Controller {
 	function logLogistik($jenis_logistik)
 	{
 		$data 	= array(
-			"active"					=>	"log-logistik"			
+			"active"					=>	"logistik"			
 		);
 
 		$this->load->view($this->session->userdata('logged_in')['akses']."/header");
