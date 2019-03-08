@@ -1,5 +1,3 @@
-<?php
-?>
 <style type="text/css">
 table {
 	border-collapse: collapse;
@@ -224,8 +222,14 @@ table tr td:last-child {
 						:
 					</div>	
 					<div class="col-9">
-						E <?=$data['gcs_e']?> &nbsp;&nbsp;  V <?=$data['gcs_v']?> &nbsp;&nbsp;  M <?=$data['gcs_m']?> &nbsp;&nbsp; 
-						( <?= (in_array("CM", $data['gcs_opsi'])) ? "CM" : "<strike>CM</strike>"?>, <?= (in_array("Apatis", $data['gcs_opsi'])) ? "Apatis" : "<strike>Apatis</strike>"?>, <?= (in_array("Delirium", $data['gcs_opsi'])) ? "Delirium" : "<strike>Delirium</strike>"?>, <?= (in_array("Somnolen", $data['gcs_opsi'])) ? "Somnolen" : "<strike>Somnolen</strike>"?>, <?= (in_array("Stupor", $data['gcs_opsi'])) ? "Stupor" : "<strike>Stupor</strike>"?>, <?= (in_array("Coma", $data['gcs_opsi'])) ? "Coma" : "<strike>Coma</strike>"?>).*)
+						E <?=(strlen($data['gcs_e']) !== 0 ? $data['gcs_e'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> &nbsp;&nbsp;  V <?=(strlen($data['gcs_v']) !== 0 ? $data['gcs_v'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> &nbsp;&nbsp;  M <?=(strlen($data['gcs_m']) !== 0 ? $data['gcs_m'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> &nbsp;&nbsp; 
+						( 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("CM", $data['gcs_opsi']) ? "CM" : "<strike>CM</strike>" ) : 'CM')?>, 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("Apatis", $data['gcs_opsi']) ? "Apatis" : "<strike>Apatis</strike>" ) : 'Apatis')?>, 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("Delirium", $data['gcs_opsi']) ? "Delirium" : "<strike>Delirium</strike>" ) : 'Delirium')?>, 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("Somnolen", $data['gcs_opsi']) ? "Somnolen" : "<strike>Somnolen</strike>" ) : 'Somnolen')?>, 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("Stupor", $data['gcs_opsi']) ? "Stupor" : "<strike>Stupor</strike>" ) : 'Stupor')?>, 
+						<?= ($data['gcs_opsi'] !== NULL ? (in_array("Coma", $data['gcs_opsi']) ? "Coma" : "<strike>Coma</strike>" ) : 'Coma')?>).*)
 					</div>		
 				</div>
 				<div class="row">
@@ -236,7 +240,7 @@ table tr td:last-child {
 						:
 					</div>
 					<div class="col-9">
-						<?=$data['tinggi_badan']?> cm / <?=$data['berat_badan']?> kg
+						<?=(strlen($data['tinggi_badan']) !== 0 ? $data['tinggi_badan'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> cm / <?=(strlen($data['berat_badan']) !== 0 ? $data['berat_badan'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> kg
 					</div>	
 				</div>
 				<div class="row">
@@ -247,7 +251,7 @@ table tr td:last-child {
 						:
 					</div>
 					<div class="col-9">
-						<?=$data['sistol']?> / <?=$data['diastol']?> mmHg
+						<?=(strlen($data['sistol']) !== 0 ? $data['sistol'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=$data['diastol']?> mmHg
 					</div>
 				</div>
 				<div class="row">
@@ -258,7 +262,7 @@ table tr td:last-child {
 						:
 					</div>
 					<div class="col-9">
-						<?=$data['nadi']?> rpm.
+						<?=(strlen($data['nadi']) !== 0 ? $data['nadi'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> rpm.
 					</div>
 				</div>
 				<div class="row">
@@ -278,7 +282,12 @@ table tr td:last-child {
 					</div>
 					<div class="col-9">
 						
-						Anemis <?=($data['anemis_kiri'] == '1') ? '+' : '-'?> / <?=($data['anemis_kanan'] == '1') ? '+' : '-'?> Ikterik <?=($data['ikterik_kiri'] == '1') ? '+' : '-'?> / <?=($data['ikterik_kanan'] == '1') ? '+' : '-'?> Cianosis <?=($data['cianosis_kiri'] == '1') ? '+' : '-'?> / <?=($data['cianosis_kanan'] == '1') ? '+' : '-'?> Deformitas <?=($data['deformitas_kiri'] == '1') ? '+' : '-'?> / <?=($data['deformitas_kiri'] == '1') ? '+' : '-'?> Refleksi cahaya <?=($data['refchy_kiri'] == '1') ? '+' : '-'?> / <?=($data['refchy_kanan'] == '1') ? '+' : '-'?> <?=($data['refchy_opsi'] == '1') ? 'Isokor / <strike>Anisokor</strike>' : '<strike>Isokor</strike> / Anisokor'?>.*)
+						Anemis <?=($data['anemis_kiri'] !== NULL  ? ($data['anemis_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=($data['anemis_kanan'] !== NULL  ? ($data['anemis_kanan'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> 
+						Ikterik <?=($data['ikterik_kiri'] !== NULL  ? ($data['ikterik_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=($data['ikterik_kanan'] !== NULL  ? ($data['ikterik_kanan'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> 
+						Cianosis <?=($data['cianosis_kiri'] !== NULL  ? ($data['cianosis_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=($data['cianosis_kanan'] !== NULL  ? ($data['cianosis_kanan'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> 
+						Deformitas <?=($data['deformitas_kiri'] !== NULL  ? ($data['deformitas_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=($data['deformitas_kiri'] !== NULL  ? ($data['deformitas_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> 
+						Refleksi cahaya <?=($data['refchy_kiri'] !== NULL  ? ($data['refchy_kiri'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=($data['refchy_kanan'] !== NULL  ? ($data['refchy_kanan'] = 1 ? "+" : "-") : '&nbsp;&nbsp;&nbsp;&nbsp;')?> 
+						<?=($data['refchy_opsi'] !== NULL  ? ($data['refchy_opsi'] == '1' ? 'Isokor / <strike>Anisokor</strike>' : '<strike>Isokor</strike> / Anisokor') : 'Isokor / Anisokor')?>.*)
 					</div>
 					<div class="col-5 offset-2">
 						Keterangan tambahan :  <?=$data['kepala_ket_tambahan']?>
@@ -294,12 +303,12 @@ table tr td:last-child {
 					</div>
 					:
 					<div class="col-3">
-						<?=($data['paru_simetris_asimetris'] == 'Simetris') ? 'Simetris / <strike>Asimetris</strike>' : '<strike>Simetris</strike> / Asimetris'?>.*)
+						<?=($data['paru_simetris_asimetris'] !== NULL ? ($data['paru_simetris_asimetris'] == 'Simetris' ? 'Simetris / <strike>Asimetris</strike>' : '<strike>Simetris</strike> / Asimetris') : 'Simetris / Asimetris')?>.*)
 					</div>
 				</div>
 				<div class="row">
 					<div class="col offset-3">
-						Wheezing <?=($data['wheezing_kiri'] == '1') ? '+' : '-'?> / <?=($data['wheezing_kanan'] == '1') ? '+' : '-'?> Ronkhi <?=($data['ronkhi_kiri'] == '1') ? '+' : '-'?> / <?=($data['ronkhi_kanan'] == '1') ? '+' : '-'?> Vesikuler <?=($data['vesikuler_kiri'] == '1') ? '+' : '-'?> / <?=($data['vesikuler_kanan'] == '1') ? '+' : '-'?>
+						Wheezing <?=($data['wheezing_kiri'] !== NULL ? ($data['wheezing_kiri'] == '1' ? '+' : '-' ) : '&nbsp;')?> / <?=($data['wheezing_kanan'] !== NULL ? ($data['wheezing_kanan'] == '1' ? '+' : '-' ) : '&nbsp;')?> Ronkhi <?=($data['ronkhi_kiri'] !== NULL ? ($data['ronkhi_kiri'] == '1' ? '+' : '-' ) : '&nbsp;')?> / <?=($data['ronkhi_kanan'] !== NULL ? ($data['ronkhi_kanan'] == '1' ? '+' : '-' ) : '&nbsp;')?> Vesikuler <?=($data['vesikuler_kiri'] !== NULL ? ($data['vesikuler_kiri'] == '1' ? '+' : '-' ) : '&nbsp;')?> / <?=($data['vesikuler_kanan'] !== NULL ? ($data['vesikuler_kanan'] == '1' ? '+' : '-' ) : '&nbsp;')?>
 					</div>
 				</div>
 				<div class="row">
@@ -309,12 +318,13 @@ table tr td:last-child {
 					</div>
 					:
 					<div class="col-4">
-						Ictus cordis <?=($data['jantung_ictuscordis'] == 'Tampak') ? 'Tampak / <strike>Tak Tampak</strike>' : '<strike>Tampak</strike> / Tak Tampak'?>.*)
+						Ictus cordis <?=($data['jantung_ictuscordis'] !== NULL ? ($data['jantung_ictuscordis'] == 'Tampak' ? 'Tampak / <strike>Tak Tampak</strike>' : '<strike>Tampak</strike> / Tak Tampak') : "Tampak / Tak Tampak")?> .*)
 					</div>
 				</div>
 				<div class="row">
 					<div class="col offset-3">
-						S1-S2 <?=($data['jantung_s1_s2'] == 'Reguler') ? 'Reguler / <strike>Irreguler</strike>' : '<strike>Reguler</strike> / Irreguler'?>.*), Suara tambahan : <?=$data['jantung_suaratambahan']?>
+						S1-S2 <?=($data['jantung_s1_s2'] !== NULL ? ($data['jantung_s1_s2'] == 'Reguler' ? 'Reguler / <strike>Irreguler</strike>' : '<strike>Reguler</strike> / Irreguler') : "Reguler / Irreguler")?> .*), 
+						Suara tambahan : <?=$data['jantung_suaratambahan']?>
 					</div>
 				</div>
 				<div class="row">
@@ -329,28 +339,36 @@ table tr td:last-child {
 					:
 					<div class="col">
 						BU <?php
-						if($data['BU'] == 'Normal'){ 
-							echo "Normal / "; 
-							echo "<strike>Meningkat</strike> / ";
-							echo "<strike>Menurun</strike> / ";
-							echo "<strike>Negatif</strike>";
-						} elseif ($data['BU'] == 'Meningkat') {
-							echo "<strike>Normal</strike> / ";
+
+						if ($data['BU'] !== NULL) {
+							if($data['BU'] == 'Normal'){ 
+								echo "Normal / "; 
+								echo "<strike>Meningkat</strike> / ";
+								echo "<strike>Menurun</strike> / ";
+								echo "<strike>Negatif</strike>";
+							} elseif ($data['BU'] == 'Meningkat') {
+								echo "<strike>Normal</strike> / ";
+								echo "Meningkat / ";
+								echo "<strike>Menurun</strike> / ";
+								echo "<strike>Negatif</strike>";
+							} elseif ($data['BU'] == 'Menurun') {
+								echo "<strike>Normal</strike> / ";
+								echo "<strike>Meningkat</strike> / ";
+								echo "Menurun / ";
+								echo "<strike>Negatif</strike>";
+							} elseif ($data['BU'] == 'Negatif') { 
+								echo "<strike>Normal</strike> / ";
+								echo "<strike>Meningkat</strike> / ";
+								echo "<strike>Menurun</strike> / ";
+								echo "Negatif";
+							}
+						}else{
+							echo "Normal / ";
 							echo "Meningkat / ";
-							echo "<strike>Menurun</strike> / ";
-							echo "<strike>Negatif</strike>";
-						} elseif ($data['BU'] == 'Menurun') {
-							echo "<strike>Normal</strike> / ";
-							echo "<strike>Meningkat</strike> / ";
 							echo "Menurun / ";
-							echo "<strike>Negatif</strike>";
-						} elseif ($data['BU'] == 'Negatif') { 
-							echo "<strike>Normal</strike> / ";
-							echo "<strike>Meningkat</strike> / ";
-							echo "<strike>Menurun</strike> / ";
 							echo "Negatif";
 						}
-						?>.*)
+						?> .*)
 					</div>
 				</div>
 				<div class="row">
@@ -380,7 +398,7 @@ table tr td:last-child {
 
 
 					<div class="col-4">
-						Hepatomegali(<?=$data['hepatomegali']?>), Spleenomegali(<?=$data['spleenomegali']?>)
+						Hepatomegali(<?=(strlen($data['hepatomegali']) !== 0 ? $data['hepatomegali'] : "............................................................")?>), Spleenomegali(<?=(strlen($data['spleenomegali']) !== 0 ? $data['spleenomegali'] : "............................................................")?>)
 					</div>
 				</div>
 				<div class="row">
@@ -516,7 +534,7 @@ table tr td:last-child {
 						<div class="row">
 							Malang, <?=tgl_indo(date("Y-m-d"))?>
 						</div>
-						<div class="row" style="margin-bottom: 100px">
+						<div class="row" style="margin-bottom: 55px">
 							Pemeriksa,
 						</div>
 						<div class="row mt-5">

@@ -846,27 +846,29 @@
 		$('#headtotoe-rujukan').val($('#headtotoe-pemeriksaan').val());
 
 		$('#suratrujukan')[0].submit();
-		
-		// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
-		var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-rujukan/<?=$pasien[0]->id?>", function(data) {
-			data = JSON.parse(data);
-			if (data[0].nomor_surat < 10 ) {
-				data[0].nomor_surat = "00"+data[0].nomor_surat;
-			}else{
-				data[0].nomor_surat = "0"+data[0].nomor_surat;
-			}
-			// console.log(document.getElementById('planning').value);
-			if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
-				document.getElementById('textarea-planning-pemeriksaan').value += ", ";
-			}
+			setTimeout(function(){
+				// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
+				var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-rujukan/<?=$pasien[0]->id?>", function(data) {
+					data = JSON.parse(data);
+					if (data[0].nomor_surat < 10 ) {
+						data[0].nomor_surat = "00"+data[0].nomor_surat;
+					}else{
+						data[0].nomor_surat = "0"+data[0].nomor_surat;
+					}
+					// console.log(document.getElementById('planning').value);
+					if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
+						document.getElementById('textarea-planning-pemeriksaan').value += ", ";
+					}
 
-			document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
-			
-		})
-		.fail(function() {
-			alert( "error" );
-		})
+					document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+					
+				})
+				.fail(function() {
+					alert( "error" );
+				})
+			}, 3000);
 	}
+
 </script>
 <div class="mt-3 mb-3"><?=$this->session->flashdata('alert')?></div>
 <h3 class="text-center mt-3"><strong>Pemeriksaan Dokter</strong></h3>
