@@ -556,7 +556,12 @@ class Dokter extends CI_Controller {
 				'terapi_2'					=>	($this->input->post('terapi_1') !== '' ? $this->input->post('terapi_1') : NULL),
 				'terapi_3'					=>	($this->input->post('terapi_2') !== '' ? $this->input->post('terapi_2') : NULL),
 				'dokter_pemeriksa'			=>	$this->session->userdata('logged_in')['id_user'],
-				'planning'					=>	($this->input->post('planning') !== '' ? $this->input->post('planning').". " : '')." Biaya dokter: ".$this->input->post('biaya_dokter').". Total biaya: ".$this->input->post('total_harga_logistik')
+				'planning'					=>	
+				($this->input->post('planning') !== '' ? $this->input->post('planning')." " : '').
+				// ($this->input->post('terapi_1') !== '' ? " Terapi 1 ".$this->input->post('terapi_1') : "").
+				// ($this->input ->post('terapi_2') !== '' ? " Terapi 2 ".$this->input->post('terapi_2') : "").
+				// ($this->input->post('terapi_3') !== '' ? "Terapi 3 ".$this->input->post('terapi_3') : "").
+				" Biaya dokter: ".$this->input->post('biaya_dokter').". Total biaya: ".$this->input->post('total_harga_logistik')
 			);
 
 			/*run query ke rekam medis, update atau create. kemudian get id nya untuk keperluan insert assessment ke tabel yang berelasi (tabel assesssment)
@@ -750,10 +755,9 @@ class Dokter extends CI_Controller {
 			.($value->abdomen_BU !== NULL || $value->nyeri_tekan1 !== NULL || $value->nyeri_tekan2 !== NULL || $value->nyeri_tekan3 !== NULL || $value->nyeri_tekan4 !== NULL || $value->nyeri_tekan5 !== NULL || $value->nyeri_tekan6 !== NULL || $value->nyeri_tekan7 !== NULL || $value->nyeri_tekan8 !== NULL || $value->nyeri_tekan9 !== NULL || $value->hepatomegali !== NULL || $value->spleenomegali !== NULL || $value->abdomen_ket_tambahan !== NULL? "<br>Abdomen " : '').($value->abdomen_BU !== NULL ? "BU: ".$value->abdomen_BU."  " : '').($value->nyeri_tekan1 !== NULL || $value->nyeri_tekan2 !== NULL || $value->nyeri_tekan3 !== NULL || $value->nyeri_tekan4 !== NULL || $value->nyeri_tekan5 !== NULL || $value->nyeri_tekan6 !== NULL || $value->nyeri_tekan7 !== NULL || $value->nyeri_tekan8 !== NULL || $value->nyeri_tekan9 !== NULL ? "Nyeri tekan :" : '').($value->nyeri_tekan1 !== NULL ? " 1 " : '').($value->nyeri_tekan2 !== NULL ? " 2 " : '').($value->nyeri_tekan3 !== NULL ? " 3 " : '').($value->nyeri_tekan4 !== NULL ? " 4 " : '').($value->nyeri_tekan5 !== NULL ? " 5 " : '').($value->nyeri_tekan6 !== NULL ? " 6 " : '').($value->nyeri_tekan7 !== NULL ? " 7 " : '').($value->nyeri_tekan8 !== NULL ? " 8 " : '').($value->nyeri_tekan9 !== NULL ? " 9 " : '').($value->hepatomegali !== NULL ? " Hepatomegali : ".$value->hepatomegali : '').($value->spleenomegali !== NULL ? " Spleenomegali : ".$value->spleenomegali : '').($value->abdomen_ket_tambahan !== NULL ? " Keterangan tambahan abdomen : ".$value->abdomen_ket_tambahan : '')
 			.($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL || $value->crt_1 !== NULL || $value->crt_2 !== NULL || $value->crt_2 !== NULL || $value->crt_3 !== NULL || $value->crt_4 !== NULL || $value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL? "<br>Ekstermitas " : '').($value->akral_hangat1 !== NULL || $value->akral_hangat2 !== NULL || $value->akral_hangat3 !== NULL || $value->akral_hangat4 !== NULL ? "Akral hangat: " : '').($value->akral_hangat1 !== NULL ? " 1 " : '').($value->akral_hangat2 !== NULL ? " 2 " : '').($value->akral_hangat3 !== NULL ? " 3 " : '').($value->akral_hangat4 !== NULL ? " 4 " : '')
 			.($value->crt_1 !== NULL || $value->crt_2 !== NULL || $value->crt_2 !== NULL || $value->crt_3 !== NULL || $value->crt_4 !== NULL ? "CRT : " : '').($value->crt_1 !== NULL ? " 1 " : '').($value->crt_2 !== NULL ? " 2 " : '').($value->crt_3 !== NULL ? " 3 " : '').($value->crt_4 !== NULL ? " 4 " : '')
-			.($value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL ? "Edema : " : '').($value->edema_1 !== NULL ? " 1 " : '').($value->edema_2 !== NULL ? " 2 " : '').($value->edema_3 !== NULL ? " 3 " : '').($value->edema_4 !== NULL ? " 4 " : '').$value->pitting_nonpitting.($value->ekstermitas_ket_tambahan !== NULL ? " Keterangan tambahan ekstermitas : ".$value->ekstermitas_ket_tambahan : '').($value->lain_lain !== NULL ? " <br>Lain-lain : ".$value->lain_lain : '')
-			.($value->terapi_1 !== NULL ? "<br>Terapi 1 : ".$value->terapi_1 : '').($value->terapi_2 !== NULL ? "<br>Terapi 2 : ".$value->terapi_2 : '').($value->terapi_3 !== NULL ? "<br>Terapi 3 : ".$value->terapi_3 : '');
+			.($value->edema_1 !== NULL || $value->edema_2 !== NULL || $value->edema_2 !== NULL || $value->edema_3 !== NULL || $value->edema_4 !== NULL ? "Edema : " : '').($value->edema_1 !== NULL ? " 1 " : '').($value->edema_2 !== NULL ? " 2 " : '').($value->edema_3 !== NULL ? " 3 " : '').($value->edema_4 !== NULL ? " 4 " : '').$value->pitting_nonpitting.($value->ekstermitas_ket_tambahan !== NULL ? " Keterangan tambahan ekstermitas : ".$value->ekstermitas_ket_tambahan : '').($value->lain_lain !== NULL ? " <br>Lain-lain : ".$value->lain_lain : '');
 
-			$processing_rekam_medis['planning'] = $value->planning;
+			$processing_rekam_medis['planning'] = $value->planning.($value->terapi_1 !== NULL ? "<br>Terapi 1 : ".$value->terapi_1 : '').($value->terapi_2 !== NULL ? "<br>Terapi 2 : ".$value->terapi_2 : '').($value->terapi_3 !== NULL ? "<br>Terapi 3 : ".$value->terapi_3 : '');
 			$processing_rekam_medis['assessment'] = $value->kelompok;
 			$processing_rekam_medis['oleh_dokter'] = $value->nama;	
 			array_push($processed_rekam_medis['record'], $processing_rekam_medis);
@@ -918,16 +922,16 @@ class Dokter extends CI_Controller {
 	* - surat sakit $surat<-surat-sakit
 	*/
 	function submitCetakSurat($jenis_surat){
+		$createSurat = $this->model->create_id($jenis_surat,array("id_pasien"=>$this->input->post('id_pasien'),"tanggal_jam"=>date("Y-m-d H:i:s")));
+		$createSurat = json_decode($createSurat);
+		if ($createSurat->message < 10) {
+			$data['nomor_surat'] = "00".$createSurat->message;
+		}elseif($createSurat->message < 100){
+			$data['nomor_surat'] = "0".$createSurat->message;
+		}else{
+			$data['nomor_surat'] = $createSurat->message;
+		}
 		if ($jenis_surat == "suratrujukan") {
-			$createSurat = $this->model->create_id("suratrujukan",array("id_pasien"=>$this->input->post('id_pasien'),"tanggal_jam"=>date("Y-m-d H:i:s")));
-			$createSurat = json_decode($createSurat);
-			if ($createSurat->message < 10) {
-				$data['nomor_surat'] = "00".$createSurat->message;
-			}elseif($createSurat->message < 100){
-				$data['nomor_surat'] = "0".$createSurat->message;
-			}else{
-				$data['nomor_surat'] = $createSurat->message;
-			}
 
 			$data['active'] 				= 'pemeriksaan';
 			$data['nama_user']				= $this->session->userdata('logged_in')['nama_user'];
@@ -1008,6 +1012,27 @@ class Dokter extends CI_Controller {
 				"terapi3" 					=> $this->input->post("terapi3")
 			);
 			$kode_surat = "003";
+		}elseif ($jenis_surat == "suratsehat") {
+			$data['tes_buta_warna']		= $this->input->post('tes_buta_warna');
+			$data['keperluan']			= $this->input->post('keperluan');
+			$data['tinggi_badan']		= $this->input->post('tinggi_badan');
+			$data['berat_badan']		= $this->input->post('berat_badan');
+			$data['sistol']				= $this->input->post('sistol');
+			$data['diastol']			= $this->input->post('diastol');
+			$data['nadi']				= $this->input->post('nadi');
+			$data['respiratory_rate']	= $this->input->post('respiratory_rate');
+			$data['temperature_ax']		= $this->input->post('temperature_ax');
+
+			// nama dokter yang menangani
+			$data['nama_user']		= $this->session->userdata('logged_in')['nama_user'];
+
+			// sip dokter yang menangani
+			$data['sip']			= $this->session->userdata('logged_in')['sip'];
+			
+			// data pasien yang sedang diperiksa
+			$data['pasien']			= $this->model->read('pasien',array('id'=>$this->input->post("id_pasien")))->result();
+
+			$kode_surat = "001";
 		}
 		// echo "<pre>";
 		// var_dump($data);

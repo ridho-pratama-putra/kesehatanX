@@ -65,19 +65,19 @@
 		});
 
 		// inisialisasi dan set alert form surat sehat
-		$("#formSuratSehat").validate({
-			rules:{
-				keperluan:{
-					required:true,
-				}
-			},messages:{
-				keperluan:{
-					required:"Mohon isi data yang dibutuhkan",
-				}
-			},
-			errorClass: "my-error-class",
-			validClass: "my-valid-class"
-		});
+		// $("#formSuratSehat").validate({
+		// 	rules:{
+		// 		keperluan:{
+		// 			required:true,
+		// 		}
+		// 	},messages:{
+		// 		keperluan:{
+		// 			required:"Mohon isi data yang dibutuhkan",
+		// 		}
+		// 	},
+		// 	errorClass: "my-error-class",
+		// 	validClass: "my-valid-class"
+		// });
 
 		// saat obat injeksi terpilih, tampilkan satuan, dan stok maksimal yang bisa dimasukkan via atribut max
 		$("#select-obat-injeksi").select2({
@@ -689,14 +689,14 @@
 
 	// function untuk menyalurkan tinggi badan via submit form surat sehat. executenya nyalip open blank page.
 	function formSuratSehat() {
-		document.getElementById('sistol_sehat').value 			= document.getElementById('sistol-pemeriksaan').value;
-		document.getElementById('diastol_sehat').value 			= document.getElementById('diastol-pemeriksaan').value;
+		document.getElementById('sistol-sehat').value 			= document.getElementById('sistol-pemeriksaan').value;
+		document.getElementById('diastol-sehat').value 			= document.getElementById('diastol-pemeriksaan').value;
 		if (document.getElementById('tinggi-badan-pemeriksaan').value !== 'undefined' && document.getElementById('berat-badan-pemeriksaan').value !== 'undefined' && document.getElementById('nadi-pemeriksaan').value !== 'undefined' && document.getElementById('respiratory-rate-pemeriksaan').value !== 'undefined' && document.getElementById('temperature-ax-pemeriksaan').value !== 'undefined') {
-			document.getElementById('tinggi_badan_sehat').value 		= document.getElementById('tinggi-badan-pemeriksaan').value;
-			document.getElementById('berat_badan_sehat').value 		= document.getElementById('berat-badan-pemeriksaan').value;
-			document.getElementById('nadi_sehat').value 				= document.getElementById('nadi-pemeriksaan').value;
-			document.getElementById('respiratory_rate_sehat').value 	= document.getElementById('respiratory-rate-pemeriksaan').value;
-			document.getElementById('temperature_ax_sehat').value 	= document.getElementById('temperature-ax-pemeriksaan').value;
+			document.getElementById('tinggi-badan-sehat').value 	= document.getElementById('tinggi-badan-pemeriksaan').value;
+			document.getElementById('berat-badan-sehat').value 		= document.getElementById('berat-badan-pemeriksaan').value;
+			document.getElementById('nadi-sehat').value 			= document.getElementById('nadi-pemeriksaan').value;
+			document.getElementById('respiratory-rate-sehat').value = document.getElementById('respiratory-rate-pemeriksaan').value;
+			document.getElementById('temperature-ax-sehat').value 	= document.getElementById('temperature-ax-pemeriksaan').value;
 			return true;
 		}else{
 			alert('Mohon lengkapi data pemeriksaan objektif kecuali Head To Toe');
@@ -707,20 +707,40 @@
 
 	// setelah cetak surat sehat, tambahkan nomor surat sakit yang telah tercetak ke kolom planning untuk dokumnetasi lebih jelas
 	function SuratSehat() {	
-		var jqxhr = $.get( "<?=base_url()?>Dokter/getTabelSurat/sehat/<?=$pasien[0]->nomor_pasien?>", function(data) {
+		alert("message?: DOMString")
+		// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
+		var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-sehat/<?=$pasien[0]->id?>", function(data) {
 			data = JSON.parse(data);
 			if (data[0].nomor_surat < 10 ) {
 				data[0].nomor_surat = "00"+data[0].nomor_surat;
-			}else{
+			}else if(data[0].nomor_surat < 100){
 				data[0].nomor_surat = "0"+data[0].nomor_surat;
-			}
-			if(document.getElementById('textarea-planning-pemeriksaan').value == ''){
-				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Sehat : "+ data[0].nomor_surat +" / 001 / 0"+ data[0].tanggal_terbit.substring(5, 7) +" / "+ data[0].tanggal_terbit.substring(0, 4) +" ";
 			}else{
-				document.getElementById('textarea-planning-pemeriksaan').value += ", Surat Sehat : "+ data[0].nomor_surat +" / 001 / 0"+ data[0].tanggal_terbit.substring(5, 7) +" / "+ data[0].tanggal_terbit.substring(0, 4) +" ";
+				data[0].nomor_surat = data[0].nomor_surat;
+			}
+			// console.log(document.getElementById('planning').value);
+			if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
+				document.getElementById('textarea-planning-pemeriksaan').value += ", ";
 			}
 
-		}).fail(function() {
+
+			document.getElementById('textarea-planning-pemeriksaan').value += "Surat Sehat : "+ data[0].nomor_surat +" / 001 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+			
+			// if (document.getElementById('kepala-ket-tambahan-pemeriksaan').value !== '') {
+			// 	document.getElementById('textarea-planning-pemeriksaan').value += ". ";
+			// }
+			
+			document.getElementById('kepala-ket-tambahan-pemeriksaan').value += "Tes buta warna : ";
+			if (typeof $("input[name='tes_buta_warna']:checked").val() == 'undefined') {
+				document.getElementById('kepala-ket-tambahan-pemeriksaan').value += 'Belum diisi ';
+			}
+
+			document.getElementById('kepala-ket-tambahan-pemeriksaan').value += ". Untuk keperluan : ";
+			if (document.getElementById('keperluan').value == '') {
+				document.getElementById('kepala-ket-tambahan-pemeriksaan').value += 'Belum diisi ';
+			}
+		})
+		.fail(function() {
 			alert( "error" );
 		})
 	}
@@ -846,27 +866,29 @@
 		$('#headtotoe-rujukan').val($('#headtotoe-pemeriksaan').val());
 
 		$('#suratrujukan')[0].submit();
-			setTimeout(function(){
-				// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
-				var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-rujukan/<?=$pasien[0]->id?>", function(data) {
-					data = JSON.parse(data);
-					if (data[0].nomor_surat < 10 ) {
-						data[0].nomor_surat = "00"+data[0].nomor_surat;
-					}else{
-						data[0].nomor_surat = "0"+data[0].nomor_surat;
-					}
-					// console.log(document.getElementById('planning').value);
-					if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
-						document.getElementById('textarea-planning-pemeriksaan').value += ", ";
-					}
+		setTimeout(function(){
+			// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
+			var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-rujukan/<?=$pasien[0]->id?>", function(data) {
+				data = JSON.parse(data);
+				if (data[0].nomor_surat < 10 ) {
+					data[0].nomor_surat = "00"+data[0].nomor_surat;
+				}else if(data[0].nomor_surat < 100){
+					data[0].nomor_surat = "0"+data[0].nomor_surat;
+				}else{
+					data[0].nomor_surat = data[0].nomor_surat;
+				}
+				// console.log(document.getElementById('planning').value);
+				if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
+					document.getElementById('textarea-planning-pemeriksaan').value += ", ";
+				}
 
-					document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
-					
-				})
-				.fail(function() {
-					alert( "error" );
-				})
-			}, 3000);
+				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Rujukan : "+ data[0].nomor_surat +" / 003 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+				
+			})
+			.fail(function() {
+				alert( "error" );
+			})
+		}, 3000);
 	}
 
 </script>
@@ -952,7 +974,7 @@
 					<a class="nav-link" id="home-tab" href="<?=base_url()?>detail-rekam-medis-pasien/<?=$pasien[0]->id?>" role="tab" target="_blank">Rekam Medis</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#pemeriksaan" role="tab" aria-controls="pemeriksaan" aria-selected="false">Pemeriksaan</a>
+					<a class="nav-link active" id="pemeriksaan-tab" data-toggle="tab" href="#tab-pemeriksaan" role="tab" aria-controls="pemeriksaan" aria-selected="false">Pemeriksaan</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#surat_sakit" role="tab" aria-controls="surat_sakit" aria-selected="false">Surat Sakit</a>
@@ -964,7 +986,7 @@
 			<div class="tab-content" id="myTabContent" >
 				
 				<!-- TAB PEMERIKSAAN -->
-				<div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="profile-tab">
+				<div class="tab-pane fade show active" id="tab-pemeriksaan" role="tabpanel" aria-labelledby="tab-pemeriksaan">
 					<form method="POST" action="<?=base_url('Dokter/submitPemeriksaan')?>">
 						<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" id="nomor-pasien">
 						<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>" id="id-pasien">
@@ -1906,22 +1928,23 @@
 				<div class="tab-pane fade" id="surat_sehat" role="tabpanel" aria-labelledby="home-tab">
 					<div class="container">
 						<h5 class="text-center mt-3">Surat Sehat</h5>
-						<form action="<?=base_url()?>Dokter/submitCetak/suratsehat" onsubmit="return formSuratSehat()" target="_blank" method="POST" id="formSuratSehat">
+						<form action="<?=base_url()?>submit-cetak-surat-sehat" onsubmit="formSuratSehat()" target="_blank" method="POST" id="formSuratSehat">
 							<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>">
+							<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>">
 							<div class="row mt-3">
 								<div class="col-3">Tes Buta Warna</div>
 								<div class="col">:</div>
 								<div class="col">
-									<input type="radio" class="custom-control-input" id="tesButaWarna1" name="tes_buta_warna" value="Ya" required="">
-									<label class="custom-control-label" for="tesButaWarna1">Ya</label>
+									<input type="radio" class="form-control" id="tesButaWarna1" name="tes_buta_warna" value="Ya" >
+									<label class="" for="tesButaWarna1">Ya</label>
 								</div>
 								<div class="col">
-									<input type="radio" class="custom-control-input" id="tesButaWarna2" name="tes_buta_warna" value="Tidak" required="">
-									<label class="custom-control-label" for="tesButaWarna2">Tidak</label>
+									<input type="radio" class="form-control" id="tesButaWarna2" name="tes_buta_warna" value="Tidak" >
+									<label class="" for="tesButaWarna2">Tidak</label>
 								</div>
 								<div class="col">
-									<input type="radio" class="custom-control-input" id="tesButaWarna3" name="tes_buta_warna" value="Parsial" required="">
-									<label class="custom-control-label" for="tesButaWarna3">Parsial</label>
+									<input type="radio" class="form-control" id="tesButaWarna3" name="tes_buta_warna" value="Parsial" >
+									<label class="" for="tesButaWarna3">Parsial</label>
 								</div>
 							</div>
 
@@ -1929,14 +1952,14 @@
 								<div class="col-3">Keperluan</div>
 								<div class="col">:</div>
 								<div class="col-8">
-									<input type="text" class="form-control" id="keperluan" name="keperluan" required="">
-									<input type="hidden" class="form-control" name="tinggi_badan" id="tinggi_badan_sehat">
-									<input type="hidden" class="form-control" name="berat_badan" id="berat_badan_sehat">
-									<input type="hidden" class="form-control" name="sistol" id="sistol_sehat">
-									<input type="hidden" class="form-control" name="diastol" id="diastol_sehat">
-									<input type="hidden" class="form-control" name="nadi" id="nadi_sehat">
-									<input type="hidden" class="form-control" name="respiratory_rate" id="respiratory_rate_sehat">
-									<input type="hidden" class="form-control" name="temperature_ax" id="temperature_ax_sehat">
+									<input type="text" class="form-control" id="keperluan" name="keperluan" >
+									<input type="hidden" class="form-control" name="tinggi_badan" id="tinggi-badan-sehat">
+									<input type="hidden" class="form-control" name="berat_badan" id="berat-badan-sehat">
+									<input type="hidden" class="form-control" name="sistol" id="sistol-sehat">
+									<input type="hidden" class="form-control" name="diastol" id="diastol-sehat">
+									<input type="hidden" class="form-control" name="nadi" id="nadi-sehat">
+									<input type="hidden" class="form-control" name="respiratory_rate" id="respiratory-rate-sehat">
+									<input type="hidden" class="form-control" name="temperature_ax" id="temperature-ax-sehat">
 								</div>
 							</div>
 

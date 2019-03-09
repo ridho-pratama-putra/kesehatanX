@@ -251,7 +251,7 @@ table tr td:last-child {
 						:
 					</div>
 					<div class="col-9">
-						<?=(strlen($data['sistol']) !== 0 ? $data['sistol'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=$data['diastol']?> mmHg
+						<?=(strlen($data['sistol']) !== 0 ? $data['sistol'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> / <?=strlen($data['diastol'] ? $data['diastol'] : '&nbsp;&nbsp;&nbsp;&nbsp;')?> mmHg
 					</div>
 				</div>
 				<div class="row">
