@@ -42,27 +42,27 @@
 		});
 
 		// inisialisasi dan set alert form surat sakit
-		$("#formSuratSakit").validate({
-			rules:{
-				alasan:{
-					required:true,
-				},selama:{
-					required:true,
-				},selama_satuan:{
-					required:true,
-				}
-			},messages:{
-				alasan:{
-					required:"Mohon isi alasan",
-				},selama:{
-					required:"Mohon isi data yang dibutuhkan",
-				},selama_satuan:{
-					required:"Mohon isi data yang dibutuhkan",
-				}
-			},
-			errorClass: "my-error-class",
-			validClass: "my-valid-class"
-		});
+		// $("#formSuratSakit").validate({
+		// 	rules:{
+		// 		alasan:{
+		// 			required:true,
+		// 		},selama:{
+		// 			required:true,
+		// 		},selama_satuan:{
+		// 			required:true,
+		// 		}
+		// 	},messages:{
+		// 		alasan:{
+		// 			required:"Mohon isi alasan",
+		// 		},selama:{
+		// 			required:"Mohon isi data yang dibutuhkan",
+		// 		},selama_satuan:{
+		// 			required:"Mohon isi data yang dibutuhkan",
+		// 		}
+		// 	},
+		// 	errorClass: "my-error-class",
+		// 	validClass: "my-valid-class"
+		// });
 
 		// inisialisasi dan set alert form surat sehat
 		// $("#formSuratSehat").validate({
@@ -669,19 +669,20 @@
 
 	// setelah cetak surat sakit, tambahkan nomor surat sakit yang telah tercetak ke kolom planning untuk dokumnetasi lebih jelas
 	function SuratSakit() {
-		var jqxhr = $.get( "<?=base_url()?>Dokter/getTabelSurat/sakit/<?=$pasien[0]->nomor_pasien?>", function(data) {
+		var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-sakit/<?=$pasien[0]->id?>", function(data) {
 			data = JSON.parse(data);
 			if (data[0].nomor_surat < 10 ) {
 				data[0].nomor_surat = "00"+data[0].nomor_surat;
-			}else{
+			}else if(data[0].nomor_surat < 100){
 				data[0].nomor_surat = "0"+data[0].nomor_surat;
-			}
-			if(document.getElementById('textarea-planning-pemeriksaan').value == ''){
-				document.getElementById('textarea-planning-pemeriksaan').value += "Surat Sakit : "+ data[0].nomor_surat +" / 002 / 0"+ data[0].tanggal_awal.substring(5, 7) +" / "+ data[0].tanggal_awal.substring(0, 4) +" ";
 			}else{
-				document.getElementById('textarea-planning-pemeriksaan').value += ", Surat Sakit : "+ data[0].nomor_surat +" / 002 / 0"+ data[0].tanggal_awal.substring(5, 7) +" / "+ data[0].tanggal_awal.substring(0, 4) +" ";
+				data[0].nomor_surat = data[0].nomor_surat;
 			}
-		}).delay( 2000 )
+			if(document.getElementById('textarea-planning-pemeriksaan').value !== ''){
+				document.getElementById('textarea-planning-pemeriksaan').value += ",";
+			}
+			document.getElementById('textarea-planning-pemeriksaan').value += " Surat Sakit : "+ data[0].nomor_surat +" / 002 / 0"+ data[0].tanggal.substring(5, 7) +" / "+ data[0].tanggal.substring(0, 4) +" ";
+		})
 		.fail(function() {
 			alert( "error" );
 		})
@@ -689,6 +690,7 @@
 
 	// function untuk menyalurkan tinggi badan via submit form surat sehat. executenya nyalip open blank page.
 	function formSuratSehat() {
+		alert("formsuratsehat")
 		document.getElementById('sistol-sehat').value 			= document.getElementById('sistol-pemeriksaan').value;
 		document.getElementById('diastol-sehat').value 			= document.getElementById('diastol-pemeriksaan').value;
 		if (document.getElementById('tinggi-badan-pemeriksaan').value !== 'undefined' && document.getElementById('berat-badan-pemeriksaan').value !== 'undefined' && document.getElementById('nadi-pemeriksaan').value !== 'undefined' && document.getElementById('respiratory-rate-pemeriksaan').value !== 'undefined' && document.getElementById('temperature-ax-pemeriksaan').value !== 'undefined') {
@@ -707,7 +709,7 @@
 
 	// setelah cetak surat sehat, tambahkan nomor surat sakit yang telah tercetak ke kolom planning untuk dokumnetasi lebih jelas
 	function SuratSehat() {	
-		alert("message?: DOMString")
+		// alert("message?: DOMString")
 		// saat submit cetak surat rujukan, tambahkan nomor surat rujukan yang telah tergenerate ke kolom planning untuk dokumnetasi lebih jelas
 		var jqxhr = $.get( "<?=base_url()?>get-tabel-surat-sehat/<?=$pasien[0]->id?>", function(data) {
 			data = JSON.parse(data);
@@ -729,7 +731,7 @@
 			// if (document.getElementById('kepala-ket-tambahan-pemeriksaan').value !== '') {
 			// 	document.getElementById('textarea-planning-pemeriksaan').value += ". ";
 			// }
-			
+
 			document.getElementById('kepala-ket-tambahan-pemeriksaan').value += "Tes buta warna : ";
 			if (typeof $("input[name='tes_buta_warna']:checked").val() == 'undefined') {
 				document.getElementById('kepala-ket-tambahan-pemeriksaan').value += 'Belum diisi ';
@@ -1866,8 +1868,9 @@
 				<div class="tab-pane fade" id="surat_sakit" role="tabpanel" aria-labelledby="home-tab">
 					<h5 class="text-center mt-3">Surat Sakit</h5>
 					<div class="container">	
-						<form id="formSuratSakit" action="<?=base_url()?>Dokter/submitCetak/suratsakit" target="_blank" method="POST">
-							<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>" readonly="">
+						<form id="formSuratSakit" action="<?=base_url()?>submit-cetak-surat-sakit" target="_blank" method="POST">
+							<input type="hidden" name="nomor_pasien" value="<?=$pasien[0]->nomor_pasien?>">
+							<input type="hidden" name="id_pasien" value="<?=$pasien[0]->id?>">
 							<div class="row mt-3">
 								<div class="col-2">Alasan</div>
 								<div class="col">:</div>
@@ -1892,10 +1895,9 @@
 								<div class="col">:</div>
 								<div class="col-9">
 									<div class="input-group">
-										<input type="number" class="form-control" id="selama" name="selama" placeholder="Angka" >
+										<input type="number" class="form-control" id="selama" name="selama" placeholder="Angka" min="1" onkeyup="updateTglAkhir()">
 										<div class="input-group-append">
 											<select class="input-group-text custom-select" name="selama_satuan" id="selama_satuan" onchange="updateTglAkhir()" required="">
-												<option selected="" disabled="">Satuan</option>
 												<option value="hari">Hari</option>
 												<option value="minggu">Minggu</option>
 												<option value="bulan">Bulan</option>

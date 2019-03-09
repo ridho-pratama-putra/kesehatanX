@@ -1033,14 +1033,23 @@ class Dokter extends CI_Controller {
 			$data['pasien']			= $this->model->read('pasien',array('id'=>$this->input->post("id_pasien")))->result();
 
 			$kode_surat = "001";
+		}elseif ($jenis_surat == "suratsakit") {
+			$data['alasan']		 	= $this->input->post('alasan');
+			$data['tanggal_awal'] 	= $this->input->post('tanggal_awal');
+			$data['tanggal_akhir'] 	= $this->input->post('tanggal_akhir');
+			$data['selama'] 		= $this->input->post('selama');
+			$data['selama_satuan'] 	= $this->input->post('selama_satuan');
+			$data['nama_user']		= $this->session->userdata('logged_in')['nama_user'];
+			$data['sip']			= $this->session->userdata('logged_in')['sip'];
+			$data['pasien']			= $this->model->read('pasien',array('id'=>$this->input->post('id_pasien')))->result();
+			$kode_surat = "002";
 		}
 		// echo "<pre>";
 		// var_dump($data);
 		// die();
 
 		$this->load->view('dokter/header');
-		$this->load->view('dokter/navbar',$data);
-		$this->load->view('dokter/'.$jenis_surat);
+		$this->load->view('dokter/'.$jenis_surat,$data);
 		$this->load->view('dokter/footer');
 		$content = '';
 		$content .= $this->load->view('dokter/header','',TRUE);

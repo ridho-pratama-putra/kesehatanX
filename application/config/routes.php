@@ -125,8 +125,10 @@ $route['submit-antrian-dokter-proses/(:num)/(:num)']	= 'Dokter/submitAntrian/pro
 $route['submit-antrian-dokter-hapus/(:num)/(:num)']		= 'Dokter/submitAntrian/hapus/$1/$2';
 $route['submit-cetak-surat-rujukan']					= 'Dokter/submitCetakSurat/suratrujukan';
 $route['submit-cetak-surat-sehat']						= 'Dokter/submitCetakSurat/suratsehat';
+$route['submit-cetak-surat-sakit']						= 'Dokter/submitCetakSurat/suratsakit';
 $route['get-tabel-surat-rujukan/(:num)']				= 'Dokter/getSurat/suratrujukan/$1';
 $route['get-tabel-surat-sehat/(:num)']					= 'Dokter/getSurat/suratsehat/$1';
+$route['get-tabel-surat-sakit/(:num)']					= 'Dokter/getSurat/suratsakit/$1';
 
 $route['rekam-medis/(:num)']							= 'Dokter/rekamMedis/$1';
 $route['list-pasien']									= 'Dokter/listPasien';
