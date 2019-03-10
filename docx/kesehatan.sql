@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-03-05 13:30:32
+Date: 2019-03-10 23:51:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,11 +41,25 @@ CREATE TABLE `assessment` (
   `tipe` varchar(250) DEFAULT NULL,
   `detil` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of assessment
 -- ----------------------------
+INSERT INTO `assessment` VALUES ('1', '2', 'primer', 'A37.0 / Rejan batuk karena Bordetella pertussis');
+INSERT INTO `assessment` VALUES ('2', '2', 'sekunder', 'A37.1 / Rejan batuk karena Bordetella parapertussis');
+INSERT INTO `assessment` VALUES ('3', '2', 'sekunder', 'A37.8 / Batuk rejan karena spesies Bordetella lainnya');
+INSERT INTO `assessment` VALUES ('4', '2', 'lainlain', 'A37.9 / Batuk rejan , tidak spesifik');
+INSERT INTO `assessment` VALUES ('5', '2', 'pemeriksaanLab', 'pemeriksaan laboratorium');
+INSERT INTO `assessment` VALUES ('6', '3', 'primer', 'A37.0 / Rejan batuk karena Bordetella pertussis');
+INSERT INTO `assessment` VALUES ('7', '3', 'primer', 'A37.1 / Rejan batuk karena Bordetella parapertussis');
+INSERT INTO `assessment` VALUES ('8', '3', 'sekunder', 'A37.8 / Batuk rejan karena spesies Bordetella lainnya');
+INSERT INTO `assessment` VALUES ('9', '3', 'lainlain', 'A37.9 / Batuk rejan , tidak spesifik');
+INSERT INTO `assessment` VALUES ('10', '3', 'pemeriksaanLab', 'pemeriksaan lab zakiva');
+INSERT INTO `assessment` VALUES ('11', '4', 'primer', 'A41.3 / Septicaemia karena Haemophilus influenzae');
+INSERT INTO `assessment` VALUES ('12', '4', 'sekunder', 'A49.2 / Infeksi influenzae Haemophilus , tidak spesifik');
+INSERT INTO `assessment` VALUES ('13', '4', 'lainlain', 'A37.0 / Rejan batuk karena Bordetella pertussis');
+INSERT INTO `assessment` VALUES ('14', '4', 'pemeriksaanLab', 'pemeriksaan labnayla');
 
 -- ----------------------------
 -- Table structure for golongan_logistik
@@ -10609,7 +10623,7 @@ CREATE TABLE `logistik_log` (
   `stok_tersisa` varchar(255) DEFAULT NULL,
   `datetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of logistik_log
@@ -10634,7 +10648,7 @@ CREATE TABLE `logistik_obat_injeksi` (
 -- ----------------------------
 -- Records of logistik_obat_injeksi
 -- ----------------------------
-INSERT INTO `logistik_obat_injeksi` VALUES ('1', 'Kanamycin', '1', '1g', 'Vial 1g', '13000', '75000', '10');
+INSERT INTO `logistik_obat_injeksi` VALUES ('1', 'Kanamycin', '1', '1g', 'Vial 1g', '13000', '75000', '12');
 INSERT INTO `logistik_obat_injeksi` VALUES ('2', 'Ketorolac', '12', '30mg/ml', 'Ampul 1ml', '6600', '20000', '10');
 INSERT INTO `logistik_obat_injeksi` VALUES ('3', 'Antrain', '12', '500mg/ml', 'Ampul 2ml', '9800', '15000', '5');
 
@@ -10658,9 +10672,9 @@ CREATE TABLE `logistik_obat_oral` (
 -- ----------------------------
 -- Records of logistik_obat_oral
 -- ----------------------------
-INSERT INTO `logistik_obat_oral` VALUES ('1', '1', 'Amoxicillin', '500mg', 'Capsul', '100', '30000', '600', '59');
+INSERT INTO `logistik_obat_oral` VALUES ('1', '1', 'Amoxicillin', '500mg', 'Capsul', '100', '30000', '600', '54');
 INSERT INTO `logistik_obat_oral` VALUES ('2', '1', 'Amoxicillin', '250mg', 'Capsul', '0', '0', '0', '0');
-INSERT INTO `logistik_obat_oral` VALUES ('3', '1', 'Amoxicillin', '125mg/5ml', 'Syrup 60ml', '1', '2850', '7500', '9');
+INSERT INTO `logistik_obat_oral` VALUES ('3', '1', 'Amoxicillin', '125mg/5ml', 'Syrup 60ml', '1', '2850', '7500', '8');
 INSERT INTO `logistik_obat_oral` VALUES ('4', '1', 'Cefadroxil', '500mg', 'Capsul', '100', '65000', '1000', '30');
 
 -- ----------------------------
@@ -10719,13 +10733,17 @@ CREATE TABLE `log_logistik` (
   `datetime_last` datetime DEFAULT NULL,
   `tipe` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of log_logistik
 -- ----------------------------
 INSERT INTO `log_logistik` VALUES ('1', 'obat_oral', '1', '56', '3', null, '2019-03-05 13:22:48', '2019-03-05 13:22:48', 'keluar');
 INSERT INTO `log_logistik` VALUES ('2', 'obat_oral', '1', '59', null, '3', '2019-03-05 13:23:52', '2019-03-05 13:23:57', 'masuk');
+INSERT INTO `log_logistik` VALUES ('3', 'obat_injeksi', '1', '12', null, '2', '2019-03-07 11:43:32', '2019-03-07 11:43:32', 'masuk');
+INSERT INTO `log_logistik` VALUES ('4', 'obat_oral', '1', '57', '2', null, '2019-03-07 22:33:47', '2019-03-07 22:33:47', 'keluar');
+INSERT INTO `log_logistik` VALUES ('5', 'obat_oral', '1', '54', '3', null, '2019-03-07 22:36:29', '2019-03-07 22:36:29', 'keluar');
+INSERT INTO `log_logistik` VALUES ('6', 'obat_oral', '3', '8', '1', null, '2019-03-10 15:37:56', '2019-03-10 15:37:56', 'keluar');
 
 -- ----------------------------
 -- Table structure for pasien
@@ -10857,13 +10875,19 @@ CREATE TABLE `rekam_medis` (
   `terapi_3` varchar(255) DEFAULT NULL,
   `dokter_pemeriksa` varchar(255) DEFAULT NULL,
   `planning` text,
+  `surat_rujukan` varchar(255) DEFAULT NULL COMMENT 'akan ada isinya yakni id surat rujukan di tabel suratrujukan, jika ada pembuatan surat',
+  `surat_sehat` varchar(255) DEFAULT NULL COMMENT 'akan ada isinya yakni id surat sehat di tabel suratsehat, jika ada pembuatan surat',
+  `surat_sakit` varchar(255) DEFAULT NULL COMMENT 'akan ada isinya yakni id surat sakit di tabel suratsakit, jika ada pembuatan surat',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of rekam_medis
 -- ----------------------------
-INSERT INTO `rekam_medis` VALUES ('1', '5', '2019-03-05 13:25:17', 'luka kena paku', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', '3 Capsul Amoxicillin 500mg Rp. 1.800,00.  Biaya dokter: 10000. Total biaya: Rp. 11.800,00');
+INSERT INTO `rekam_medis` VALUES ('1', '5', '2019-03-10 15:38:01', 'anaknya sakit demam', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', '1 Syrup 60ml Amoxicillin 125mg/5ml Rp. 7.500,00  Biaya dokter: 10000. Total biaya: Rp. 17.500,00', null, null, null);
+INSERT INTO `rekam_medis` VALUES ('2', '5', '2019-03-10 16:11:25', 'untuk ngeccek icd nya work atau tidak', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', ' Biaya dokter: 10000. Total biaya: Rp. 10.000,00', null, null, null);
+INSERT INTO `rekam_medis` VALUES ('3', '1', '2019-03-10 16:14:02', 'untuk ngecek icd di lain pasien', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', ' Biaya dokter: 10000. Total biaya: Rp. 10.000,00', null, null, null);
+INSERT INTO `rekam_medis` VALUES ('4', '4', '2019-03-10 16:30:02', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2', ' Biaya dokter: 10000. Total biaya: Rp. 10.000,00', null, null, null);
 
 -- ----------------------------
 -- Table structure for settingan
@@ -10878,7 +10902,52 @@ CREATE TABLE `settingan` (
 -- ----------------------------
 -- Records of settingan
 -- ----------------------------
-INSERT INTO `settingan` VALUES ('1', '2019-03-05 08:26:39');
+INSERT INTO `settingan` VALUES ('1', '2019-03-10 02:30:25');
+
+-- ----------------------------
+-- Table structure for suratrujukan
+-- ----------------------------
+DROP TABLE IF EXISTS `suratrujukan`;
+CREATE TABLE `suratrujukan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pasien` varchar(225) DEFAULT NULL,
+  `tanggal_jam` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of suratrujukan
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for suratsakit
+-- ----------------------------
+DROP TABLE IF EXISTS `suratsakit`;
+CREATE TABLE `suratsakit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pasien` varchar(255) DEFAULT NULL,
+  `tanggal_jam` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of suratsakit
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for suratsehat
+-- ----------------------------
+DROP TABLE IF EXISTS `suratsehat`;
+CREATE TABLE `suratsehat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pasien` varchar(255) DEFAULT NULL,
+  `tanggal_jam` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of suratsehat
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -10897,11 +10966,13 @@ CREATE TABLE `user` (
   `verified` varchar(50) NOT NULL,
   `nama` varchar(225) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'b7766cf93f0fcbcfa13adcc202419a4e5f21816f70360b6e76fd18342b56fdd8', '1231231231231231231231231231233123', 'admin', 'Laki - Laki ', 'gajayana no563', '1231231231231231', 'assets/images/users_photo/dragon-ball.jpg', 'sudah', 'dr. admin');
-INSERT INTO `user` VALUES ('2', 'dokter', '6c2b8adf9f897f646f442f6776425479958e409842a3506c1c51cc292fd27c55', '446.DU/1616.1/35.73.302/2018', 'dokter', 'Laki - Laki ', 'jalan mawar 45 malangJln. Mayjend Sungkono No.09 B', '1405356066621233', 'assets/images/users_photo/juragan.jpg', 'sudah', 'dr. Muchamad Zubait');
-INSERT INTO `user` VALUES ('3', 'petugas', '6c2b8adf9f897f646f442f6776425479958e409842a3506c1c51cc292fd27c55', '', 'petugas', 'Laki - Laki ', 'dinoyo gang 3', '1231231231231239', 'assets/images/users_photo/24a3f397a1058a682ab61e13845e0efd1.jpg', 'sudah', 'petugas');
+INSERT INTO `user` VALUES ('1', 'admin', 'b7766cf93f0fcbcfa13adcc202419a4e5f21816f70360b6e76fd18342b56fdd8', '1231231231231231231231231231233123', 'admin', 'gajayana no563', 'Laki - Laki ', '1231231231231231', 'assets/images/users_photo/dragon-ball.jpg', 'sudah', 'dr. admin');
+INSERT INTO `user` VALUES ('2', 'dokter', '6c2b8adf9f897f646f442f6776425479958e409842a3506c1c51cc292fd27c55', '446.DU/1616.1/35.73.302/2018', 'dokter', 'jalan mawar 45 malangJln. Mayjend Sungkono No.09 B', 'Laki - Laki ', '1405356066621233', 'assets/images/users_photo/juragan.jpg', 'sudah', 'dr. Muchamad Zubait');
+INSERT INTO `user` VALUES ('3', 'petugas', '6c2b8adf9f897f646f442f6776425479958e409842a3506c1c51cc292fd27c55', '', 'petugas', 'dinoyo gang 3', 'Laki - Laki ', '1231231231231239', 'assets/images/users_photo/24a3f397a1058a682ab61e13845e0efd1.jpg', 'sudah', 'petugas');
+INSERT INTO `user` VALUES ('4', 'mayang', '0541bdb2c6e30b291cc4a08b22d30519272c32a7f61eb0c6b2bbc49aeae8b77c', '1234567890', 'dokter', 'jalan mergosono', 'Laki - Laki ', '1234567891234567', 'assets/images/users_photo/0e2d88832440ba12629e68f298fa89e52018293232620712.jpg', 'sudah', 'dr. mayang');
+INSERT INTO `user` VALUES ('5', 'adminx', 'a766452ebf53985054faa5a37039c29a11567734d56239d59eb235b36f7408dc', '1234567890', 'admin', 'jalan surabaya', 'Laki - Laki ', '1234567891234567', 'assets/images/users_photo/20e7d24d4cf1f1441a1b42d19192a62d1.jpg', 'sudah', 'dr. si admin baru');
