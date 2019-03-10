@@ -15,7 +15,7 @@
 							</div>
 							<div class="row">
 								<div class="col"><button class="btn btn-primary btn-block " type="submit">Login</button></div>
-								<div class="col"><a class="btn btn-primary btn-block text-white" id="signup_btn" href="<?= base_url().'Account/menu/register'?>">Register</a></div>
+								<div class="col"><a class="btn btn-primary btn-block text-white" id="signup_btn" href="<?= base_url().'register'?>">Register</a></div>
 							</div>
 						</fieldset>
 					</form>

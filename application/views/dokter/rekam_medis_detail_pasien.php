@@ -17,9 +17,9 @@
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/DataTables/DataTables-1.10.18/js/pdfmake.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/DataTables/DataTables-1.10.18/js/vfs_fonts.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/DataTables/DataTables-1.10.18/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		getRekamMedisByMonth();

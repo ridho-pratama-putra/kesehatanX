@@ -57,6 +57,19 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] 										= 'Account/login';
 $route['submit-login'] 									= 'Account/submitLogin';
 $route['logout'] 										= 'Account/logout';
+$route['register'] 										= 'Account/register';
+$route['submit-register-user'] 							= 'Account/submitRegister';
+
+$route['dashboard-admin'] 								= 'Admin/dashboard';
+$route['verifikasi-user'] 								= 'Admin/verifikasi';
+$route['submit-verifikasi-user/(:num)'] 				= 'Admin/SubmitVerifikasiUser/$1';
+$route['submit-reset-password/(:num)'] 					= 'Admin/SubmitResetPassword/$1';
+$route['daftar-dokter'] 								= 'Admin/daftarDokter';
+$route['get-pasien-per-usia-per-bulan']					= 'Admin/getPasienPerUsiaPerBulan';
+$route['get-pasien-per-dokter-per-bulan']				= 'Admin/getPasienPerDokterPerBulan';
+$route['per-dokter-per-pembayaran/(:num)/(:any)'] 		= 'Admin/perDokterPerPembayaran/$1/$2';
+$route['get-per-dokter-per-pembayaran'] 				= 'Admin/getPasienPerDokterPerPembayaran';
+
 
 /*LOGISTIK*/
 $route['submit-restok']									= 'Logistik/submitRestokLogistik';
@@ -100,10 +113,7 @@ $route['logistik-obat-sigma-usus-externum-restok/(:num)']	= 'Logistik/restokLogi
 $route['logistik-obat-sigma-usus-externum-hapus/(:num)']	= 'Logistik/deleteLogistik/obat_sigma_usus_externum/$1';
 $route['get-log-logistik-obat-sigma-usus-externum']			= 'Logistik/getLogLogistik/obat_sigma_usus_externum';
 
-$route['dashboard-admin'] 								= 'Admin/dashboard';
-$route['verifikasi-user'] 								= 'Admin/verifikasi';
-$route['submit-verifikasi-user'] 						= 'Admin/SubmitVerifikasiUser';
-$route['submit-reset-password/(:num)'] 					= 'Admin/SubmitResetPassword/$1';
+
 $route['pendaftaran'] 									= 'Petugas/pendaftaran';
 $route['submit-pendaftaran'] 							= 'Petugas/submitPendaftaran';
 $route['pemeriksaan-awal'] 								= 'Petugas/pemeriksaanAwal';

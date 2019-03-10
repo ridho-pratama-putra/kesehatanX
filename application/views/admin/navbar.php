@@ -9,11 +9,8 @@
       <li class="nav-item" id="dashboard">
         <a class="nav-link" href="<?php echo base_url()?>dashboard-admin">Dashboard</a>
       </li>
-      <li class="nav-item" id="daftar-pasien">
-        <a class="nav-link" href="<?php echo base_url()?>Admin/pasien">Daftar Pasien</a>
-      </li>
       <li class="nav-item" id="daftar-dokter">
-        <a class="nav-link" href="<?php echo base_url()?>Admin/dokter">Daftar Dokter</a>
+        <a class="nav-link" href="<?php echo base_url()?>daftar-dokter">Daftar Dokter</a>
       </li>
       <li class="nav-item" id="verifikasi-user">
         <a class="nav-link" href="<?php echo base_url()?>verifikasi-user">Verifikasi User</a>
